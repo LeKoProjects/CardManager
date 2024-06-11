@@ -10,7 +10,7 @@ class Lancamentos extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table='lancamentos';
-    protected $fillable=['moeda_id', 'tipo_id', 'status_id', 'useredit', 'codigo', 'valor'];
+    protected $fillable=['moeda_id', 'tipo_id', 'status_id', 'user_id', 'codigo', 'valor'];
     protected $dates=['deleted_at'];
 
     public function tipo()
@@ -26,5 +26,9 @@ class Lancamentos extends Model
     public function status()
     {
         return $this->belongsTo(Status::class, 'status_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

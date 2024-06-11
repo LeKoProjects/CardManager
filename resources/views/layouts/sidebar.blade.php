@@ -24,37 +24,39 @@
     <hr class="sidebar-divider">
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Lançamentos</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{route('lancamento.index')}}">Criar</a>
-                <a class="collapse-item" href="{{route('lancamento.controle')}}">Controle</a>
+    @if (auth()->user()->tipo == 1)
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Lançamentos</span>
+            </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{{ route('lancamento.index') }}">Criar</a>
+                    <a class="collapse-item" href="{{ route('lancamento.controle') }}">Controle</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-            aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fas fa-fw fa-wrench"></i>
-            <span>Utilidades</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Cadastros:</h6>
-                <a class="collapse-item" href="{{route('tipo.index')}}">Tipo Gift Card</a>
-                <a class="collapse-item" href="{{route('status.index')}}">Status</a>
-                <a class="collapse-item" href="{{route('moedas.index')}}">Moedas</a>
-                <a class="collapse-item" href="{{route('usuario.index')}}">Usuários</a>
+        <!-- Nav Item - Utilities Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                aria-expanded="true" aria-controls="collapseUtilities">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Utilidades</span>
+            </a>
+            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Cadastros:</h6>
+                    <a class="collapse-item" href="{{ route('tipo.index') }}">Tipo Gift Card</a>
+                    <a class="collapse-item" href="{{ route('status.index') }}">Status</a>
+                    <a class="collapse-item" href="{{ route('moedas.index') }}">Moedas</a>
+                    <a class="collapse-item" href="{{ route('usuario.index') }}">Usuários</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
+    @endif
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

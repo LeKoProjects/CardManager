@@ -21,14 +21,16 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'tipo' => 'required|integer'
+            'tipo' => 'required|integer',
+            'celular' => 'required|string|max:255'
         ]);
     
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'tipo' => $request->tipo
+            'tipo' => $request->tipo,
+            'celular' => $request->celular
         ]);
     
         return redirect()->route('usuario.index')->with('success', 'Usuário criado com sucesso');
@@ -43,10 +45,12 @@ public function update(Request $request, $id)
         'name' => 'required|string|max:255',
         'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
         'password' => 'nullable|string|min:8|confirmed',
-        'tipo' => 'required|integer'
+        'tipo' => 'required|integer',
+        'celular' => 'required|string|max:255'
     ]);
 
     $user->name = $request->name;
+    $user->celular = $request->celular;
     $user->email = $request->email;
     if ($request->filled('password')) {
         $user->password = Hash::make($request->password);

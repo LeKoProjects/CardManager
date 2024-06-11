@@ -39,10 +39,10 @@
                         <thead>
                             <tr>
                                 <th>Código</th>
-                                <th>Moeda</th>
                                 <th>Valor</th>
                                 <th>Tipo</th>
-                                <th>Status</th>
+                                <th>Solicitante</th>
+                                <th>Numero</th>
                                 <th>Porcentagem</th>
                                 <th>Lucro</th>
                             </tr>
@@ -51,10 +51,10 @@
                             @foreach ($lancamentos as $item)
                                 <tr>
                                     <td>{{ $item->codigo }}</td>
-                                    <td>{{ $item->moeda->abreviacao }}</td>
-                                    <td>{{ $item->valor }}</td>
+                                    <td>{{ $item->moeda->abreviacao }} {{ $item->valor }}</td>
                                     <td>{{ $item->tipo->nome }}</td>
-                                    <td>{{ $item->status->nome }}</td>
+                                    <td>{{ $item->user ? $item->user->name : 'Usuário não encontrado' }}</td>
+                                    <td>{{ $item->user ? $item->user->celular : 'Celular não encontrado' }}</td>
                                     <td>{{ $item->tipo->porcentagem }}%</td>
                                     <td>
                                         @php

@@ -17,9 +17,50 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Admin',
                 'tipo' => '1',
+                'celular' => '71999999999',
                 'email' => 'admin@anb.com',
                 'password' => bcrypt('12345678')
             ],
+            [
+                'name' => 'Gabryel',
+                'tipo' => '2',
+                'celular' => '71999999988',
+                'email' => 'admin2@anb.com',
+                'password' => bcrypt('12345678')
+            ],
         ]);
+
+        DB::table('tipos')->insert([
+            [
+                'nome' => 'XBOX',
+                'porcentagem' => '2',
+            ],
+            [
+                'nome' => 'UBER',
+                'porcentagem' => '3',
+            ],
+        ]);
+
+        DB::table('statuses')->insert([
+            [
+                'nome' => 'Novo',
+            ],
+            [
+                'nome' => 'Vendido',
+            ],
+        ]);
+
+        DB::table('moedas')->insert([
+            [
+                'moeda' => 'Real',
+                'abreviacao' => 'R$',
+            ],
+            [
+                'moeda' => 'Dolar',
+                'abreviacao' => 'USD$',
+            ],
+        ]);
+
+
     }
 }

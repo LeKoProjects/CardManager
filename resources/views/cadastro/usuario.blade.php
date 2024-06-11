@@ -28,8 +28,8 @@
                                     <input name="password" id="password" class="form-control" type="password" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label class="form-label">Confirme a Senha</label>
-                                    <input name="password_confirmation" id="password_confirmation" class="form-control" type="password" required>
+                                    <label class="form-label">Celular</label>
+                                    <input name="celular" id="celular" class="form-control" type="text" required>
                                 </div>
                             </div>
                             <div class="row">
@@ -63,6 +63,7 @@
                                 <tr>
                                     <th>Nome</th>
                                     <th>E-mail</th>
+                                    <th>Celular</th>
                                     <th>Tipo</th>
                                     <th>Ações</th>
                                 </tr>
@@ -72,6 +73,7 @@
                                     <tr>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->email }}</td>
+                                        <td>{{ $item->celular }}</td>
                                         <td>{{ $item->tipo == 1 ? 'Admin' : 'User' }}</td>
                                         <td>
                                             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">
@@ -114,11 +116,11 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="mb-3 col-md-6">
+                                        <div class="mb-3 col-md-4">
                                             <label class="form-label">Senha</label>
                                             <input name="password" class="form-control" type="password">
                                         </div>
-                                        <div class="mb-3 col-md-6">
+                                        <div class="mb-3 col-md-4">
                                             <label class="form-label">Tipo</label>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="tipo" value="1" {{ $item->tipo == 1 ? 'checked' : '' }}> Admin
@@ -126,6 +128,10 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" type="radio" name="tipo" value="2" {{ $item->tipo == 2 ? 'checked' : '' }}> User
                                             </div>
+                                        </div>
+                                        <div class="mb-3 col-md-4">
+                                            <label class="form-label">Celular</label>
+                                            <input name="celular" class="form-control" type="text" value="{{ $item->celular }}">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
