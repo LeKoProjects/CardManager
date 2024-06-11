@@ -5,7 +5,7 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Lançamentos</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Liberar Compras</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -16,20 +16,33 @@
                                 <th>Moeda</th>
                                 <th>Valor</th>
                                 <th>Tipo</th>
+                                <th>Solicitante</th>
+                                <th>Numero</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($lancamento as $item)
                                 <tr style="text-align: center">
-                                    <td class="codigo-cell">{{ $item->codigo }}</td>
+                                    @if ($item->status_id == 4)
+                                        <td>{{ $item->codigo }}</td>
+                                    @else
+                                        <td class="codigo-cell">{{ $item->codigo }}</td>
+                                    @endif
                                     <td>{{ $item->moeda->moeda }}</td>
                                     <td>{{ $item->moeda->abreviacao }} {{ $item->valor }}</td>
                                     <td>{{ $item->tipo->nome }}</td>
+                                    <td>{{ $item->user ? $item->user->name : 'Usuário não encontrado' }}</td>
+                                    <td>{{ $item->user ? $item->user->celular : 'Celular não encontrado' }}</td>
                                     <td>
-                                        <button class="btn btn-danger change-status" data-lancamento-id="{{ $item->id }}">
-                                            Adquirir
-                                        </button>
+                                        @if ($item->status_id == 4)
+                                            Liberado
+                                        @else
+                                            <button class="btn btn-success change-status"
+                                                data-lancamento-id="{{ $item->id }}">
+                                                Liberar
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -51,7 +64,7 @@
                     method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
-                        status_id: 2,
+                        status_id: 4,
                         lancamento_id: lancamento_id
                     },
                     success: function(response) {

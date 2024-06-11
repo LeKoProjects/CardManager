@@ -85,6 +85,25 @@
 
     <!-- Page level custom scripts -->
     <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
+
+    <script>
+        function maskString(str, visibleChars = 5) {
+        if (str.length <= visibleChars) {
+            return str;
+        }
+        let visiblePart = str.substring(0, visibleChars);
+        let maskedPart = '*'.repeat(str.length - visibleChars);
+        return visiblePart + maskedPart;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        let codigoCells = document.querySelectorAll('.codigo-cell');
+        codigoCells.forEach(function(cell) {
+            let originalText = cell.textContent;
+            cell.textContent = maskString(originalText);
+        });
+    });
+    </script>
 </body>
 
 </html>

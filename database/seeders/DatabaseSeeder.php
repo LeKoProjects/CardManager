@@ -46,7 +46,13 @@ class DatabaseSeeder extends Seeder
                 'nome' => 'Novo',
             ],
             [
-                'nome' => 'Vendido',
+                'nome' => 'Adquirir',
+            ],
+            [
+                'nome' => 'Paguei',
+            ],
+            [
+                'nome' => 'Liberar',
             ],
         ]);
 

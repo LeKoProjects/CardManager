@@ -7,6 +7,7 @@ use App\Models\Moedas;
 use App\Models\Status;
 use App\Models\Tipo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LancamentosController extends Controller
 {
@@ -104,25 +105,13 @@ class LancamentosController extends Controller
     {
         $lancamento = Lancamentos::find($request->lancamento_id);
 
-        if ($lancamento) {
+        $lancamento->status_id = $request->status_id;
+        $lancamento->user_id = auth()->user()->id;
+        $lancamento->save();
 
-            if (auth()->user()->tipo = 2 && $request->status_id != 2) {
-                return response()->json(['error' => 'Você não tem permissão para alterar para este status'], 403);
-            }
-
-            if ($lancamento->user_id) {
-                return response()->json(['error' => 'Lançamento já alterado'], 403);
-            }
-
-            $lancamento->status_id = $request->status_id;
-            $lancamento->user_id = auth()->user()->id; // Assumindo que você tem uma coluna 'updated_by' para armazenar o ID do usuário que fez a atualização
-            $lancamento->save();
-
-            return response()->json(['success' => 'Status atualizado com sucesso']);
-        }
-
-        return response()->json(['error' => 'Lançamento não encontrado'], 404);
+        return response()->json(['success' => 'Status atualizado com sucesso']);
     }
+
 
     public function controle(Request $request)
     {
@@ -146,6 +135,25 @@ class LancamentosController extends Controller
         return view('lancamento.controle', compact('lancamentos', 'status', 'tipos'));
     }
 
+    public function listaUser()
+    {
+        // Obtém o ID do usuário logado
+        $userId = Auth::id();
+
+        // Filtra os lançamentos pelo usuário logado e exclui aqueles com status_id igual a 2
+        $lancamento = Lancamentos::where('user_id', $userId)
+            ->where('status_id', '!=', 1)
+            ->get();
+
+        return view('lancamento.listauser', compact('lancamento'));
+    }
+
+    public function listaLiberar()
+    {
+        $lancamento = Lancamentos::whereIn('status_id', [3, 4])->get();
+
+        return view('lancamento.liberar', compact('lancamento'));
+    }
 
     /**
      * Remove the specified resource from storage.

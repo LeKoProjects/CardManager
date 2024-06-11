@@ -63,7 +63,6 @@
                                 <tr>
                                     <th>Nome</th>
                                     <th>E-mail</th>
-                                    <th>Celular</th>
                                     <th>Tipo</th>
                                     <th>Ações</th>
                                 </tr>
@@ -73,7 +72,6 @@
                                     <tr>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->email }}</td>
-                                        <td>{{ $item->celular }}</td>
                                         <td>{{ $item->tipo == 1 ? 'Admin' : 'User' }}</td>
                                         <td>
                                             <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">

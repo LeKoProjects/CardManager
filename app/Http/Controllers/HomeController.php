@@ -27,7 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $lancamento = Lancamentos::all();
+        $lancamento = Lancamentos::where('status_id', '=', 1)->get();
         $moeda = Moedas::all();
         $tipo = Tipo::all();
         $status = Status::all();

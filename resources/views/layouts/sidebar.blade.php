@@ -18,6 +18,9 @@
         <a class="nav-link" href="/home">
             <i class="fas fa-fw fa-table"></i>
             <span>Inicio</span></a>
+        <a class="nav-link" href="{{route('lancamento.usuario')}}">
+            <i class="fas fa-solid fa-store"></i>
+            <span>Minhas Compras</span></a>
     </li>
 
     <!-- Divider -->
@@ -35,6 +38,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="{{ route('lancamento.index') }}">Criar</a>
                     <a class="collapse-item" href="{{ route('lancamento.controle') }}">Controle</a>
+                    <a class="collapse-item" href="{{ route('lancamento.liberar') }}">Liberar</a>
                 </div>
             </div>
         </li>
@@ -46,7 +50,8 @@
                 <i class="fas fa-fw fa-wrench"></i>
                 <span>Utilidades</span>
             </a>
-            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Cadastros:</h6>
                     <a class="collapse-item" href="{{ route('tipo.index') }}">Tipo Gift Card</a>

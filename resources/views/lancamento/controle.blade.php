@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="container-fluid">
-        <form method="GET" action="{{ route('lancamento.controle') }}" class="mb-4">
+        <form method="GET" action="{{ route('lancamento.controle') }}" class="mb-2">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="status_id" class="form-label">Status</label>
                     <select name="status_id" id="status_id" class="form-control">
                         <option value="">Todos</option>
@@ -13,7 +13,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="tipo_id" class="form-label">Tipo</label>
                     <select name="tipo_id" id="tipo_id" class="form-control">
                         <option value="">Todos</option>
@@ -37,7 +37,7 @@
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
-                            <tr>
+                            <tr style="text-align: center">
                                 <th>Código</th>
                                 <th>Valor</th>
                                 <th>Tipo</th>
@@ -49,8 +49,12 @@
                         </thead>
                         <tbody>
                             @foreach ($lancamentos as $item)
-                                <tr>
+                            <tr style="text-align: center">
+                                @if ($item->status_id == 4)
                                     <td>{{ $item->codigo }}</td>
+                                @else
+                                    <td class="codigo-cell">{{ $item->codigo }}</td>
+                                @endif
                                     <td>{{ $item->moeda->abreviacao }} {{ $item->valor }}</td>
                                     <td>{{ $item->tipo->nome }}</td>
                                     <td>{{ $item->user ? $item->user->name : 'Usuário não encontrado' }}</td>
@@ -62,7 +66,7 @@
                                             $porcentagem = floatval($item->tipo->porcentagem);
                                         @endphp
                                         @if(is_numeric($valor) && is_numeric($porcentagem))
-                                            {{ $valor + ($valor * ($porcentagem / 100)) }}
+                                            {{ $valor - ($valor * ($porcentagem / 100)) }}
                                         @else
                                             N/A
                                         @endif

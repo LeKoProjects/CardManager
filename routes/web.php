@@ -55,5 +55,7 @@ Route::get('/lancamento', [LancamentosController::class, 'index'])->name('lancam
 Route::post('/lancamento', [LancamentosController::class, 'store'])->name('lancamento.store');
 Route::put('/lancamento/{id}', [LancamentosController::class, 'update'])->name('lancamento.update');
 Route::delete('/lancamento/{id}', [LancamentosController::class, 'destroy'])->name('lancamento.destroy');
-Route::post('/lancamentos/update', [LancamentosController::class, 'updateStatus'])->name('lancamentos.update-status');
+Route::post('/lancamentos/update-status', [LancamentosController::class, 'updateStatus'])->name('lancamentos.update-status');
 Route::get('/lancamento/controle', [LancamentosController::class, 'controle'])->name('lancamento.controle');
+Route::get('/lancamento/usuario', [LancamentosController::class, 'listaUser'])->name('lancamento.usuario');
+Route::get('/lancamento/liberar', [LancamentosController::class, 'listaLiberar'])->name('lancamento.liberar');
