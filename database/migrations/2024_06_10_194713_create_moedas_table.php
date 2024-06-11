@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('moeda')->nullable();
             $table->string('abreviacao')->nullable();
-            $table->string('porcentagem')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

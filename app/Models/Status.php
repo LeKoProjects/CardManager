@@ -13,4 +13,9 @@ class Status extends Model
     protected $fillable=['nome'];
     protected $dates=['deleted_at'];
 
+    public function lancamento()
+    {
+        return $this->belongsTo(Lancamentos::class, 'status_id');
+    }
+
 }

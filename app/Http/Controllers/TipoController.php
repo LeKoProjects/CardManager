@@ -32,6 +32,7 @@ class TipoController extends Controller
     {
         // Capitalize the input
         $tipo = ucfirst(trim($request->input('nome')));
+        $porcentagem = $request->input('porcentagem');
 
         // Check if the permission already exists
         $existeTipo = Tipo::where('nome', $tipo)->first();
@@ -43,6 +44,7 @@ class TipoController extends Controller
         // Create a new permission
         Tipo::create([
             'nome' => $tipo,
+            'porcentagem' => $porcentagem,
         ]);
 
         return redirect()->route('tipo.index')->with('success', 'Tipo cadastrado!');
@@ -76,6 +78,7 @@ class TipoController extends Controller
         }
 
         $tipo->nome = ucfirst(trim($request->input('nome')));
+        $tipo->porcentagem = $request->input('porcentagem');
 
         $tipo->save();
 

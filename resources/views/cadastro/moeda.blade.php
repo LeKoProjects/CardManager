@@ -16,17 +16,13 @@
                                 <form method="POST" action="{{ route('moedas.store') }}" class="form-horizontal">
                                     @csrf
                                     <div class="row">
-                                        <div class="mb-3 col-md-4">
+                                        <div class="mb-3 col-md-6">
                                             <label class="form-label">Nome da Moeda</label>
                                             <input name="moeda" id="moeda" class="form-control" type="text" placeholder="" required>
                                         </div>
-                                        <div class="mb-3 col-md-4">
+                                        <div class="mb-3 col-md-6">
                                             <label class="form-label">Abreviação</label>
                                             <input name="abreviacao" id="abreviacao" class="form-control" type="text" placeholder="" required>
-                                        </div>
-                                        <div class="mb-3 col-md-4">
-                                            <label class="form-label">Porcentagem</label>
-                                            <input name="porcentagem" id="porcentagem" class="form-control" type="text" placeholder="" required>
                                         </div>
                                     </div>
                                     <hr>
@@ -60,7 +56,6 @@
                                         <th>#</th>
                                         <th>Moeda</th>
                                         <th>Abreviação</th>
-                                        <th>%</th>
                                         <th>Editar</th>
                                         <th>Excluir</th>
                                     </tr>
@@ -71,7 +66,6 @@
                                             <td>{{ $item->id }}</td>
                                             <td>{{ $item->moeda }}</td>
                                             <td>{{ $item->abreviacao }}</td>
-                                            <td>{{ $item->porcentagem }}</td>
                                             <td>
                                                 <div>
                                                     <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">
@@ -100,17 +94,13 @@
                                                             @csrf
                                                             @method('PUT')
                                                             <div class="row">
-                                                                <div class="mb-3 col-md-4">
+                                                                <div class="mb-3 col-md-6">
                                                                     <label class="form-label">Nome do Tipo</label>
                                                                     <input name="moeda" id="moeda{{ $item->id }}" class="form-control" type="text" placeholder="" value="{{ $item->moeda }}">
                                                                 </div>
-                                                                <div class="mb-3 col-md-4">
+                                                                <div class="mb-3 col-md-6">
                                                                     <label class="form-label">Abreviação</label>
                                                                     <input name="abreviacao" id="abreviacao{{ $item->id }}" class="form-control" type="text" placeholder="" value="{{ $item->abreviacao }}">
-                                                                </div>
-                                                                <div class="mb-3 col-md-4">
-                                                                    <label class="form-label">Porcentagem</label>
-                                                                    <input name="porcentagem" id="porcentagem{{ $item->id }}" class="form-control" type="text" placeholder="" value="{{ $item->porcentagem }}">
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">

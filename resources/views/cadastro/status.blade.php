@@ -14,9 +14,9 @@
                             <div class="tile-body">
                                 <form method="POST" action="{{ route('status.store') }}" class="form-horizontal">
                                     @csrf
-                                    <div class="mb-12 row">
-                                        <label class="form-label col-md-12">Nome do Status</label>
+                                    <div class="row">
                                         <div class="col-md-12">
+                                        <label class="form-label">Nome do Status</label>
                                             <input name="nome" id="nome" class="form-control" type="text" placeholder="" required>
                                         </div>
                                     </div>
@@ -47,7 +47,6 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
                                         <th>Status</th>
                                         <th>Editar</th>
                                         <th>Excluir</th>
@@ -56,7 +55,6 @@
                                 <tbody>
                                     @foreach ($status as $item)
                                         <tr>
-                                            <td>{{ $item->id }}</td>
                                             <td>{{ $item->nome }}</td>
                                             <td>
                                                 <div>
@@ -85,9 +83,11 @@
                                                         <form method="POST" action="{{ route('status.update', $item->id) }}" enctype="multipart/form-data">
                                                             @csrf
                                                             @method('PUT')
-                                                            <div class="mb-3">
-                                                                <label for="nome{{ $item->id }}" class="form-label">Nome</label>
-                                                                <input type="text" class="form-control" id="nome{{ $item->id }}" name="nome" value="{{ $item->nome }}">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <label for="nome{{ $item->id }}" class="form-label">Nome</label>
+                                                                    <input type="text" class="form-control" id="nome{{ $item->id }}" name="nome" value="{{ $item->nome }}">
+                                                                </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

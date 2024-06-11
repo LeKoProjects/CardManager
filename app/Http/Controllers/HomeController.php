@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lancamentos;
+use App\Models\Moedas;
+use App\Models\Status;
+use App\Models\Tipo;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +27,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $lancamento = Lancamentos::all();
+        $moeda = Moedas::all();
+        $tipo = Tipo::all();
+        $status = Status::all();
+
+        return view('home', compact(['lancamento', 'moeda', 'tipo', 'status']));
     }
 }

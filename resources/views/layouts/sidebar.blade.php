@@ -32,7 +32,8 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="#">Criar</a>
+                <a class="collapse-item" href="{{route('lancamento.index')}}">Criar</a>
+                <a class="collapse-item" href="{{route('lancamento.controle')}}">Controle</a>
             </div>
         </div>
     </li>

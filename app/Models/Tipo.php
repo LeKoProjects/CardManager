@@ -10,6 +10,11 @@ class Tipo extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table='tipos';
-    protected $fillable=['nome'];
+    protected $fillable=['nome', 'porcentagem'];
     protected $dates=['deleted_at'];
+
+    public function lancamento()
+    {
+        return $this->belongsTo(Lancamentos::class, 'tipo_id');
+    }
 }
