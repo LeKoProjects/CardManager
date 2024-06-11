@@ -112,7 +112,17 @@ class LancamentosController extends Controller
         return response()->json(['success' => 'Status atualizado com sucesso']);
     }
 
+    public function updateStatus1(Request $request)
+    {
+        foreach ($request->lancamento_ids as $lancamento_id) {
+            $lancamento = Lancamentos::find($lancamento_id);
+            $lancamento->status_id = $request->status_id;
+            $lancamento->user_id = auth()->user()->id;
+            $lancamento->save();
+        }
 
+        return response()->json(['success' => 'Status atualizado com sucesso']);
+    }
     public function controle(Request $request)
     {
         $status_id = $request->input('status_id');
