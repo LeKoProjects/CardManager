@@ -16,25 +16,26 @@ class UserController extends Controller
 
     // Método store
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'tipo' => 'required|integer',
-            'celular' => 'required|string|max:255'
-        ]);
-    
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'tipo' => $request->tipo,
-            'celular' => $request->celular
-        ]);
-    
-        return redirect()->route('usuario.index')->with('success', 'Usuário criado com sucesso');
-    }
+{
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:8',
+        'tipo' => 'required|integer',
+        'celular' => 'required|string|max:20',
+    ]);
+
+    User::create([
+        'name' => $validatedData['name'],
+        'email' => $validatedData['email'],
+        'password' => Hash::make($validatedData['password']),
+        'tipo' => $validatedData['tipo'],
+        'celular' => $validatedData['celular'],
+    ]);
+
+    return redirect()->route('usuario.index')->with('success', 'Usuário criado com sucesso');
+}
+
 
 // Método update
 public function update(Request $request, $id)

@@ -12,6 +12,15 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('usuario.store') }}" class="form-horizontal">
                             @csrf
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <div class="row">
                                 <div class="mb-3 col-md-6">
                                     <label class="form-label">Nome</label>
@@ -58,38 +67,44 @@
                         <h6 class="m-0 font-weight-bold text-primary">Lista de Usuários</h6>
                     </div>
                     <div class="card-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>E-mail</th>
-                                    <th>Tipo</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($usuario as $item)
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
                                     <tr>
-                                        <td>{{ $item->name }}</td>
-                                        <td>{{ $item->email }}</td>
-                                        <td>{{ $item->tipo == 1 ? 'Admin' : 'User' }}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">
-                                                Editar
-                                            </button>
-                                            <form action="{{ route('usuario.destroy', $item->id) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Excluir</button>
-                                            </form>
-                                        </td>
+                                        <th>Nome</th>
+                                        <th>E-mail</th>
+                                        <th>Tipo</th>
+                                        <th>Editar</th>
+                                        <th>Excluir</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($usuario as $item)
+                                        <tr>
+                                            <td>{{ $item->name }}</td>
+                                            <td>{{ $item->email }}</td>
+                                            <td>{{ $item->tipo == 1 ? 'Admin' : 'User' }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">
+                                                    Editar
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <form action="{{ route('usuario.destroy', $item->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger">Excluir</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+            
 
             <!-- Modals for editing users -->
             @foreach ($usuario as $item)
