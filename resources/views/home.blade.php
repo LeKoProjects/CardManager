@@ -7,12 +7,14 @@
             <div class="card-header py-3">
                 <div class="d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-primary">Lançamentos </h6>
-                    <div id="adquirir-button-container" style="display: none;">
-                        <button id="adquirir-button" class="btn btn-primary">Adquirir</button>
+                    <div class="mb-3 text-right">
+                        <div class="d-inline-block" id="adquirir-button-container" style="display: none;">
+                            <button id="adquirir-button" class="btn btn-primary">Adquirir</button>
+                        </div>
+                        <button id="select-all-button" class="btn btn-secondary d-inline-block ml-2">Selecionar Tudo</button>
                     </div>
                 </div>
             </div>
-            
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -22,23 +24,46 @@
                                 <th>Moeda</th>
                                 <th>Valor</th>
                                 <th>Tipo</th>
-                                <th>Selecionar</th> <!-- Adicionando uma nova coluna -->
+                                <th>Selecionar</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($lancamento as $item)
+                            @foreach ($lancamento as $lancamento)
                                 <tr style="text-align: center">
-                                    <td class="codigo-cell">{{ $item->codigo }}</td>
-                                    <td>{{ $item->moeda->moeda }}</td>
-                                    <td>{{ $item->moeda->abreviacao }} {{ $item->valor }}</td>
-                                    <td>{{ $item->tipo->nome }}</td>
-                                    <td> <!-- Adicionando uma nova coluna com a caixa de seleção -->
-                                        <input type="checkbox" class="select-lancamento" data-lancamento-id="{{ $item->id }}">
+                                    <td class="codigo-cell">{{ $lancamento->codigo }}</td>
+                                    <td>{{ $lancamento->moeda->moeda }}</td>
+                                    <td>{{ $lancamento->moeda->abreviacao }} {{ $lancamento->valor }}</td>
+                                    <td>{{ $lancamento->tipo->nome }}</td>
+                                    <td>
+                                        <input type="checkbox" class="select-lancamento"
+                                            data-lancamento-id="{{ $lancamento->id }}">
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div class="modal fade" id="confirmarModal" tabindex="-1" role="dialog" aria-labelledby="confirmarModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmarModalLabel">Confirmar Lançamentos</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Tem certeza que deseja adquirir os lançamentos selecionados?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary btn-confirmar-adquirir">Confirmar</button>
                 </div>
             </div>
         </div>
@@ -58,8 +83,19 @@
                 }
             });
 
-            // Adiciona ação para o botão de adquirir
+            // Ação para o botão Selecionar Tudo
+            $('#select-all-button').click(function() {
+                var allSelected = $('.select-lancamento').length === $('.select-lancamento:checked').length;
+                $('.select-lancamento').prop('checked', !allSelected).trigger('change');
+            });
+
+            // Ação para abrir o modal de confirmação ao clicar em Adquirir
             $('#adquirir-button').click(function() {
+                $('#confirmarModal').modal('show');
+            });
+
+            // Ação para confirmar adquirir os lançamentos
+            $('.btn-confirmar-adquirir').click(function() {
                 var lancamento_ids = $('.select-lancamento:checked').map(function() {
                     return $(this).data('lancamento-id');
                 }).get();
@@ -74,12 +110,15 @@
                     },
                     success: function(response) {
                         alert(response.success);
-                        location.reload(); // Reload the page to reflect the changes
+                        location.reload(); // Recarrega a página para refletir as alterações
                     },
                     error: function(xhr) {
-                        alert('Erro: ' + xhr.responseJSON.error);
+                        alert('Erro ao adquirir os lançamentos.');
                     }
                 });
+
+                // Fecha o modal após a ação ser completada
+                $('#confirmarModal').modal('hide');
             });
         });
     </script>

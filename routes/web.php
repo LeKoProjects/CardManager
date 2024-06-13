@@ -59,5 +59,6 @@ Route::post('/lancamentos/update-status', [LancamentosController::class, 'update
 Route::get('/lancamento/controle', [LancamentosController::class, 'controle'])->name('lancamento.controle');
 Route::get('/lancamento/usuario', [LancamentosController::class, 'listaUser'])->name('lancamento.usuario');
 Route::post('/lancamentos/update-status1', [LancamentosController::class, 'updateStatus1'])->name('lancamentos.update-status1');
+Route::get('/lancamentos/exportar-selecionados-excel', [LancamentosController::class, 'exportarSelecionadosParaExcel'])->name('exportar.lancamentos.selecionados.excel');
 
 Route::get('/lancamento/liberar', [LancamentosController::class, 'listaLiberar'])->name('lancamento.liberar');

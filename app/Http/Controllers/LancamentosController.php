@@ -8,6 +8,8 @@ use App\Models\Status;
 use App\Models\Tipo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\LancamentosExport;
 
 class LancamentosController extends Controller
 {
@@ -37,21 +39,25 @@ class LancamentosController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        // Capitalize the input
-        $codigo = $request->input('codigo');
-        $moeda = $request->input('moeda_id');
-        $valor = $request->input('valor');
-        $tipo = $request->input('tipo_id');
+{
+    $codigos = $request->input('codigo');
+    $moedas = $request->input('moeda_id');
+    $valores = $request->input('valor');
+    $tipos = $request->input('tipo_id');
 
-        // Check if the permission already exists
+    foreach ($codigos as $index => $codigo) {
+        $moeda = $moedas[$index];
+        $valor = $valores[$index];
+        $tipo = $tipos[$index];
+
+        // Check if the lancamento already exists
         $existeLancamento = Lancamentos::where('codigo', $codigo)->first();
 
         if ($existeLancamento) {
-            return redirect()->back()->with('error', 'Lançamento já existe!');
+            continue; // Skip existing lancamentos
         }
 
-        // Create a new permission
+        // Create a new lancamento
         Lancamentos::create([
             'codigo' => $codigo,
             'moeda_id' => $moeda,
@@ -59,9 +65,11 @@ class LancamentosController extends Controller
             'tipo_id' => $tipo,
             'status_id' => 1,
         ]);
-
-        return redirect()->back()->with('success', 'Lançamento cadastrado!');
     }
+
+    return redirect()->back()->with('success', 'Lançamentos cadastrados!');
+}
+
 
     /**
      * Display the specified resource.
@@ -123,6 +131,27 @@ class LancamentosController extends Controller
 
         return response()->json(['success' => 'Status atualizado com sucesso']);
     }
+
+    public function exportarSelecionadosParaExcel(Request $request)
+    {
+        // Obtém os IDs dos lançamentos selecionados
+        $lancamentosSelecionados = explode(',', $request->query('lancamentos'));
+
+        // Remove IDs vazios ou não numéricos e mantém apenas IDs válidos
+        $lancamentosIds = array_filter($lancamentosSelecionados, function($id) {
+            return is_numeric($id) && intval($id) > 0; // Verifica se é numérico e maior que zero
+        });
+
+        // Verifica se há IDs válidos para prosseguir
+        if (empty($lancamentosIds)) {
+            // Retorna uma resposta de erro ou faz outra ação adequada
+            return response()->json(['error' => 'Nenhum lançamento válido selecionado.'], 400);
+        }
+
+        // Inicia o download do arquivo Excel com os dados dos lançamentos selecionados
+        return Excel::download(new LancamentosExport($lancamentosIds), 'lancamentos_selecionados.xlsx');
+    }
+
     public function controle(Request $request)
     {
         $status_id = $request->input('status_id');
