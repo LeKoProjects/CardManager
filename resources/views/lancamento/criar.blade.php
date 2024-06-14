@@ -43,7 +43,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input name="valor[]" class="form-control" type="text" required>
+                                                    <input name="valor[]" class="form-control valor" type="text" required>
                                                 </td>
                                                 <td>
                                                     <select class="form-control tipo-select" name="tipo_id[]" onchange="checkDivida(this)">
@@ -168,7 +168,7 @@
                                                         <div class="mb-3 col-md-4">
                                                             <label class="form-label">Valor</label>
                                                             <input name="valor" id="valor{{ $item->id }}"
-                                                                class="form-control" type="text"
+                                                                class="form-control valor" type="text"
                                                                 placeholder="" value="{{ $item->valor }}">
                                                         </div>
                                                         <div class="mb-3 col-md-4">
@@ -221,8 +221,21 @@
         </div>
     </div>
     </div>
-
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
     <script>
+    $(document).ready(function() {
+        // Aplica a máscara aos inputs de valor
+        applyMask();
+
+        function applyMask() {
+            $('.valor').mask('000.000.000.000.000,00', { reverse: true });
+        }
+
+        // Função para verificar se é divida e mostrar campo de usuário
         function checkDivida(element) {
             const usuarioCell = element.closest('tr').querySelector('.usuario-cell');
             const usuarioHeader = document.querySelector('.usuario-header');
@@ -232,44 +245,41 @@
             } else {
                 usuarioCell.style.display = 'none';
                 usuarioCell.querySelector('select').value = '';
-                
-                // Check if any other rows need the Usuario header
+
+                // Verifica se há outras linhas com tipo de dívida para mostrar o cabeçalho
                 const anyDivida = [...document.querySelectorAll('.tipo-select')].some(select => select.value == '3');
                 if (!anyDivida) {
                     usuarioHeader.style.display = 'none';
                 }
             }
         }
-        function addLancamento() {
+
+        // Função para adicionar um novo lançamento
+        window.addLancamento = function() {
             const tableBody = document.querySelector('#lancamentos tbody');
             const newRow = tableBody.querySelector('.lancamento').cloneNode(true);
             newRow.querySelectorAll('input').forEach(input => input.value = '');
             newRow.querySelectorAll('select').forEach(select => select.value = '');
             newRow.querySelector('.usuario-cell').style.display = 'none';
             tableBody.appendChild(newRow);
+
+            applyMask();
         }
-        function removeLancamento(button) {
+
+        // Função para remover um lançamento
+        window.removeLancamento = function(button) {
             const row = button.closest('tr');
             const tableBody = document.querySelector('#lancamentos tbody');
             if (tableBody.querySelectorAll('.lancamento').length > 1) {
                 row.remove();
-                
-                // Check if any other rows need the Usuario header
+
+                // Verifica se há outras linhas com tipo de dívida para mostrar o cabeçalho
                 const anyDivida = [...document.querySelectorAll('.tipo-select')].some(select => select.value == '3');
                 if (!anyDivida) {
                     document.querySelector('.usuario-header').style.display = 'none';
                 }
             }
         }
-        window.removeLancamento = function(button) {
-                const lancamento = button.closest('tr.lancamento');
-                if (document.querySelectorAll('tr.lancamento').length > 1) {
-                    lancamento.remove();
-                } else {
-                    alert('Você deve ter pelo menos um lançamento.');
-                }
-            }
+    });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 @endsection
