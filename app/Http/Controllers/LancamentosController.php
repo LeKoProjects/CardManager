@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LancamentosExport;
+use App\Models\User;
+use GuzzleHttp\Client;
 
 class LancamentosController extends Controller
 {
@@ -22,8 +24,9 @@ class LancamentosController extends Controller
         $moeda = Moedas::all();
         $tipo = Tipo::all();
         $status = Status::all();
+        $users = User::all();
 
-        return view('lancamento.criar', compact(['lancamento', 'moeda', 'tipo', 'status']));
+        return view('lancamento.criar', compact(['lancamento', 'moeda', 'tipo', 'status', 'users']));
     }
 
 
@@ -44,11 +47,13 @@ class LancamentosController extends Controller
     $moedas = $request->input('moeda_id');
     $valores = $request->input('valor');
     $tipos = $request->input('tipo_id');
+    $users = $request->input('user_id'); // Corrigido para 'usuario_id' conforme o nome no template
 
     foreach ($codigos as $index => $codigo) {
         $moeda = $moedas[$index];
         $valor = $valores[$index];
         $tipo = $tipos[$index];
+        $user = isset($users[$index]) ? $users[$index] : null; // Verificar se o usuário está definido
 
         // Check if the lancamento already exists
         $existeLancamento = Lancamentos::where('codigo', $codigo)->first();
@@ -57,18 +62,23 @@ class LancamentosController extends Controller
             continue; // Skip existing lancamentos
         }
 
+        // Define o status_id com base na presença de user_id
+        $status_id = $user ? 2 : 1;
+
         // Create a new lancamento
         Lancamentos::create([
             'codigo' => $codigo,
             'moeda_id' => $moeda,
             'valor' => $valor,
             'tipo_id' => $tipo,
-            'status_id' => 1,
+            'user_id' => $user,
+            'status_id' => $status_id,
         ]);
     }
 
     return redirect()->back()->with('success', 'Lançamentos cadastrados!');
 }
+
 
 
     /**
@@ -152,17 +162,20 @@ class LancamentosController extends Controller
         return Excel::download(new LancamentosExport($lancamentosIds), 'lancamentos_selecionados.xlsx');
     }
 
-    public function controle(Request $request)
+        public function controle(Request $request)
     {
         $status_id = $request->input('status_id');
         $tipo_id = $request->input('tipo_id');
-
+        $user_id = $request->input('user_id');
+        
         $query = Lancamentos::query();
 
         if ($status_id) {
             $query->where('status_id', $status_id);
         }
-
+        if ($user_id) {
+            $query->where('user_id', $user_id);
+        }
         if ($tipo_id) {
             $query->where('tipo_id', $tipo_id);
         }
@@ -170,8 +183,12 @@ class LancamentosController extends Controller
         $lancamentos = $query->get();
         $status = Status::all();
         $tipos = Tipo::all();
+        $user = User::all();
+        // Obter cotação BRL para USD
+        $cotacaoBRLtoUSD = $this->getCotacaoBRLtoUSD();
+        $cotacoes = Moedas::all()->pluck('cotacao', 'abreviacao');
 
-        return view('lancamento.controle', compact('lancamentos', 'status', 'tipos'));
+        return view('lancamento.controle', compact('user','lancamentos', 'status', 'tipos', 'cotacaoBRLtoUSD', 'cotacoes'));
     }
 
     public function listaUser()
@@ -192,6 +209,31 @@ class LancamentosController extends Controller
         $lancamento = Lancamentos::whereIn('status_id', [3, 4])->get();
 
         return view('lancamento.liberar', compact('lancamento'));
+    }
+
+        public function showCart()
+    {
+        $lancamento = Lancamentos::where('user_id', Auth::id())->get();
+        $valorTotal = $lancamento->sum('valor'); // Supondo que a coluna de valor seja 'valor'
+
+        return view('carrinho', compact('lancamentos', 'valorTotal'));
+    }
+
+    public function getCotacaoBRLtoUSD()
+    {
+        $client = new Client();
+        $response = $client->get('https://economia.awesomeapi.com.br/json/last/BRL-USD');
+        $data = json_decode($response->getBody(), true);
+        return $data['BRLUSD']['bid']; // Retorna a taxa de câmbio de compra
+    }
+
+    public function showTable()
+    {
+        $cotacaoBRLtoUSD = $this->getCotacaoBRLtoUSD();
+        $lancamentos = Lancamentos::all(); // ou o método que você usa para obter os lançamentos
+        $cotacoes = Moedas::all()->pluck('cotacao', 'abreviacao'); // ou como você está obtendo as cotações das moedas
+    
+        return view('lancamento.controle', compact('lancamentos', 'cotacoes', 'cotacaoBRLtoUSD'));
     }
 
     /**
