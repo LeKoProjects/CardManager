@@ -20,6 +20,13 @@
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
     @stack('css')
 </head>
+<style>
+    #walletDropdownMenu:hover .dropdown-menu {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+    }
+</style>
 
 <body id="page-top">
 
