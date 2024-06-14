@@ -39,6 +39,10 @@ class DatabaseSeeder extends Seeder
                 'nome' => 'UBER',
                 'porcentagem' => '3',
             ],
+            [
+                'nome' => 'DIVIDA',
+                'porcentagem' => '0',
+            ],
         ]);
 
         DB::table('statuses')->insert([
@@ -59,11 +63,11 @@ class DatabaseSeeder extends Seeder
         DB::table('moedas')->insert([
             [
                 'moeda' => 'Real',
-                'abreviacao' => 'R$',
+                'abreviacao' => 'BRL',
             ],
             [
                 'moeda' => 'Dolar',
-                'abreviacao' => 'USD$',
+                'abreviacao' => 'USD',
             ],
         ]);
 

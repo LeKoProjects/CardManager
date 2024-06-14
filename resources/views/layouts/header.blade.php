@@ -11,12 +11,23 @@
 
         <div class="topbar-divider d-none d-sm-block"></div>
 
-        <!-- Nav Item - User Information -->
+        <!-- Nav Item - Wallet Information -->
+        <li class="nav-item dropdown no-arrow" id="walletDropdownMenu">
+            <a class="nav-link dropdown-toggle" href="{{ route('lancamento.usuario') }}" id="walletDropdown" role="button"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-wallet fa-sm fa-fw mr-2 text-gray-600"></i>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                    @if ($valorTotalUSD > 0)
+                        USD -{{ number_format($valorTotalUSD, 2, ',', '.') }}
+                    @endif
+                </span>
+            </a>
+        </li>
+        {{-- User --}}
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
-                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

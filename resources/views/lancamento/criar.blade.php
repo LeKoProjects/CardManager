@@ -13,69 +13,68 @@
                     <div class="card-body">
                         <div class="tile">
                             <div class="tile-body">
-                                <form method="POST" action="{{ route('lancamento.store') }}" class="form-horizontal">
+                                <form method="POST" action="{{ route('lancamento.store') }}">
                                     @csrf
-                                    <div class="table-responsive">
-                                        <table class="table" id="lancamentos">
-                                            <thead>
-                                                <tr>
-                                                    <th>Código</th>
-                                                    <th>Moeda</th>
-                                                    <th>Valor</th>
-                                                    <th>Tipo</th>
-                                                    <th>Adicionar</th>
-                                                    <th>Excluir</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr class="lancamento">
-                                                    <td>
-                                                        <input name="codigo[]" class="form-control" type="text" required>
-                                                    </td>
-                                                    <td>
-                                                        <select class="form-control" name="moeda_id[]">
-                                                            <option>Selecione a Moeda</option>
-                                                            @foreach ($moeda as $item)
-                                                                <option value="{{ $item->id }}">
-                                                                    {{ $item->moeda }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <input name="valor[]" class="form-control" type="text" required>
-                                                    </td>
-                                                    <td>
-                                                        <select class="form-control" name="tipo_id[]">
-                                                            <option value="">Selecione o Tipo</option>
-                                                            @foreach ($tipo as $item)
-                                                                <option value="{{ $item->id }}">
-                                                                    {{ $item->nome }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-success"
-                                                            onclick="addLancamento()"><i class="fas fa-solid fa-plus"></i></button>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger"
-                                                            onclick="removeLancamento(this)"><i class="fas fa-solid fa-minus"></i></button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="tile-footer">
-                                        <div class="row">
-                                            <div class="col-md-12 col-md-offset-3">
-                                                <button class="btn btn-primary" type="submit">
-                                                    <i class="bi bi-check-circle-fill me-2"></i>Criar
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <table class="table" id="lancamentos">
+                                        <thead>
+                                            <tr>
+                                                <th>Código</th>
+                                                <th>Moeda</th>
+                                                <th>Valor</th>
+                                                <th>Tipo</th>
+                                                <th class="usuario-header" style="display: none;">Usuário</th>
+                                                <th>Adicionar</th>
+                                                <th>Excluir</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="lancamento">
+                                                <td>
+                                                    <input name="codigo[]" class="form-control" type="text" required>
+                                                </td>
+                                                <td>
+                                                    <select class="form-control" name="moeda_id[]">
+                                                        <option>Selecione a Moeda</option>
+                                                        @foreach ($moeda as $item)
+                                                            <option value="{{ $item->id }}">
+                                                                {{ $item->moeda }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input name="valor[]" class="form-control" type="text" required>
+                                                </td>
+                                                <td>
+                                                    <select class="form-control tipo-select" name="tipo_id[]" onchange="checkDivida(this)">
+                                                        <option value="">Selecione o Tipo</option>
+                                                        @foreach ($tipo as $item)
+                                                            <option value="{{ $item->id }}">
+                                                                {{ $item->nome }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td class="usuario-cell" style="display:none;">
+                                                    <select class="form-control" name="user_id[]">
+                                                        <option value="">Selecione o Usuário</option>
+                                                        @foreach ($users as $usuario)
+                                                            <option value="{{ $usuario->id }}">
+                                                                {{ $usuario->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-success" onclick="addLancamento()"><i class="fas fa-plus"></i></button>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger" onclick="removeLancamento(this)"><i class="fas fa-minus"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button type="submit" class="btn btn-primary">Salvar</button>
                                 </form>
                             </div>
                         </div>
@@ -109,7 +108,7 @@
                                                 <td>{{ $item->codigo }}</td>
                                                 <td>{{ $item->moeda->moeda }}</td>
                                                 <td>{{ $item->valor }}</td>
-                                                <td>{{ $item->tipo->nome }}</td>
+                                                <td>{{ optional($item->tipo)->nome }}</td>
                                                 <td>
                                                     <div>
                                                         <button type="button" class="btn btn-info" data-bs-toggle="modal"
@@ -128,89 +127,89 @@
                                                 </td>
                                             </tr>
 
-                                            <!-- Modal for Editing -->
-                                            <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1"
-                                                aria-labelledby="editModalLabel{{ $item->id }}" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="editModalLabel{{ $item->id }}">
-                                                                Editar Lançamento</h5>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form method="POST"
-                                                                action="{{ route('lancamento.update', $item->id) }}"
-                                                                enctype="multipart/form-data">
-                                                                @csrf
-                                                                @method('PUT')
-                                                                <div class="row">
-                                                                    <div class="mb-3 col-md-12">
-                                                                        <label class="form-label">Código</label>
-                                                                        <input name="codigo"
-                                                                            id="codigo{{ $item->id }}"
-                                                                            class="form-control" type="text"
-                                                                            placeholder="" value="{{ $item->codigo }}">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="mb-3 col-md-4">
-                                                                        <label class="form-label">Moeda</label>
-                                                                        <select class="form-control"
-                                                                            id="moeda_id{{ $item->id }}"
-                                                                            name="moeda_id">
-                                                                            <option selected></option>
-                                                                            @foreach ($moeda as $moedas)
-                                                                                <option value="{{ $moedas->id }}"
-                                                                                    {{ $item->moeda_id == $moedas->id ? 'selected' : '' }}>
-                                                                                    {{ $moedas->moeda }}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="mb-3 col-md-4">
-                                                                        <label class="form-label">Valor</label>
-                                                                        <input name="valor" id="valor{{ $item->id }}"
-                                                                            class="form-control" type="text"
-                                                                            placeholder="" value="{{ $item->valor }}">
-                                                                    </div>
-                                                                    <div class="mb-3 col-md-4">
-                                                                        <label class="form-label">Tipo</label>
-                                                                        <select class="form-control"
-                                                                            id="tipo_id{{ $item->id }}" name="tipo_id">
-                                                                            <option selected></option>
-                                                                            @foreach ($tipo as $tipos)
-                                                                                <option value="{{ $tipos->id }}"
-                                                                                    {{ $item->tipo_id == $tipos->id ? 'selected' : '' }}>
-                                                                                    {{ $tipos->nome }}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="mb-3 col-md-12"
-                                                                        style="text-align: center">
-                                                                        <label class="form-label">Status</label>
-                                                                        <select class="form-control"
-                                                                            id="status_id{{ $item->id }}"
-                                                                            name="status_id" style="text-align: center">
-                                                                            <option selected></option>
-                                                                            @foreach ($status as $statuss)
-                                                                                <option value="{{ $statuss->id }}"
-                                                                                    {{ $item->status_id == $statuss->id ? 'selected' : '' }}>
-                                                                                    {{ $statuss->nome }}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Cancelar</button>
-                                                            <button type="submit" class="btn btn-primary">Salvar</button>
-                                                        </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
+                                <!-- Modal for Editing -->
+                                <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1"
+                                    aria-labelledby="editModalLabel{{ $item->id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editModalLabel{{ $item->id }}">
+                                                    Editar Lançamento</h5>
                                             </div>
+                                            <div class="modal-body">
+                                                <form method="POST"
+                                                    action="{{ route('lancamento.update', $item->id) }}"
+                                                    enctype="multipart/form-data">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="row">
+                                                        <div class="mb-3 col-md-12">
+                                                            <label class="form-label">Código</label>
+                                                            <input name="codigo"
+                                                                id="codigo{{ $item->id }}"
+                                                                class="form-control" type="text"
+                                                                placeholder="" value="{{ $item->codigo }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="mb-3 col-md-4">
+                                                            <label class="form-label">Moeda</label>
+                                                            <select class="form-control"
+                                                                id="moeda_id{{ $item->id }}"
+                                                                name="moeda_id">
+                                                                <option selected></option>
+                                                                @foreach ($moeda as $moedas)
+                                                                    <option value="{{ $moedas->id }}"
+                                                                        {{ $item->moeda_id == $moedas->id ? 'selected' : '' }}>
+                                                                        {{ $moedas->moeda }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3 col-md-4">
+                                                            <label class="form-label">Valor</label>
+                                                            <input name="valor" id="valor{{ $item->id }}"
+                                                                class="form-control" type="text"
+                                                                placeholder="" value="{{ $item->valor }}">
+                                                        </div>
+                                                        <div class="mb-3 col-md-4">
+                                                            <label class="form-label">Tipo</label>
+                                                            <select class="form-control"
+                                                                id="tipo_id{{ $item->id }}" name="tipo_id">
+                                                                <option selected></option>
+                                                                @foreach ($tipo as $tipos)
+                                                                    <option value="{{ $tipos->id }}"
+                                                                        {{ $item->tipo_id == $tipos->id ? 'selected' : '' }}>
+                                                                        {{ $tipos->nome }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="mb-3 col-md-12"
+                                                            style="text-align: center">
+                                                            <label class="form-label">Status</label>
+                                                            <select class="form-control"
+                                                                id="status_id{{ $item->id }}"
+                                                                name="status_id" style="text-align: center">
+                                                                <option selected></option>
+                                                                @foreach ($status as $statuss)
+                                                                    <option value="{{ $statuss->id }}"
+                                                                        {{ $item->status_id == $statuss->id ? 'selected' : '' }}>
+                                                                        {{ $statuss->nome }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cancelar</button>
+                                                <button type="submit" class="btn btn-primary">Salvar</button>
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             @endforeach
                             </tbody>
@@ -224,21 +223,52 @@
     </div>
 
     <script>
-        function addLancamento() {
-            const lancamentoTemplate = document.querySelector('.lancamento').cloneNode(true);
-            lancamentoTemplate.querySelectorAll('input').forEach(input => input.value = '');
-            lancamentoTemplate.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
-            document.querySelector('#lancamentos tbody').appendChild(lancamentoTemplate);
-        }
-    
-        function removeLancamento(button) {
-            const lancamento = button.closest('tr.lancamento');
-            if (document.querySelectorAll('tr.lancamento').length > 1) {
-                lancamento.remove();
+        function checkDivida(element) {
+            const usuarioCell = element.closest('tr').querySelector('.usuario-cell');
+            const usuarioHeader = document.querySelector('.usuario-header');
+            if (element.value == '3') {
+                usuarioCell.style.display = '';
+                usuarioHeader.style.display = '';
             } else {
-                alert('Você deve ter pelo menos um lançamento.');
+                usuarioCell.style.display = 'none';
+                usuarioCell.querySelector('select').value = '';
+                
+                // Check if any other rows need the Usuario header
+                const anyDivida = [...document.querySelectorAll('.tipo-select')].some(select => select.value == '3');
+                if (!anyDivida) {
+                    usuarioHeader.style.display = 'none';
+                }
             }
         }
+        function addLancamento() {
+            const tableBody = document.querySelector('#lancamentos tbody');
+            const newRow = tableBody.querySelector('.lancamento').cloneNode(true);
+            newRow.querySelectorAll('input').forEach(input => input.value = '');
+            newRow.querySelectorAll('select').forEach(select => select.value = '');
+            newRow.querySelector('.usuario-cell').style.display = 'none';
+            tableBody.appendChild(newRow);
+        }
+        function removeLancamento(button) {
+            const row = button.closest('tr');
+            const tableBody = document.querySelector('#lancamentos tbody');
+            if (tableBody.querySelectorAll('.lancamento').length > 1) {
+                row.remove();
+                
+                // Check if any other rows need the Usuario header
+                const anyDivida = [...document.querySelectorAll('.tipo-select')].some(select => select.value == '3');
+                if (!anyDivida) {
+                    document.querySelector('.usuario-header').style.display = 'none';
+                }
+            }
+        }
+        window.removeLancamento = function(button) {
+                const lancamento = button.closest('tr.lancamento');
+                if (document.querySelectorAll('tr.lancamento').length > 1) {
+                    lancamento.remove();
+                } else {
+                    alert('Você deve ter pelo menos um lançamento.');
+                }
+            }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
