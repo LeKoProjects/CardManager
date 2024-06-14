@@ -109,7 +109,7 @@
                         lancamento_ids: lancamento_ids
                     },
                     success: function(response) {
-                        alert(response.success);
+                        //alert(response.success);
                         location.reload(); // Recarrega a página para refletir as alterações
                     },
                     error: function(xhr) {

@@ -155,7 +155,7 @@ class LancamentosController extends Controller
         // Verifica se há IDs válidos para prosseguir
         if (empty($lancamentosIds)) {
             // Retorna uma resposta de erro ou faz outra ação adequada
-            return response()->json(['error' => 'Nenhum lançamento válido selecionado.'], 400);
+            return redirect()->back()->with('error', 'Nenhum Lançamento selecionado.');
         }
 
         // Inicia o download do arquivo Excel com os dados dos lançamentos selecionados

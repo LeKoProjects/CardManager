@@ -27,7 +27,12 @@ class LancamentosExport implements FromCollection
     }
 
     // Consulta os lançamentos no banco de dados com base nos IDs
-    $lancamentos = Lancamentos::whereIn('id', $lancamentosIds)->get();
+    $lancamentos = Lancamentos::join('moedas as mo', 'lancamentos.moeda_id', '=', 'mo.id')
+    ->join('statuses as st', 'lancamentos.status_id', '=', 'st.id')
+    ->join('tipos as ti', 'lancamentos.tipo_id', '=', 'ti.id')
+    ->whereIn('lancamentos.id', $lancamentosIds)
+    ->select('lancamentos.codigo', 'mo.abreviacao', 'lancamentos.valor', 'st.nome as status_nome', 'ti.nome as tipo_nome')
+    ->get();
 
     // Retorna uma coleção de dados dos lançamentos
     return $lancamentos;

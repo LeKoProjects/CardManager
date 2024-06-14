@@ -22,20 +22,15 @@
                             <th>Moeda</th>
                             <th>Valor</th>
                             <th>Tipo</th>
-                            <th>Status</th> <!-- Adicionei Status como cabeçalho da coluna -->
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($lancamento as $lancamento)
                         <tr style="text-align: center">
-                            <!-- Mostra checkbox apenas se o status permitir -->
-                            @if ($lancamento->status_id != 3 && $lancamento->status_id != 4)
                             <td>
-                                <input type="checkbox" class="checkbox-select" data-lancamento-id="{{ $lancamento->id }}">
+                                <input type="checkbox" class="checkbox-select" data-lancamento-id="{{ $lancamento->id }}" data-status-id="{{ $lancamento->status_id }}">
                             </td>
-                            @else
-                            <td></td>
-                            @endif
                             <td>{{ $lancamento->codigo }}</td>
                             <td>{{ $lancamento->moeda->moeda }}</td>
                             <td>{{ $lancamento->moeda->abreviacao }} {{ $lancamento->valor }}</td>
@@ -69,7 +64,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Tem certeza que deseja pagar este lançamento?
+                Tem certeza que deseja pagar este(s) lançamento(s)?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -88,33 +83,42 @@
         // Ação para o botão Pagar dentro do modal
         $('.btn-pagar').click(function() {
             lancamentosSelecionados = $('.checkbox-select:checked').map(function() {
-                return $(this).data('lancamento-id');
+                return {
+                    id: $(this).data('lancamento-id'),
+                    status: $(this).data('status-id')
+                };
             }).get();
-
-            $('#confirmarModal').modal('show');
-            $('#confirmarModal').data('lancamento-id', lancamentosSelecionados);
         });
 
         // Ação para o botão Confirmar dentro do modal
         $('.btn-pagar-confirmar').click(function() {
-            var lancamento_id = $('#confirmarModal').data('lancamento-id');
-
-            $.ajax({
-                url: '{{ route('lancamentos.update-status1') }}',
-                method: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    status_id: 3, // Status 3 = Aguardando Liberação
-                    lancamento_ids: lancamento_id
-                },
-                success: function(response) {
-                    alert(response.success);
-                    location.reload();
-                },
-                error: function(xhr) {
-                    alert('Erro ao atualizar o status do lançamento.');
-                }
+            // Filtrar lançamentos com status 2
+            var lancamentosParaAtualizar = lancamentosSelecionados.filter(function(lancamento) {
+                return lancamento.status == 2;
+            }).map(function(lancamento) {
+                return lancamento.id;
             });
+
+            if (lancamentosParaAtualizar.length > 0) {
+                $.ajax({
+                    url: '{{ route('lancamentos.update-status1') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        status_id: 3, // Status 3 = Aguardando Liberação
+                        lancamento_ids: lancamentosParaAtualizar
+                    },
+                    success: function(response) {
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        alert('Erro ao atualizar o status do lançamento.');
+                    }
+                });
+            } else {
+                alert('Nenhum lançamento válido selecionado para atualização.');
+                $('#confirmarModal').modal('hide');
+            }
         });
 
         // Ação para o botão Selecionar Tudo
