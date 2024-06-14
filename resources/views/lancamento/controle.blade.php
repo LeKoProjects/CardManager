@@ -22,7 +22,16 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-4 d-flex align-items-end">
+                <div class="col-md-3">
+                    <label for="user_id" class="form-label">Usuário</label>
+                    <select name="user_id" id="user_id" class="form-control">
+                        <option value="">Todos</option>
+                        @foreach ($user as $userItem)
+                            <option value="{{ $userItem->id }}">{{ $userItem->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
                     <button type="submit" class="btn btn-primary">Filtrar</button>
                 </div>
             </div>
@@ -44,10 +53,13 @@
                                 <th>Solicitante</th>
                                 <th>Numero</th>
                                 <th>Porcentagem</th>
-                                <th>Lucro</th>
+                                <th>Lucro (USD)</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $totalLucro = 0;
+                            @endphp
                             @foreach ($lancamentos as $item)
                             <tr style="text-align: center">
                                 @if ($item->status_id == 4)
@@ -55,28 +67,50 @@
                                 @else
                                     <td class="codigo-cell">{{ $item->codigo }}</td>
                                 @endif
-                                    <td>{{ $item->moeda->abreviacao }} {{ $item->valor }}</td>
-                                    <td>{{ $item->tipo->nome }}</td>
-                                    <td>{{ $item->user ? $item->user->name : 'Usuário não encontrado' }}</td>
-                                    <td>{{ $item->user ? $item->user->celular : 'Celular não encontrado' }}</td>
-                                    <td>{{ $item->tipo->porcentagem }}%</td>
-                                    <td>
-                                        @php
-                                            $valor = floatval($item->valor);
-                                            $porcentagem = floatval($item->tipo->porcentagem);
-                                        @endphp
-                                        @if(is_numeric($valor) && is_numeric($porcentagem))
-                                            {{ $valor - ($valor * ($porcentagem / 100)) }}
-                                        @else
-                                            N/A
-                                        @endif
-                                    </td>
-                                </tr>
+                                @php
+                                    $abreviacao = $item->moeda->abreviacao;
+                                    $valor = floatval($item->valor);
+
+                                    // Converter o valor para USD se a moeda for BRL
+                                    if ($abreviacao == 'BRL') {
+                                        $valorConvertido = $valor * $cotacaoBRLtoUSD;
+                                    } else {
+                                        $valorConvertido = $valor; // Mantém o valor inalterado se não for BRL
+                                    }
+
+                                    // Calcular o lucro em USD
+                                    $porcentagem = floatval($item->tipo->porcentagem);
+                                    $lucro = $valorConvertido - ($valorConvertido * ($porcentagem / 100));
+
+                                    // Acumular lucro total
+                                    $totalLucro += $lucro;
+                                @endphp
+                                <td>{{ $abreviacao }} {{ number_format($valor, 2, ',', '.') }}</td>
+                                <td>{{ $item->tipo->nome }}</td>
+                                <td>{{ $item->user ? $item->user->name : 'Usuário não encontrado' }}</td>
+                                <td>{{ $item->user ? $item->user->celular : 'Celular não encontrado' }}</td>
+                                <td>{{ $item->tipo->porcentagem }}%</td>
+                                <td>
+                                    @if(is_numeric($lucro))
+                                        {{ number_format($lucro, 2, ',', '.') }} USD
+                                    @else
+                                        N/A
+                                    @endif
+                                </td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    <!-- Mostrar o total dos lucros -->
+                    <div class="mt-3">
+                        <h5>Total dos Lucros: {{ number_format($totalLucro, 2, ',', '.') }} USD</h5>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
+
+
+
