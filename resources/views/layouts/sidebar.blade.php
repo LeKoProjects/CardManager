@@ -21,6 +21,9 @@
         <a class="nav-link" href="{{route('lancamento.usuario')}}">
             <i class="fas fa-solid fa-store"></i>
             <span>Minhas Compras</span></a>
+        <a class="nav-link" href="#">
+            <i class="fas fa-solid fa-envelope"></i>
+            <span>Solicitações</span></a>
     </li>
 
     <!-- Divider -->
@@ -41,6 +44,12 @@
                     <a class="collapse-item" href="{{ route('lancamento.liberar') }}">Liberar</a>
                 </div>
             </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="/home">
+                <i class="fas fa-regular fa-envelope"></i>
+                <span>Solicitações</span></a>
         </li>
 
         <!-- Nav Item - Utilities Collapse Menu -->
