@@ -20,6 +20,8 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr style="text-align: center">
+                                <th>#</th>
+                                <th>Data/Hora</th>
                                 <th>Código</th>
                                 <th>Moeda</th>
                                 <th>Valor</th>
@@ -30,10 +32,12 @@
                         <tbody>
                             @foreach ($lancamento as $lancamento)
                                 <tr style="text-align: center">
+                                    <td>{{$lancamento->id}}</td>
+                                    <td>{{$lancamento->created_at}}</td>
                                     <td class="codigo-cell">{{ $lancamento->codigo }}</td>
                                     <td>{{ $lancamento->moeda->moeda }}</td>
                                     <td>{{ $lancamento->moeda->abreviacao }} {{ $lancamento->valor }}</td>
-                                    <td>{{ $lancamento->tipo->nome }}</td>
+                                    <td><img src="images/{{ $lancamento->tipo->imagem }}" alt="{{ $lancamento->tipo->nome }}"></td>
                                     <td>
                                         <input type="checkbox" class="select-lancamento"
                                             data-lancamento-id="{{ $lancamento->id }}">

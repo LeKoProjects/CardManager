@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nome')->nullable();
             $table->string('porcentagem')->nullable();
+            $table->string('imagem')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

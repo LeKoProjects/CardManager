@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Tipo;
 use Illuminate\Http\Request;
+use Imagine\Gd\Imagine;
+use Imagine\Image\Box;
+
 
 class TipoController extends Controller
 {
@@ -12,7 +15,8 @@ class TipoController extends Controller
      */
     public function index()
     {
-        $tipo = Tipo::all();
+        $tipo = Tipo::orderBy('created_at', 'desc')->get();
+
 
         return view('cadastro.tipo', compact('tipo'));
     }
@@ -29,61 +33,81 @@ class TipoController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        // Capitalize the input
-        $tipo = ucfirst(trim($request->input('nome')));
-        $porcentagem = $request->input('porcentagem');
+{
+    $tipo = ucfirst(trim($request->input('nome')));
+    $porcentagem = $request->input('porcentagem');
+    $imagem = $request->file('imagem');
 
-        // Check if the permission already exists
-        $existeTipo = Tipo::where('nome', $tipo)->first();
+    if ($imagem && $imagem->isValid()) {
+        $filenameWithExt = $imagem->getClientOriginalName();
+        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        $extension = $imagem->getClientOriginalExtension();
+        $imageName = $filename . '.' . $extension;
 
-        if ($existeTipo) {
-            return redirect()->route('tipo.index')->with('error', 'Tipo já existe!');
-        }
+        // Usando Imagine para redimensionar a imagem
+        $imagine = new Imagine();
+        $image = $imagine->open($imagem->getPathname());
+        $image->resize(new Box(35, 35))
+              ->save(public_path('images/') . $imageName);
 
-        // Create a new permission
-        Tipo::create([
+        $tipo = Tipo::create([
+            'nome' => $tipo,
+            'porcentagem' => $porcentagem,
+            'imagem' => $imageName,
+        ]);
+    } else {
+        $tipo = Tipo::create([
             'nome' => $tipo,
             'porcentagem' => $porcentagem,
         ]);
-
-        return redirect()->route('tipo.index')->with('success', 'Tipo cadastrado!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Tipo $tipo)
-    {
-        //
+    return redirect()->route('tipo.index')->with('success', 'Tipo cadastrado!');
+}
+
+public function update(Request $request, $id)
+{
+    $tipo = Tipo::find($id);
+
+    if (!$tipo) {
+        return redirect()->back()->with('error', 'Tipo não encontrada!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Tipo $tipo)
-    {
-        //
-    }
+    $nome = ucfirst(trim($request->input('nome')));
+    $porcentagem = $request->input('porcentagem');
+    $imagem = $request->file('imagem');
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
-        $tipo = Tipo::find($id);
+    if ($imagem && $imagem->isValid()) {
+        $filenameWithExt = $imagem->getClientOriginalName();
+        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        $extension = $imagem->getClientOriginalExtension();
+        $imageName = $filename . '.' . $extension;
 
-        if (!$tipo) {
-            return redirect()->back()->with('error', 'Tipo não encontrada!');
+        // Usando Imagine para redimensionar a imagem
+        $imagine = new Imagine();
+        $image = $imagine->open($imagem->getPathname());
+        $image->resize(new Box(35, 35))
+              ->save(public_path('images/') . $imageName);
+
+        // Remover a imagem antiga se existir
+        if ($tipo->imagem && file_exists(public_path('images/') . $tipo->imagem)) {
+            unlink(public_path('images/') . $tipo->imagem);
         }
 
-        $tipo->nome = ucfirst(trim($request->input('nome')));
-        $tipo->porcentagem = $request->input('porcentagem');
-
-        $tipo->save();
-
-        return redirect()->back()->with('success', 'Tipo Atualizada com sucesso!');
+        // Atualizar o tipo com a nova imagem
+        $tipo->imagem = $imageName;
+        $tipo->nome = $nome;
+        $tipo->porcentagem = $porcentagem;
+    } else {
+        $tipo->nome = $nome;
+        $tipo->porcentagem = $porcentagem;
     }
+
+    $tipo->save();
+
+    return redirect()->back()->with('success', 'Tipo atualizado com sucesso!');
+}
+
 
     /**
      * Remove the specified resource from storage.

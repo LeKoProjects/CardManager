@@ -47,6 +47,8 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr style="text-align: center">
+                                <th>#</th>
+                                <th>Data/Hora</th>
                                 <th>Código</th>
                                 <th>Valor</th>
                                 <th>Tipo</th>
@@ -62,6 +64,8 @@
                             @endphp
                             @foreach ($lancamentos as $item)
                             <tr style="text-align: center">
+                                <td>{{$item->id}}</td>
+                                <td>{{$item->created_at}}</td>
                                 @if ($item->status_id == 4)
                                     <td>{{ $item->codigo }}</td>
                                 @else
@@ -86,7 +90,7 @@
                                     $totalLucro += $lucro;
                                 @endphp
                                 <td>{{ $abreviacao }} {{ number_format($valor, 2, ',', '.') }}</td>
-                                <td>{{ $item->tipo->nome }}</td>
+                                <td><img src="images/{{ $item->tipo->imagem }}" alt="{{ optional($item->tipo)->nome }}"></td>
                                 <td>{{ $item->user ? $item->user->name : 'Usuário não encontrado' }}</td>
                                 <td>{{ $item->user ? $item->user->celular : 'Celular não encontrado' }}</td>
                                 <td>{{ $item->tipo->porcentagem }}%</td>

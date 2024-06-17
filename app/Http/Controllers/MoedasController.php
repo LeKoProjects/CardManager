@@ -12,7 +12,7 @@ class MoedasController extends Controller
      */
     public function index()
     {
-        $moeda = Moedas::all();
+        $moeda = Moedas::orderBy('created_at', 'desc')->get();
 
         return view('cadastro.moeda', compact('moeda'));
     }
@@ -32,7 +32,6 @@ class MoedasController extends Controller
     {
         // Capitalize the input
         $moeda = ucfirst(trim($request->input('moeda')));
-        $porcentagem = $request->input('porcentagem');
         $abreviacao = $request->input('abreviacao');
 
         // Check if the permission already exists
@@ -45,7 +44,6 @@ class MoedasController extends Controller
         // Create a new permission
         Moedas::create([
             'moeda' => $moeda,
-            'porcentagem' => $porcentagem,
             'abreviacao' => $abreviacao,
         ]);
 
@@ -80,7 +78,6 @@ class MoedasController extends Controller
         }
 
         $moeda->moeda = ucfirst(trim($request->input('moeda')));
-        $moeda->porcentagem = $request->input('porcentagem');
         $moeda->abreviacao = $request->input('abreviacao');
 
         $moeda->save();

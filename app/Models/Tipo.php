@@ -10,7 +10,7 @@ class Tipo extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table='tipos';
-    protected $fillable=['nome', 'porcentagem'];
+    protected $fillable=['nome', 'porcentagem', 'imagem'];
     protected $dates=['deleted_at'];
 
     public function lancamento()

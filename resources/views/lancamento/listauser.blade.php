@@ -17,20 +17,21 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr style="text-align: center">
-                            <th>Selecionar</th>
+                            <th>#</th>
+                            <th>Data/Hora</th>
                             <th>Código</th>
                             <th>Moeda</th>
                             <th>Valor</th>
                             <th>Tipo</th>
                             <th>Status</th>
+                            <th>Selecionar</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($lancamento as $lancamento)
                         <tr style="text-align: center">
-                            <td>
-                                <input type="checkbox" class="checkbox-select" data-lancamento-id="{{ $lancamento->id }}" data-status-id="{{ $lancamento->status_id }}">
-                            </td>
+                            <td>{{ $lancamento->id }}</td>
+                            <td>{{ $lancamento->created_at }}</td>
                             <td>
                                 @if ($lancamento->status_id != 4)
                                     {{ substr($lancamento->codigo, 0, 5) . str_repeat('*', strlen($lancamento->codigo) - 5) }}
@@ -40,7 +41,7 @@
                             </td>
                             <td>{{ $lancamento->moeda->moeda }}</td>
                             <td>{{ $lancamento->moeda->abreviacao }} {{ $lancamento->valor }}</td>
-                            <td>{{ $lancamento->tipo->nome }}</td>
+                            <td><img src="images/{{ $lancamento->tipo->imagem }}" alt="{{ $lancamento->tipo->nome }}"></td>
                             <td>
                                 @if ($lancamento->status_id == 2)
                                 Aguardando Pagamento
@@ -49,6 +50,9 @@
                                 @elseif ($lancamento->status_id == 4)
                                 Adquirido
                                 @endif
+                            </td> 
+                            <td>
+                                <input type="checkbox" class="checkbox-select" data-lancamento-id="{{ $lancamento->id }}" data-status-id="{{ $lancamento->status_id }}">
                             </td>
                         </tr>
                         @endforeach

@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $usuario = User::all();
+        $usuario = User::orderBy('created_at', 'desc')->get();
         return view('cadastro.usuario', compact('usuario'));
     }
 

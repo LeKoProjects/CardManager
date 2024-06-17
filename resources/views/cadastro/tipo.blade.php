@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <div class="tile">
                             <div class="tile-body">
-                                <form method="POST" action="{{ route('tipo.store') }}" class="form-horizontal">
+                                <form method="POST" action="{{ route('tipo.store') }}" class="form-horizontal" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-6">
@@ -27,6 +27,13 @@
                                                     class="form-control" placeholder="" aria-describedby="basic-addon2">
                                                 <span class="input-group-text" id="basic-addon2">%</span>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="form-label">Logo</label>
+                                            <input name="imagem" id="imagem" class="form-control" type="file"
+                                                placeholder="">
                                         </div>
                                     </div>
                                     <hr>
@@ -57,6 +64,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th>Logo</th>
                                         <th>Tipo</th>
                                         <th>Porcentagem</th>
                                         <th>Editar</th>
@@ -66,6 +74,7 @@
                                 <tbody>
                                     @foreach ($tipo as $item)
                                         <tr>
+                                            <td><img src="images/{{ $item->imagem }}"></td>
                                             <td>{{ $item->nome }}</td>
                                             <td>{{ $item->porcentagem }}%</td>
                                             <td>
@@ -119,6 +128,13 @@
                                                                         <span class="input-group-text"
                                                                             id="basic-addon2">%</span>
                                                                     </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <label class="form-label">Logo</label>
+                                                                    <input name="imagem" id="imagem" class="form-control" type="file"
+                                                                        placeholder="" >
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">

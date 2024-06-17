@@ -12,7 +12,7 @@ class StatusController extends Controller
      */
     public function index()
     {
-        $status = Status::all();
+        $status = Status::orderBy('created_at', 'desc')->get();
 
         return view('cadastro.status', compact('status'));
     }
