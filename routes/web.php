@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\LancamentosController;
 use App\Http\Controllers\MoedasController;
+use App\Http\Controllers\SolicitacoesController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TipoController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,3 +64,8 @@ Route::post('/lancamentos/update-status1', [LancamentosController::class, 'updat
 Route::get('/lancamentos/exportar-selecionados-excel', [LancamentosController::class, 'exportarSelecionadosParaExcel'])->name('exportar.lancamentos.selecionados.excel');
 
 Route::get('/lancamento/liberar', [LancamentosController::class, 'listaLiberar'])->name('lancamento.liberar');
+
+#solicitaçao
+Route::get('/solicitacoes/lista', [SolicitacoesController::class, 'index'])->middleware('auth')->name('solicitacoes.lista');
+Route::get('/solicitacoes/criar', [SolicitacoesController::class, 'criar'])->middleware('auth')->name('solicitacoes.criar');
+Route::post('/solicitacoes', [SolicitacoesController::class, 'store'])->middleware('auth')->name('solicitacoes.store');

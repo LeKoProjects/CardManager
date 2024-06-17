@@ -31,7 +31,13 @@
                             <td>
                                 <input type="checkbox" class="checkbox-select" data-lancamento-id="{{ $lancamento->id }}" data-status-id="{{ $lancamento->status_id }}">
                             </td>
-                            <td>{{ $lancamento->codigo }}</td>
+                            <td>
+                                @if ($lancamento->status_id != 4)
+                                    {{ substr($lancamento->codigo, 0, 5) . str_repeat('*', strlen($lancamento->codigo) - 5) }}
+                                @else
+                                    {{ $lancamento->codigo }}
+                                @endif
+                            </td>
                             <td>{{ $lancamento->moeda->moeda }}</td>
                             <td>{{ $lancamento->moeda->abreviacao }} {{ $lancamento->valor }}</td>
                             <td>{{ $lancamento->tipo->nome }}</td>
