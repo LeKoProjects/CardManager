@@ -14,6 +14,7 @@ return new class extends Migration
             $table->unsignedBigInteger('tipo_id'); // Adicionando a coluna tipo_id
             $table->string('titulo');
             $table->text('mensagem');
+            $table->text('resposta')->nullable(); // Adicionando a coluna resposta
             $table->timestamps();
             $table->softDeletes();
 
@@ -22,6 +23,9 @@ return new class extends Migration
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down()
     {
         Schema::dropIfExists('solicitacoes');

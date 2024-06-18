@@ -66,6 +66,8 @@ Route::get('/lancamentos/exportar-selecionados-excel', [LancamentosController::c
 Route::get('/lancamento/liberar', [LancamentosController::class, 'listaLiberar'])->name('lancamento.liberar');
 
 #solicitaçao
-Route::get('/solicitacoes/lista', [SolicitacoesController::class, 'index'])->middleware('auth')->name('solicitacoes.lista');
-Route::get('/solicitacoes/criar', [SolicitacoesController::class, 'criar'])->middleware('auth')->name('solicitacoes.criar');
-Route::post('/solicitacoes', [SolicitacoesController::class, 'store'])->middleware('auth')->name('solicitacoes.store');
+Route::get('/solicitacoes', [SolicitacoesController::class, 'index'])->name('solicitacoes.lista');
+Route::get('/solicitacoes/criar', [SolicitacoesController::class, 'criar'])->name('solicitacoes.criar');
+Route::post('/solicitacoes', [SolicitacoesController::class, 'store'])->name('solicitacoes.store');
+Route::put('/solicitacoes/{id}', [SolicitacoesController::class, 'update'])->name('solicitacoes.update');
+Route::delete('/solicitacoes/{solicitacao}', [SolicitacoesController::class, 'destroy'])->name('solicitacoes.destroy');

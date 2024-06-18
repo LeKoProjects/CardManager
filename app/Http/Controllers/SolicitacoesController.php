@@ -15,9 +15,8 @@ class SolicitacoesController extends Controller
      */
     public function index()
     {
-        $tipo = Tipo::all();
         $solicitacoes = Solicitacoes::with('user', 'tipo')->get();
-        return view('solicitacao.lista', compact('solicitacoes', 'tipo'));
+        return view('solicitacao.lista', compact('solicitacoes'));
     }
 
     /**
@@ -26,9 +25,13 @@ class SolicitacoesController extends Controller
     public function criar()
     {
         $tipos = Tipo::where('id', '<>', 3)->get();
-        return view('solicitacao.criar', compact('tipos'));
+        $solicitacoes = Solicitacoes::where('user_id', Auth::id())->with('tipo')->get();
+        return view('solicitacao.criar', compact('tipos', 'solicitacoes'));
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -38,7 +41,7 @@ class SolicitacoesController extends Controller
         ]);
 
         $solicitacao = new Solicitacoes();
-        $solicitacao->user_id = Auth::id(); // Assumindo que o usuário está autenticado
+        $solicitacao->user_id = Auth::id();
         $solicitacao->titulo = $request->input('titulo');
         $solicitacao->mensagem = $request->input('mensagem');
         $solicitacao->tipo_id = $request->input('tipo_id');
@@ -48,34 +51,31 @@ class SolicitacoesController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(solicitacoes $solicitacoes)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(solicitacoes $solicitacoes)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, solicitacoes $solicitacoes)
-    {
-        //
-    }
+
+     public function update(Request $request, $id)
+     {
+         $solicitacao = Solicitacoes::find($id);
+ 
+         if (!$solicitacao) {
+             return redirect()->back()->with('error', 'lançamento não encontrado!');
+         }
+ 
+         $solicitacao->resposta = $request->input('resposta');
+
+ 
+         $solicitacao->save();
+ 
+         return redirect()->back()->with('success', 'Resposta Atualizado com sucesso!');
+     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(solicitacoes $solicitacoes)
+    public function destroy(Solicitacoes $solicitacao)
     {
-        //
+        $solicitacao->delete();
+        return redirect()->route('solicitacoes.lista')->with('success', 'Solicitação excluída com sucesso!');
     }
 }

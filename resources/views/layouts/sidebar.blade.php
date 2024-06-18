@@ -21,7 +21,7 @@
         <a class="nav-link" href="{{route('lancamento.usuario')}}">
             <i class="fas fa-solid fa-store"></i>
             <span>Minhas Compras</span></a>
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{{ route('solicitacoes.criar') }}">
             <i class="fas fa-solid fa-envelope"></i>
             <span>Solicitações</span></a>
     </li>
@@ -47,9 +47,10 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="/home">
-                <i class="fas fa-regular fa-envelope"></i>
-                <span>Solicitações</span></a>
+            <a class="nav-link" href="{{ route('solicitacoes.lista') }}">
+                <i class="fas fa-envelope"></i>
+                <span>Solicitações</span>
+            </a>
         </li>
 
         <!-- Nav Item - Utilities Collapse Menu -->

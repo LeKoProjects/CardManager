@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Solicitacoes extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['user_id', 'titulo', 'mensagem', 'tipo_id'];
+
+    protected $fillable = ['user_id', 'titulo', 'mensagem', 'tipo_id', 'resposta'];
 
     public function tipo()
     {
