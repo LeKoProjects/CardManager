@@ -209,7 +209,6 @@
                                                 <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Cancelar</button>
                                                 <button type="submit" class="btn btn-primary">Salvar</button>
-                                            </div>
                                             </form>
                                         </div>
                                     </div>
@@ -240,7 +239,7 @@
         }
 
         // Função para verificar se é divida e mostrar campo de usuário
-        function checkDivida(element) {
+        window.checkDivida = function(element) {
             const usuarioCell = element.closest('tr').querySelector('.usuario-cell');
             const usuarioHeader = document.querySelector('.usuario-header');
             if (element.value == '3') {
