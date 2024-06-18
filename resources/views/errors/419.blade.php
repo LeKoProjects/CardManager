@@ -48,7 +48,7 @@
     <script>
         setTimeout(function() {
             window.location.href = "{{ url('/') }}";
-        }, 5000); // Redireciona após 5 segundos
+        }, 3000); // Redireciona após 5 segundos
     </script>
 </body>
 </html>
