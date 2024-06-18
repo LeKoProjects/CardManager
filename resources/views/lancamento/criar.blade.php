@@ -116,7 +116,7 @@
                                                     @if($item->imagem)
                                                     <img src="images/{{ optional($item->tipo)->nome }}" alt="{{ optional($item->tipo)->nome }}">
                                                     @else
-                                                        Sem imagem
+                                                        {{ optional($item->tipo)->nome }}
                                                     @endif
                                                 </td>
                                                 <td>

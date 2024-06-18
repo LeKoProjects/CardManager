@@ -41,7 +41,7 @@
                                         @if($lancamento->imagem)
                                         <img src="images/{{ optional($lancamento->tipo)->nome }}" alt="{{ optional($lancamento->tipo)->nome }}">
                                         @else
-                                            Sem imagem
+                                            {{ optional($lancamento->tipo)->nome }}
                                         @endif
                                     </td>
                                     <td>
