@@ -76,6 +76,29 @@
                                                     </form>
                                                 </td>
                                             </tr>
+                                            <div class="modal fade" id="respostaModal" tabindex="-1" role="dialog" aria-labelledby="respostaModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="respostaModalLabel">Resposta</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="mb-3 col-md-12">
+                                                                <label class="form-label">Resposta</label>
+                                                                <textarea name="resposta" id="resposta{{ $item->resposta }}"
+                                                                    class="form-control valor" type="text"
+                                                                    placeholder="" >{{ $item->resposta }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -86,32 +109,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="respostaModal" tabindex="-1" role="dialog" aria-labelledby="respostaModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="respostaModalLabel">Resposta</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3 col-md-12">
-                        <label class="form-label">Resposta</label>
-                        <textarea name="resposta" id="resposta{{ $item->resposta }}"
-                            class="form-control valor" type="text"
-                            placeholder="" >{{ $item->resposta }}</textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Script para manipular o modal -->
     <script>
         $('#respostaModal').on('show.bs.modal', function (event) {
