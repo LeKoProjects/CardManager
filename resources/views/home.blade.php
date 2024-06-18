@@ -38,7 +38,7 @@
                                     <td>{{ $lancamento->moeda->moeda }}</td>
                                     <td>{{ $lancamento->moeda->abreviacao }} {{ $lancamento->valor }}</td>
                                     <td>
-                                        <img src="images/{{ optional($lancamento->tipo)->imagem }}" alt="{{ optional($lancamento->tipo)->imagem }}"> {{ optional($lancamento->tipo)->nome }}
+                                        <img src="{{ asset('images/' . optional($lancamento->tipo)->imagem) }}" alt="{{ optional($lancamento->tipo)->nome }}"> {{ optional($lancamento->tipo)->nome }}
                                     </td>
                                     <td>
                                         <input type="checkbox" class="select-lancamento"
