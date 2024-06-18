@@ -90,7 +90,13 @@
                                     $totalLucro += $lucro;
                                 @endphp
                                 <td>{{ $abreviacao }} {{ number_format($valor, 2, ',', '.') }}</td>
-                                <td><img src="images/{{ $item->tipo->imagem }}" alt="{{ optional($item->tipo)->nome }}"></td>
+                                <td>
+                                    @if($item->imagem)
+                                    <img src="images/{{ optional($item->tipo)->nome }}" alt="{{ optional($item->tipo)->nome }}">
+                                    @else
+                                        Sem imagem
+                                    @endif
+                                </td>
                                 <td>{{ $item->user ? $item->user->name : 'Usuário não encontrado' }}</td>
                                 <td>{{ $item->user ? $item->user->celular : 'Celular não encontrado' }}</td>
                                 <td>{{ $item->tipo->porcentagem }}%</td>

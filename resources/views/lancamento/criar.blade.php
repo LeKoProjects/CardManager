@@ -112,7 +112,13 @@
                                                 <td>{{ $item->codigo }}</td>
                                                 <td>{{ $item->moeda->moeda }}</td>
                                                 <td>{{ $item->valor }}</td>
-                                                <td><img src="images/{{ $item->tipo->imagem }}" alt="{{ optional($item->tipo)->nome }}"></td>
+                                                <td>
+                                                    @if($item->imagem)
+                                                    <img src="images/{{ optional($item->tipo)->nome }}" alt="{{ optional($item->tipo)->nome }}">
+                                                    @else
+                                                        Sem imagem
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <div>
                                                         <button type="button" class="btn btn-info" data-bs-toggle="modal"

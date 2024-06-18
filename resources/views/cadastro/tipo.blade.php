@@ -74,7 +74,13 @@
                                 <tbody>
                                     @foreach ($tipo as $item)
                                         <tr>
-                                            <td><img src="images/{{ $item->imagem }}"></td>
+                                            <td>
+                                                @if($item->imagem)
+                                                    <img src="images/{{ $item->imagem }}" alt="{{ $item->tipo->nome ?? 'Imagem' }}">
+                                                @else
+                                                    Sem imagem
+                                                @endif
+                                            </td>
                                             <td>{{ $item->nome }}</td>
                                             <td>{{ $item->porcentagem }}%</td>
                                             <td>
