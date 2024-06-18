@@ -46,7 +46,7 @@
                                                     <input name="valor[]" class="form-control valor" type="text" required>
                                                 </td>
                                                 <td>
-                                                    <select class="form-control tipo-select" name="tipo_id[]" onchange="checkDivida(this)">
+                                                    <select class="form-control tipo-select" name="tipo_id[]" onchange="checkDivida(this)" required>
                                                         <option value="">Selecione o Tipo</option>
                                                         @foreach ($tipo as $item)
                                                             <option value="{{ $item->id }}">
