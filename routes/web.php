@@ -6,7 +6,6 @@ use App\Http\Controllers\SolicitacoesController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TipoController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,7 +28,6 @@ Auth::routes();
 // Rota para a Página de Erro 419
 Route::view('/error/419', 'errors.419')->name('error.419');
 
-Route::middleware(['check.session.expired'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     // status
@@ -75,4 +73,3 @@ Route::middleware(['check.session.expired'])->group(function () {
     Route::post('/solicitacoes', [SolicitacoesController::class, 'store'])->name('solicitacoes.store');
     Route::put('/solicitacoes/{id}', [SolicitacoesController::class, 'update'])->name('solicitacoes.update');
     Route::delete('/solicitacoes/{solicitacao}', [SolicitacoesController::class, 'destroy'])->name('solicitacoes.destroy');
-});
