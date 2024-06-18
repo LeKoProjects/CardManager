@@ -61,7 +61,7 @@ class Handler extends ExceptionHandler
         Log::error($exception);
 
         // Redireciona para a view específica com uma mensagem de erro
-        return redirect()->route('home')->with('error', 'Algo deu errado. Por favor, tente novamente mais tarde.');
+        return redirect()->back()->with('error', 'Algo deu errado. Por favor, verifique.');
     }
 
     public function report(Throwable $exception)
