@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use ErrorException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -46,12 +48,27 @@ class Handler extends ExceptionHandler
         });
     }
 
+
+    
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException && $exception->getStatusCode() === 419) {
+            // Redireciona para a view específica de erro 419
             return response()->view('errors.419', [], 419);
         }
 
-        return parent::render($request, $exception);
+        // Log the exception details (opcional)
+        Log::error($exception);
+
+        // Redireciona para a view específica com uma mensagem de erro
+        return redirect()->route('home')->with('error', 'Algo deu errado. Por favor, tente novamente mais tarde.');
+    }
+
+    public function report(Throwable $exception)
+    {
+        // Log the exception details
+        Log::error($exception);
+
+        parent::report($exception);
     }
 }
