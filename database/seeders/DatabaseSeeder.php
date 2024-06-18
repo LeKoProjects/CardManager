@@ -56,8 +56,11 @@ class DatabaseSeeder extends Seeder
                 'nome' => 'Paguei',
             ],
             [
-                'nome' => 'Liberar',
+                'nome' => 'Finalizado',
             ],
+            [
+                'nome' => 'Reservado',
+            ]
         ]);
 
         DB::table('moedas')->insert([

@@ -46,11 +46,11 @@
                             </td>
                             <td>
                                 @if ($lancamento->status_id == 2)
-                                Aguardando Pagamento
+                                <span style="color: red">Aguardando Pagamento</span>
                                 @elseif ($lancamento->status_id == 3)
-                                Aguardando Liberação
+                                <span style="color: orange">Aguardando Liberação</span>
                                 @elseif ($lancamento->status_id == 4)
-                                Adquirido
+                                <span style="color: green">Adquirido</span>
                                 @endif
                             </td> 
                             <td>

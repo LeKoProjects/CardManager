@@ -41,8 +41,11 @@
                                         <img src="{{ asset('images/' . optional($lancamento->tipo)->imagem) }}"> {{ optional($lancamento->tipo)->nome }}
                                     </td>
                                     <td>
-                                        <input type="checkbox" class="select-lancamento"
-                                            data-lancamento-id="{{ $lancamento->id }}">
+                                        @if ($lancamento->status->nome === 'Reservado')
+                                        <span style="color: red">Reservado</span>
+                                        @else
+                                        <input type="checkbox" class="select-lancamento" data-lancamento-id="{{ $lancamento->id }}">
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

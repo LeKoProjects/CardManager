@@ -90,7 +90,7 @@ class StatusController extends Controller
         $status = Status::findOrFail($id);
 
         // Verifica se o ID do status está na lista dos IDs que não podem ser excluídos
-        if (in_array($status->id, [1, 2, 3, 4])) {
+        if (in_array($status->id, [1, 2, 3, 4, 5])) {
             return redirect()->route('status.index')->with('error', 'Você não pode excluir este status!');
         }
 
