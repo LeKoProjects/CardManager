@@ -76,7 +76,7 @@
                                         <tr>
                                             <td>
                                                 @if($item->imagem)
-                                                    <img src="images/{{ $item->imagem }}" alt="{{ $item->tipo->nome ?? 'Imagem' }}">
+                                                    <img src="images/{{ $item->imagem }}">
                                                 @else
                                                     Sem imagem
                                                 @endif

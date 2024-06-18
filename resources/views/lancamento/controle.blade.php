@@ -91,8 +91,7 @@
                                 @endphp
                                 <td>{{ $abreviacao }} {{ number_format($valor, 2, ',', '.') }}</td>
                                 <td>
-                                    <img src="{{ asset('images/' . optional($item->tipo)->imagem) }}" alt="{{ optional($item->tipo)->nome }}">
- {{ optional($item->tipo)->nome }}
+                                    <img src="{{ asset('images/' . optional($item->tipo)->imagem) }}"> {{ optional($item->tipo)->nome }}
                                 </td>
                                 <td>{{ $item->user ? $item->user->name : 'Usuário não encontrado' }}</td>
                                 <td>{{ $item->user ? $item->user->celular : 'Celular não encontrado' }}</td>

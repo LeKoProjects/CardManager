@@ -113,7 +113,7 @@
                                                 <td>{{ $item->moeda->moeda }}</td>
                                                 <td>{{ $item->valor }}</td>
                                                 <td>
-                                                    <img src="images/{{ optional($item->tipo)->imagem }}" alt="{{ optional($item->tipo)->nome }}"> {{ optional($item->tipo)->nome }}
+                                                    <img src="images/{{ optional($item->tipo)->imagem }}"> {{ optional($item->tipo)->nome }}
                                                 </td>
                                                 <td>
                                                     <div>
