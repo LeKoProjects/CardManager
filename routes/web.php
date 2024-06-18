@@ -6,6 +6,7 @@ use App\Http\Controllers\SolicitacoesController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TipoController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*

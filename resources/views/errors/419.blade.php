@@ -1,31 +1,54 @@
+<!-- resources/views/errors/419.blade.php -->
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Main CSS-->
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
-    <!-- Font-icon css-->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <title>ERROR - ePRONTUARIO</title>
-    <script type="text/javascript">
-        // Redireciona automaticamente para a página de login após 3 segundos
-        setTimeout(function() {
-            window.location.href = '/';
-        }, 2000);
-    </script>
-  </head>
-  <body>
-    
-    <div class="page-error">
-        <h1 class="text-danger"><i class="bi bi-exclamation-circle"></i> Error 419: Token Expirado</h1>
-        <p>Seu token de sessão expirou. Você será redirecionado para a página de login em breve.</p>
-        <p>Se não for redirecionado, clique <a class="btn btn-primary" href='/'>aqui</a>.</p>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>419 - Page Expired</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 24px;
+            margin-bottom: 40px;
+        }
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>419 - Página Expirada</h1>
+        <p>A sessão expirou. Você será redirecionado para a página inicial em alguns segundos.</p>
+        <a href="{{ url('/') }}">Faça o login novamente</a>
     </div>
-    <!-- Essential javascripts for application to work-->
-    <script src="js/jquery-3.7.0.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/main.js"></script>
-  </body>
+    <script>
+        setTimeout(function() {
+            window.location.href = "{{ url('/') }}";
+        }, 5000); // Redireciona após 5 segundos
+    </script>
+</body>
 </html>
