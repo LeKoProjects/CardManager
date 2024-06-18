@@ -39,7 +39,7 @@
                                     <td>{{ $lancamento->moeda->abreviacao }} {{ $lancamento->valor }}</td>
                                     <td>
                                         @if($lancamento->imagem)
-                                        <img src="images/{{ optional($lancamento->tipo)->nome }}" alt="{{ optional($lancamento->tipo)->nome }}">
+                                        <img src="images/{{ optional($lancamento->tipo)->nome }}" alt="{{ optional($lancamento->tipo)->nome }}"> {{ optional($lancamento->tipo)->nome }}
                                         @else
                                             {{ optional($lancamento->tipo)->nome }}
                                         @endif

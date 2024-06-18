@@ -37,7 +37,7 @@
                                     <td>{{ $item->moeda->abreviacao }} {{ $item->valor }}</td>
                                     <td>
                                         @if($item->imagem)
-                                        <img src="images/{{ optional($item->tipo)->nome }}" alt="{{ optional($item->tipo)->nome }}">
+                                        <img src="images/{{ optional($item->tipo)->nome }}" alt="{{ optional($item->tipo)->nome }}"> {{ optional($item->tipo)->nome }}
                                         @else
                                         {{ optional($item->tipo)->nome }}
                                         @endif
