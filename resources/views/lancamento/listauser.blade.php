@@ -42,11 +42,7 @@
                             <td>{{ $lancamento->moeda->moeda }}</td>
                             <td>{{ $lancamento->moeda->abreviacao }} {{ $lancamento->valor }}</td>
                             <td>
-                                @if($lancamento->imagem)
-                                    <img src="images/{{ optional($lancamento->tipo)->nome }}" alt="{{ optional($lancamento->tipo)->nome }}"> {{ optional($lancamento->tipo)->nome }}
-                                @else
-                                {{ optional($lancamento->tipo)->nome }}
-                                @endif
+                                <img src="images/{{ optional($lancamento->tipo)->imagem }}" alt="{{ optional($lancamento->tipo)->nome }}"> {{ optional($lancamento->tipo)->nome }}
                             </td>
                             <td>
                                 @if ($lancamento->status_id == 2)

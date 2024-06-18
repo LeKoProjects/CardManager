@@ -36,11 +36,7 @@
                                     <td>{{ $item->moeda->moeda }}</td>
                                     <td>{{ $item->moeda->abreviacao }} {{ $item->valor }}</td>
                                     <td>
-                                        @if($item->imagem)
-                                        <img src="images/{{ optional($item->tipo)->nome }}" alt="{{ optional($item->tipo)->nome }}"> {{ optional($item->tipo)->nome }}
-                                        @else
-                                        {{ optional($item->tipo)->nome }}
-                                        @endif
+                                        <img src="images/{{ optional($item->tipo)->imagem }}" alt="{{ optional($item->tipo)->nome }}"> {{ optional($item->tipo)->nome }}
                                     </td>
                                     <td>{{ $item->user ? $item->user->name : 'Usuário não encontrado' }}</td>
                                     <td>{{ $item->user ? $item->user->celular : 'Celular não encontrado' }}</td>
