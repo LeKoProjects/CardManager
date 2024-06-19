@@ -59,7 +59,7 @@ class LancamentosController extends Controller
             $existeLancamento = Lancamentos::where('codigo', $codigo)->first();
 
             if ($existeLancamento) {
-                continue; // Skip existing lancamentos
+                return redirect()->back()->with('error', 'Lançamento já existe!');
             }
 
             // Define o status_id com base na presença de user_id
