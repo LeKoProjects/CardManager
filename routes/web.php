@@ -26,9 +26,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// Rota para a Página de Erro 419
-Route::view('/error/419', 'errors.419')->name('error.419');
-
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     // status

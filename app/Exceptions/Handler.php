@@ -48,27 +48,4 @@ class Handler extends ExceptionHandler
         });
     }
 
-
-    
-    public function render($request, Throwable $exception)
-    {
-        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException && $exception->getStatusCode() === 419) {
-            // Redireciona para a view específica de erro 419
-            return response()->view('errors.419', [], 419);
-        }
-
-        // Log the exception details (opcional)
-        Log::error($exception);
-
-        // Redireciona para a view específica com uma mensagem de erro
-        return redirect()->back()->with('error', 'Algo deu errado. Por favor, verifique.');
-    }
-
-    public function report(Throwable $exception)
-    {
-        // Log the exception details
-        Log::error($exception);
-
-        parent::report($exception);
-    }
 }

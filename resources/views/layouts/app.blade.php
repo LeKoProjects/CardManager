@@ -109,6 +109,13 @@
             cell.textContent = maskString(originalText);
         });
     });
+
+    // Verifica a mensagem de erro no localStorage e exibe o alerta
+    const errorMessage = localStorage.getItem('error_message');
+        if (errorMessage) {
+            alert(errorMessage);
+            localStorage.removeItem('error_message'); // Remove a mensagem após exibir
+    }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 </body>
