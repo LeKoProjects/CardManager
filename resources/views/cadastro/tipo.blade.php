@@ -24,7 +24,7 @@
                                             <label class="form-label">Porcentagem</label>
                                             <div class="input-group mb-3">
                                                 <input type="text" name="porcentagem" id="porcentagem"
-                                                    class="form-control" placeholder="" aria-describedby="basic-addon2">
+                                                    class="form-control" placeholder="" aria-describedby="basic-addon2" required>
                                                 <span class="input-group-text" id="basic-addon2">%</span>
                                             </div>
                                         </div>

@@ -50,10 +50,10 @@
                                 <div class="mb-3 col-md-6">
                                     <label class="form-label">Tipo</label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="tipo" value="1"> Admin
+                                        <input class="form-check-input" type="radio" name="tipo" value="1" required> Admin
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="tipo" value="2"> User
+                                        <input class="form-check-input" type="radio" name="tipo" value="2" required> User
                                     </div>
                                 </div>
                             </div>
@@ -155,7 +155,7 @@
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Confirme a Senha</label>
-                                            <input name="password_confirmation" id="password_confirmation" class="form-control" type="password" required>
+                                            <input name="password_confirmation" id="password_confirmation" class="form-control" type="password">
                                         </div>
                                     </div>
                                     
