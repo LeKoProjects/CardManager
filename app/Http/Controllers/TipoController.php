@@ -38,6 +38,12 @@ class TipoController extends Controller
     $porcentagem = $request->input('porcentagem');
     $imagem = $request->file('imagem');
 
+    $existeStatus = Tipo::where('nome', $tipo)->first();
+
+    if ($existeStatus) {
+        return redirect()->route('tipo.index')->with('error', 'Tipo já existe!');
+    }
+
     if ($imagem && $imagem->isValid()) {
         $filenameWithExt = $imagem->getClientOriginalName();
         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
