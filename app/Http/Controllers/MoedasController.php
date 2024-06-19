@@ -35,7 +35,7 @@ class MoedasController extends Controller
         $abreviacao = $request->input('abreviacao');
 
         // Check if the permission already exists
-        $existeMoeda = Moedas::where('moeda', $moeda)->first();
+        $existeMoeda = Moedas::where('moeda', $moeda, 'abreviacao', $abreviacao)->first();
 
         if ($existeMoeda) {
             return redirect()->route('moedas.index')->with('error', 'Moeda já existe!');
