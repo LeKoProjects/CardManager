@@ -155,7 +155,7 @@
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label class="form-label">Confirme a Senha</label>
-                                            <input name="password_confirmation" id="password_confirmation" class="form-control" type="password" required>
+                                            <input name="password_confirmation" id="password_confirmation" class="form-control" type="password">
                                         </div>
                                     </div>
                                     
