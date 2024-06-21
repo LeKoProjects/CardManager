@@ -48,4 +48,15 @@ class Handler extends ExceptionHandler
         });
     }
 
+    public function render($request, Throwable $exception)
+    {
+        // Evitar mostrar stack traces em ambiente de produção
+        if ($this->isHttpException($exception)) {
+            return $this->renderHttpException($exception);
+        } else {
+            return response()->view('errors.generic', [], 500);
+        }
+    }
+
+
 }
