@@ -62,6 +62,8 @@ Auth::routes();
     Route::get('/lancamento/usuario', [LancamentosController::class, 'listaUser'])->name('lancamento.usuario');
     Route::post('/lancamentos/update-status1', [LancamentosController::class, 'updateStatus1'])->name('lancamentos.update-status1');
     Route::get('/lancamentos/exportar-selecionados-excel', [LancamentosController::class, 'exportarSelecionadosParaExcel'])->name('exportar.lancamentos.selecionados.excel');
+    Route::post('/lancamentos/reserva', [App\Http\Controllers\LancamentosController::class, 'reserva'])->name('lancamentos.reserva');
+    Route::post('/lancamentos/updatestatus', [App\Http\Controllers\LancamentosController::class, 'updateStatus2'])->name('lancamentos.update-status2');
 
     Route::get('/lancamento/liberar', [LancamentosController::class, 'listaLiberar'])->name('lancamento.liberar');
 

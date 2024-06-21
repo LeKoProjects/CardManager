@@ -50,10 +50,10 @@ class DatabaseSeeder extends Seeder
                 'nome' => 'Novo',
             ],
             [
-                'nome' => 'Adquirir',
+                'nome' => 'Adquirido',
             ],
             [
-                'nome' => 'Paguei',
+                'nome' => 'Pago',
             ],
             [
                 'nome' => 'Finalizado',
