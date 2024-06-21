@@ -309,29 +309,30 @@ $(document).ready(function() {
     });
 
     function reserveSelected() {
-        const selectedIds = $('.selectRow:checked').map(function() {
-            return $(this).data('id');
-        }).get();
+    const selectedIds = $('.selectRow:checked').map(function() {
+        return $(this).data('id');
+    }).get();
 
-        if (selectedIds.length > 0) {
-            $.ajax({
-                url: '{{ route('lancamentos.reserva') }}',
-                method: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    ids: selectedIds
-                },
-                success: function(response) {
-                    alert('Lançamentos reservados com sucesso.');
-                    location.reload();
-                },
-                error: function(xhr) {
-                    // Handle error response
-                    alert('Erro ao reservar os lançamentos.');
-                }
-            });
-        }
+    if (selectedIds.length > 0) {
+        $.ajax({
+            url: '{{ route('lancamentos.update-status3') }}',
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                status_id: 5,
+                lancamento_ids: selectedIds  // Sending array of selected IDs
+            },
+            success: function(response) {
+                alert(response.success);
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('Erro: ' + xhr.responseJSON.error);
+            }
+        });
     }
+}
+
 });
 </script>
 @endsection

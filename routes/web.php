@@ -58,6 +58,7 @@ Auth::routes();
     Route::put('/lancamento/{id}', [LancamentosController::class, 'update'])->name('lancamento.update');
     Route::delete('/lancamento/{id}', [LancamentosController::class, 'destroy'])->name('lancamento.destroy');
     Route::post('/lancamentos/update-status', [LancamentosController::class, 'updateStatus'])->name('lancamentos.update-status');
+    Route::post('/lancamentos/update-status3', [LancamentosController::class, 'updateStatus3'])->name('lancamentos.update-status3');
     Route::get('/lancamento/controle', [LancamentosController::class, 'controle'])->name('lancamento.controle');
     Route::get('/lancamento/usuario', [LancamentosController::class, 'listaUser'])->name('lancamento.usuario');
     Route::post('/lancamentos/update-status1', [LancamentosController::class, 'updateStatus1'])->name('lancamentos.update-status1');
