@@ -20,7 +20,7 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr style="text-align: center">
-                                <th>#123</th>
+                                <th>#</th>
                                 <th>Data/Hora</th>
                                 <th>Código</th>
                                 <th>Moeda</th>
