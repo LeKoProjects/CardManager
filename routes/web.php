@@ -26,9 +26,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// Rota para a Página de Erro 419
-Route::view('/error/419', 'errors.419')->name('error.419');
-
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     // status
@@ -61,10 +58,13 @@ Route::view('/error/419', 'errors.419')->name('error.419');
     Route::put('/lancamento/{id}', [LancamentosController::class, 'update'])->name('lancamento.update');
     Route::delete('/lancamento/{id}', [LancamentosController::class, 'destroy'])->name('lancamento.destroy');
     Route::post('/lancamentos/update-status', [LancamentosController::class, 'updateStatus'])->name('lancamentos.update-status');
+    Route::post('/lancamentos/update-status3', [LancamentosController::class, 'updateStatus3'])->name('lancamentos.update-status3');
     Route::get('/lancamento/controle', [LancamentosController::class, 'controle'])->name('lancamento.controle');
     Route::get('/lancamento/usuario', [LancamentosController::class, 'listaUser'])->name('lancamento.usuario');
     Route::post('/lancamentos/update-status1', [LancamentosController::class, 'updateStatus1'])->name('lancamentos.update-status1');
     Route::get('/lancamentos/exportar-selecionados-excel', [LancamentosController::class, 'exportarSelecionadosParaExcel'])->name('exportar.lancamentos.selecionados.excel');
+    Route::post('/lancamentos/reserva', [App\Http\Controllers\LancamentosController::class, 'reserva'])->name('lancamentos.reserva');
+    Route::post('/lancamentos/updatestatus', [App\Http\Controllers\LancamentosController::class, 'updateStatus2'])->name('lancamentos.update-status2');
 
     Route::get('/lancamento/liberar', [LancamentosController::class, 'listaLiberar'])->name('lancamento.liberar');
 

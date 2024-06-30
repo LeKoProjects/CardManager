@@ -8,6 +8,7 @@ use App\Models\Status;
 use App\Models\Tipo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LancamentosExport;
 use App\Models\User;
@@ -59,7 +60,7 @@ class LancamentosController extends Controller
             $existeLancamento = Lancamentos::where('codigo', $codigo)->first();
 
             if ($existeLancamento) {
-                continue; // Skip existing lancamentos
+                return redirect()->back()->with('error', 'Lançamento já existe!');
             }
 
             // Define o status_id com base na presença de user_id
@@ -129,6 +130,28 @@ class LancamentosController extends Controller
 
         return response()->json(['success' => 'Status atualizado com sucesso']);
     }
+
+    public function updateStatus3(Request $request)
+{
+    $lancamentoIds = $request->lancamento_ids; // Array of lancamento ids
+    $statusId = $request->status_id;
+
+    try {
+        foreach ($lancamentoIds as $lancamentoId) {
+            $lancamento = Lancamentos::find($lancamentoId);
+
+            if ($lancamento) {
+                $lancamento->status_id = $statusId;
+                $lancamento->user_id = auth()->user()->id; // Assuming you want to track who made the update
+                $lancamento->save();
+            }
+        }
+
+        return response()->json(['success' => 'Status atualizado com sucesso']);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Erro ao atualizar status: ' . $e->getMessage()], 500);
+    }
+}
 
     public function updateStatus1(Request $request)
     {
@@ -248,4 +271,27 @@ class LancamentosController extends Controller
 
         return redirect()->back()->with('success', 'Lançamento excluído com sucesso!');
     }
+
+    public function reserva(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        DB::table('lancamentos')
+            ->whereIn('id', $ids)
+            ->update(['status_id' => 5]);
+
+        return response()->json(['message' => 'Lançamentos reservados com sucesso.']);
+    }
+
+    public function updateStatus2(Request $request)
+{
+    $statusId = $request->input('status_id');
+    $lancamentoIds = $request->input('lancamento_ids', []);
+
+    DB::table('lancamentos')
+        ->whereIn('id', $lancamentoIds)
+        ->update(['status_id' => $statusId]);
+
+    return response()->json(['success' => 'Lançamentos liberados com sucesso.']);
+}
+
 }

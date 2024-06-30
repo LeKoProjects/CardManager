@@ -23,7 +23,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="tipo_id" class="form-label">Tipo:</label>
-                                <select id="tipo_id" name="tipo_id" class="form-control" required>
+                                <select id="tipo_id" name="tipo_id" class="form-control">
                                     <option value="">Selecione um tipo</option>
                                     @foreach($tipos as $tipo)
                                         <option value="{{ $tipo->id }}">{{ $tipo->nome }}</option>
