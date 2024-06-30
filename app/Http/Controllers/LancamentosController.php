@@ -21,12 +21,12 @@ class LancamentosController extends Controller
      */
     public function index()
     {
-        $lancamento = Lancamentos::orderBy('created_at', 'desc')->get();
+        $lancamento = Lancamentos::orderBy('created_at', 'desc')->paginate(10); // Pagina com 10 itens por página
         $moeda = Moedas::all();
         $tipo = Tipo::all();
         $status = Status::all();
         $users = User::all();
-
+    
         return view('lancamento.criar', compact(['lancamento', 'moeda', 'tipo', 'status', 'users']));
     }
 

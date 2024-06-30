@@ -29,7 +29,7 @@
                                     </thead>
                                     <tbody>
                                         <tr class="lancamento">
-                                            <td><input name="codigo[]" class="form-control" type="text" required></td>
+                                            <td><input name="codigo[]" class="form-control codigo-input" type="text" required></td>
                                             <td>
                                                 <select class="form-control" name="moeda_id[]">
                                                     <option>Selecione a Moeda</option>
@@ -216,6 +216,10 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            <!-- Paginação -->
+                            <div class="d-flex justify-content-center">
+                                {{ $lancamento->links('pagination::bootstrap-4') }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -230,6 +234,13 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 <script>
 $(document).ready(function() {
+    // Defina o token CSRF para todas as solicitações AJAX
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     // Aplica a máscara aos inputs de valor
     applyMask();
 
@@ -309,30 +320,44 @@ $(document).ready(function() {
     });
 
     function reserveSelected() {
-    const selectedIds = $('.selectRow:checked').map(function() {
-        return $(this).data('id');
-    }).get();
+        const selectedIds = $('.selectRow:checked').map(function() {
+            return $(this).data('id');
+        }).get();
 
-    if (selectedIds.length > 0) {
-        $.ajax({
-            url: '{{ route('lancamentos.update-status3') }}',
-            method: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                status_id: 5,
-                lancamento_ids: selectedIds  // Sending array of selected IDs
-            },
-            success: function(response) {
-                alert(response.success);
-                location.reload();
-            },
-            error: function(xhr) {
-                alert('Erro: ' + xhr.responseJSON.error);
-            }
-        });
+        if (selectedIds.length > 0) {
+            $.ajax({
+                url: '{{ route('lancamentos.update-status3') }}',
+                method: 'POST',
+                data: {
+                    status_id: 5,
+                    lancamento_ids: selectedIds  // Sending array of selected IDs
+                },
+                success: function(response) {
+                    alert(response.success);
+                    location.reload();
+                },
+                error: function(xhr) {
+                    alert('Erro: ' + xhr.responseJSON.error);
+                }
+            });
+        }
     }
-}
 
+    // Função para verificar o campo de código
+    $(document).on('input', '.codigo-input', function() {
+        const value = $(this).val();
+        if (/^\d{14}$/.test(value)) {
+            const row = $(this).closest('tr');
+            row.find('select[name="moeda_id[]"]').val('1');
+            row.find('input[name="valor[]"]').val('200,00');
+            row.find('select[name="tipo_id[]"]').val('4');
+        } else if (/^\d{25}$/.test(value)) {
+            const row = $(this).closest('tr');
+            row.find('select[name="moeda_id[]"]').val('1');
+            row.find('input[name="valor[]"]').val('500,00');
+            row.find('select[name="tipo_id[]"]').val('2');
+        }
+    });
 });
 </script>
 @endsection
