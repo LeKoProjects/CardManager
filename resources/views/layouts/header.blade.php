@@ -8,10 +8,13 @@
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
+        <!-- Botão de tradução -->
+        <li class="nav-item dropdown no-arrow">
+            <button class="btn btn-info" onclick="translatePage()" title="English"><i class="fas fa-solid fa-language"></i></button>
+        </li>
 
         <div class="topbar-divider d-none d-sm-block"></div>
-
-        <!-- Nav Item - Wallet Information -->
+        <!-- Demais itens -->
         <li class="nav-item dropdown no-arrow" id="walletDropdownMenu">
             <a class="nav-link dropdown-toggle" href="{{ route('lancamento.usuario') }}" id="walletDropdown" role="button"
                 aria-haspopup="true" aria-expanded="false">
@@ -23,7 +26,8 @@
                 </span>
             </a>
         </li>
-        {{-- User --}}
+
+        <!-- User -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -40,17 +44,22 @@
                 </form>
             </div>
         </li>
-
     </ul>
-
 </nav>
+
 @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-    @if(session('error'))
-        <div class="alert alert-warning">
-            {{ session('error') }}
-        </div>
-    @endif
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+@if(session('error'))
+    <div class="alert alert-warning">
+        {{ session('error') }}
+    </div>
+@endif
+
+<style>
+    .btn-info {
+        margin-top: 18px; /* Ajuste o espaçamento superior conforme necessário */
+    }
+</style>
