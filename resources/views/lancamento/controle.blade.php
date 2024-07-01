@@ -63,47 +63,54 @@
                                 $totalLucro = 0;
                             @endphp
                             @foreach ($lancamentos as $item)
-                            <tr style="text-align: center">
-                                <td>{{$item->id}}</td>
-                                <td>{{$item->created_at}}</td>
-                                @if ($item->status_id == 4)
-                                    <td>{{ $item->codigo }}</td>
-                                @else
-                                    <td class="codigo-cell">{{ $item->codigo }}</td>
-                                @endif
-                                @php
-                                    $abreviacao = $item->moeda->abreviacao;
-                                    $valor = floatval($item->valor);
-
-                                    // Converter o valor para USD se a moeda for BRL
-                                    if ($abreviacao == 'BRL') {
-                                        $valorConvertido = $valor * $cotacaoBRLtoUSD;
-                                    } else {
-                                        $valorConvertido = $valor; // Mantém o valor inalterado se não for BRL
-                                    }
-
-                                    // Calcular o lucro em USD
-                                    $porcentagem = floatval($item->tipo->porcentagem);
-                                    $lucro = $valorConvertido - ($valorConvertido * ($porcentagem / 100));
-
-                                    // Acumular lucro total
-                                    $totalLucro += $lucro;
-                                @endphp
-                                <td>{{ $abreviacao }} {{ number_format($valor, 2, ',', '.') }}</td>
-                                <td>
-                                    <img src="{{ asset('images/' . optional($item->tipo)->imagem) }}"> {{ optional($item->tipo)->nome }}
-                                </td>
-                                <td>{{ $item->user ? $item->user->name : 'Usuário não encontrado' }}</td>
-                                <td>{{ $item->user ? $item->user->celular : 'Celular não encontrado' }}</td>
-                                <td>{{ $item->tipo->porcentagem }}%</td>
-                                <td>
-                                    @if(is_numeric($lucro))
-                                        {{ number_format($lucro, 2, ',', '.') }} USD
+                                <tr style="text-align: center">
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $item->created_at }}</td>
+                                    @if ($item->status_id == 4)
+                                        <td>{{ $item->codigo }}</td>
                                     @else
-                                        N/A
+                                        <td class="codigo-cell">{{ $item->codigo }}</td>
                                     @endif
-                                </td>
-                            </tr>
+                                    @php
+                                        $abreviacao = $item->moeda->abreviacao;
+                                        $valor = floatval($item->valor);
+
+                                        // Converter o valor para USD se a moeda for BRL
+                                        if ($abreviacao == 'BRL') {
+                                            $valorConvertido = $valor * $cotacaoBRLtoUSD;
+                                        } else {
+                                            $valorConvertido = $valor; // Mantém o valor inalterado se não for BRL
+                                        }
+
+                                        // Inicializa o lucro
+                                        $lucro = 0;
+
+                                        // Verifica se $item->tipo não é null
+                                        if ($item->tipo) {
+                                            // Calcular o lucro em USD
+                                            $porcentagem = floatval($item->tipo->porcentagem);
+                                            $lucro = $valorConvertido - $valorConvertido * ($porcentagem / 100);
+                                        }
+
+                                        // Acumular lucro total
+                                        $totalLucro += $lucro;
+                                    @endphp
+                                    <td>{{ $abreviacao }} {{ number_format($valor, 2, ',', '.') }}</td>
+                                    <td>
+                                        <img src="{{ asset('images/' . optional($item->tipo)->imagem) }}">
+                                        {{ optional($item->tipo)->nome }}
+                                    </td>
+                                    <td>{{ $item->user ? $item->user->name : 'Usuário não encontrado' }}</td>
+                                    <td>{{ $item->user ? $item->user->celular : 'Celular não encontrado' }}</td>
+                                    <td>{{ $item->tipo ? $item->tipo->porcentagem : '0' }}%</td>
+                                    <td>
+                                        @if (is_numeric($lucro))
+                                            {{ number_format($lucro, 2, ',', '.') }} USD
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -116,7 +123,3 @@
         </div>
     </div>
 @endsection
-
-
-
-
