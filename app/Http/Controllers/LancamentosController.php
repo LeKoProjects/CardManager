@@ -284,14 +284,13 @@ class LancamentosController extends Controller
 
     public function updateStatus2(Request $request)
 {
-    $statusId = $request->input('status_id');
-    $lancamentoIds = $request->input('lancamento_ids', []);
+    foreach ($request->lancamento_ids as $lancamento_id) {
+        $lancamento = Lancamentos::find($lancamento_id);
+        $lancamento->status_id = $request->status_id;
+        $lancamento->save();
+    }
 
-    DB::table('lancamentos')
-        ->whereIn('id', $lancamentoIds)
-        ->update(['status_id' => $statusId]);
-
-    return response()->json(['success' => 'Lançamentos liberados com sucesso.']);
+    return response()->json(['success' => 'Status atualizado com sucesso']);
 }
 
 }

@@ -76,6 +76,6 @@ class SolicitacoesController extends Controller
     public function destroy(Solicitacoes $solicitacao)
     {
         $solicitacao->delete();
-        return redirect()->route('solicitacoes.lista')->with('success', 'Solicitação excluída com sucesso!');
+        return redirect()->back()->with('success', 'Solicitação excluída com sucesso!');
     }
 }

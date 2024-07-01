@@ -26,51 +26,55 @@ Route::get('/', function () {
 
 Auth::routes();
 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    // status
+Route::middleware(['admin'])->group(function () {
+    #status
     Route::get('/status', [StatusController::class, 'index'])->name('status.index');
     Route::post('/status', [StatusController::class, 'store'])->name('status.store');
     Route::put('/status/{id}', [StatusController::class, 'update'])->name('status.update');
     Route::delete('/status/{id}', [StatusController::class, 'destroy'])->name('status.destroy');
 
-    // tipo
+    #tipo
     Route::get('/tipo', [TipoController::class, 'index'])->name('tipo.index');
     Route::post('/tipo', [TipoController::class, 'store'])->name('tipo.store');
     Route::put('/tipo/{id}', [TipoController::class, 'update'])->name('tipo.update');
     Route::delete('/tipo/{id}', [TipoController::class, 'destroy'])->name('tipo.destroy');
 
-    // moedas
+    #moedas
     Route::get('/moedas', [MoedasController::class, 'index'])->name('moedas.index');
     Route::post('/moedas', [MoedasController::class, 'store'])->name('moedas.store');
     Route::put('/moedas/{id}', [MoedasController::class, 'update'])->name('moedas.update');
     Route::delete('/moedas/{id}', [MoedasController::class, 'destroy'])->name('moedas.destroy');
 
-    // usuarios
+    #usuarios
     Route::get('/usuario', [UserController::class, 'index'])->name('usuario.index');
     Route::post('/usuario', [UserController::class, 'store'])->name('usuario.store');
     Route::put('/usuario/{id}', [UserController::class, 'update'])->name('usuario.update');
     Route::delete('/usuario/{id}', [UserController::class, 'destroy'])->name('usuario.destroy');
 
-    // usuarios
-    Route::get('/lancamento', [LancamentosController::class, 'index'])->name('lancamento.index');
-    Route::post('/lancamento', [LancamentosController::class, 'store'])->name('lancamento.store');
-    Route::put('/lancamento/{id}', [LancamentosController::class, 'update'])->name('lancamento.update');
-    Route::delete('/lancamento/{id}', [LancamentosController::class, 'destroy'])->name('lancamento.destroy');
+    #lançamentos
+    Route::post('/lancamentos/reserva', [App\Http\Controllers\LancamentosController::class, 'reserva'])->name('lancamentos.reserva');
+    Route::get('/lancamento/liberar', [LancamentosController::class, 'listaLiberar'])->name('lancamento.liberar');
+    Route::get('/lancamento/controle', [LancamentosController::class, 'controle'])->name('lancamento.controle');
     Route::post('/lancamentos/update-status', [LancamentosController::class, 'updateStatus'])->name('lancamentos.update-status');
     Route::post('/lancamentos/update-status3', [LancamentosController::class, 'updateStatus3'])->name('lancamentos.update-status3');
-    Route::get('/lancamento/controle', [LancamentosController::class, 'controle'])->name('lancamento.controle');
-    Route::get('/lancamento/usuario', [LancamentosController::class, 'listaUser'])->name('lancamento.usuario');
-    Route::post('/lancamentos/update-status1', [LancamentosController::class, 'updateStatus1'])->name('lancamentos.update-status1');
-    Route::get('/lancamentos/exportar-selecionados-excel', [LancamentosController::class, 'exportarSelecionadosParaExcel'])->name('exportar.lancamentos.selecionados.excel');
-    Route::post('/lancamentos/reserva', [App\Http\Controllers\LancamentosController::class, 'reserva'])->name('lancamentos.reserva');
+    Route::put('/lancamento/{id}', [LancamentosController::class, 'update'])->name('lancamento.update');
+    Route::delete('/lancamento/{id}', [LancamentosController::class, 'destroy'])->name('lancamento.destroy');
+    Route::get('/lancamento', [LancamentosController::class, 'index'])->name('lancamento.index');
+    Route::post('/lancamento', [LancamentosController::class, 'store'])->name('lancamento.store');
     Route::post('/lancamentos/updatestatus', [App\Http\Controllers\LancamentosController::class, 'updateStatus2'])->name('lancamentos.update-status2');
+});
 
-    Route::get('/lancamento/liberar', [LancamentosController::class, 'listaLiberar'])->name('lancamento.liberar');
+#lançamentos
+Route::get('/lancamento/usuario', [LancamentosController::class, 'listaUser'])->name('lancamento.usuario');
+Route::post('/lancamentos/update-status1', [LancamentosController::class, 'updateStatus1'])->name('lancamentos.update-status1');
+Route::get('/lancamentos/exportar-selecionados-excel', [LancamentosController::class, 'exportarSelecionadosParaExcel'])->name('exportar.lancamentos.selecionados.excel');
 
-    #solicitaçao
-    Route::get('/solicitacoes', [SolicitacoesController::class, 'index'])->name('solicitacoes.lista');
-    Route::get('/solicitacoes/criar', [SolicitacoesController::class, 'criar'])->name('solicitacoes.criar');
-    Route::post('/solicitacoes', [SolicitacoesController::class, 'store'])->name('solicitacoes.store');
-    Route::put('/solicitacoes/{id}', [SolicitacoesController::class, 'update'])->name('solicitacoes.update');
-    Route::delete('/solicitacoes/{solicitacao}', [SolicitacoesController::class, 'destroy'])->name('solicitacoes.destroy');
+
+#solicitação
+Route::get('/solicitacoes', [SolicitacoesController::class, 'index'])->name('solicitacoes.lista');
+Route::put('/solicitacoes/{id}', [SolicitacoesController::class, 'update'])->name('solicitacoes.update');
+Route::delete('/solicitacoes/{solicitacao}', [SolicitacoesController::class, 'destroy'])->name('solicitacoes.destroy');
+Route::get('/solicitacoes/criar', [SolicitacoesController::class, 'criar'])->name('solicitacoes.criar');
+Route::post('/solicitacoes', [SolicitacoesController::class, 'store'])->name('solicitacoes.store');

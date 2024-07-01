@@ -48,9 +48,9 @@
                                     <td>{{ $item->user ? $item->user->celular : 'Celular não encontrado' }}</td>
                                     <td>
                                         @if ($item->status_id == 4)
-                                            Liberado
+                                            <span style="color: green">Liberado</span>
                                         @else
-                                            Pendente
+                                            <span style="color: red">Pendente</span>
                                         @endif
                                     </td>
                                 </tr>
@@ -94,7 +94,7 @@
 
                 if (selectedIds.length > 0) {
                     $.ajax({
-                        url: '{{ route('lancamentos.update-status') }}',
+                        url: '{{ route('lancamentos.update-status2') }}',
                         method: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
