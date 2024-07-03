@@ -34,8 +34,18 @@ class AppServiceProvider extends ServiceProvider
                 ->where('status_id', '!=', 4) // Supondo que o status 'Adquirido' tem o ID 4
                 ->get();
 
-            $valorTotalRS = $lancamentos->where('moeda.moeda', 'Real')->sum('valor');
-            $valorTotalUSD = $lancamentos->where('moeda.moeda', 'Dolar')->sum('valor');
+                $valorTotalRS = $lancamentos->where('moeda.moeda', 'Real')
+                ->filter(function ($item) {
+                    return is_numeric($item['valor']);
+                })
+                ->sum('valor');
+            
+            $valorTotalUSD = $lancamentos->where('moeda.moeda', 'Dolar')
+                ->filter(function ($item) {
+                    return is_numeric($item['valor']);
+                })
+                ->sum('valor');
+            
 
             // Buscar a cotação do dólar
             $url = 'https://economia.awesomeapi.com.br/last/USD-BRL';
