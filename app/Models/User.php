@@ -48,4 +48,17 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Lancamentos::class, 'user_id');
     }
+
+    public function transfers()
+    {
+        return $this->hasMany(Transfer::class);
+    }
+
+    public function getWalletBalance()
+    {
+        $incoming = $this->transfers()->where('to_address', $this->address)->sum('valor');
+        $outgoing = $this->transfers()->where('from_address', $this->address)->sum('valor');
+
+        return $incoming - $outgoing;
+    }
 }

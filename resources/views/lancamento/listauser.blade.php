@@ -8,7 +8,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Minhas Compras</h6>
             <div>
                 <button class="btn btn-primary btn-selecionar-todos">Selecionar Tudo</button>
-                <button class="btn btn-danger btn-pagar" data-toggle="modal" data-target="#confirmarModal">Pagar</button>
+                <button class="btn btn-danger btn-pagar" data-toggle="modal" data-target="#confirmarModal">Desativar</button>
                 <a href="{{ route('exportar.lancamentos.selecionados.excel') }}" class="btn btn-success btn-exportar-excel"><i class="fas fa-solid fa-file-excel"></i></a>
             </div>
         </div>
@@ -29,7 +29,7 @@
                     </thead>
                     <tbody>
                         @foreach ($lancamento as $lancamento)
-                        <tr style="text-align: center">
+                        <tr style="text-align: center" class="{{ $lancamento->valido == 'N' ? 'red-row' : '' }}">
                             <td>{{ $lancamento->id }}</td>
                             <td>{{ $lancamento->created_at }}</td>
                             <td>
@@ -45,12 +45,10 @@
                                 <img src="{{ asset('images/' . optional($lancamento->tipo)->imagem) }}"> {{ optional($lancamento->tipo)->nome }}
                             </td>
                             <td>
-                                @if ($lancamento->status_id == 2)
-                                <span style="color: red">Aguardando Pagamento</span>
-                                @elseif ($lancamento->status_id == 3)
-                                <span style="color: orange">Aguardando Liberação</span>
-                                @elseif ($lancamento->status_id == 4)
-                                <span style="color: green">Adquirido</span>
+                                @if ($lancamento->valido == 'N')
+                                <span style="color: red">Desativado</span>
+                                @elseif ($lancamento->valido == 'S')
+                                <span style="color: green">Ativado</span>
                                 @endif
                             </td> 
                             <td>
@@ -70,13 +68,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmarModalLabel">Confirmar Pagamento</h5>
+                <h5 class="modal-title" id="confirmarModalLabel">Confirmar Invalidez</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Tem certeza que deseja pagar este(s) lançamento(s)?
+                Tem certeza que este(s) lançamento(s) já foram usados?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -104,9 +102,9 @@
 
         // Ação para o botão Confirmar dentro do modal
         $('.btn-pagar-confirmar').click(function() {
-            // Filtrar lançamentos com status 2
+            // Filtrar lançamentos com status 4
             var lancamentosParaAtualizar = lancamentosSelecionados.filter(function(lancamento) {
-                return lancamento.status == 2;
+                return lancamento.status == 4;
             }).map(function(lancamento) {
                 return lancamento.id;
             });
@@ -117,7 +115,7 @@
                     method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
-                        status_id: 3, // Status 3 = Aguardando Liberação
+                        valido: 'N', // Status 3 = Aguardando Liberação
                         lancamento_ids: lancamentosParaAtualizar
                     },
                     success: function(response) {

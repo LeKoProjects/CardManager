@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" type="image/png" href="{{ asset('transferir.png') }}">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Manager Gift Card</title>
     <script type="text/javascript">
         function googleTranslateElementInit() {
@@ -15,6 +15,13 @@
         }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tronweb/2.4.0/tronweb.min.js"></script>
+    <script>
+        // Definição da função sendUSDT() no escopo global
+        window.sendUSDT = async () => {
+            // Código para enviar USDT
+        };
+    </script>
     <!-- Custom fonts for this template-->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link
@@ -31,6 +38,10 @@
         opacity: 1;
         visibility: visible;
     }
+    
+    .red-row {
+    background: rgb(242, 244, 193);
+}
 </style>
 
 <body id="page-top">
@@ -98,14 +109,6 @@
     <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
 
     <script>
-        function translatePage() {
-            var googleTranslateElement = document.getElementById('google_translate_element');
-            var googleTranslateSelect = googleTranslateElement.querySelector('.goog-te-combo');
-            if (googleTranslateSelect) {
-                googleTranslateSelect.value = 'en';
-                googleTranslateSelect.dispatchEvent(new Event('change'));
-            }
-        }
         
         function maskString(str, visibleChars = 5) {
         if (str.length <= visibleChars) {

@@ -32,6 +32,15 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Manager Gift Card</h1>
                                     </div>
+                                    @if ($errors->any())
+                                        <div class="alert-danger">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
                                     <form class="user" method="POST" action="{{ route('login') }}">
                                         @csrf
                                         <div class="form-group">
@@ -40,7 +49,7 @@
                                         </div>
                                         <div class="form-group">
                                             <input type="password" id="password" name="password" class="form-control form-control-user"
-                                                placeholder="Senha">
+                                                placeholder="Password">
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
                                             Login

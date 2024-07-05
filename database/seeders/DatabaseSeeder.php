@@ -74,6 +74,12 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
+        DB::table('wallet')->insert([
+            [
+                'address' => 'TBZHrWrvRLVpPqi3m3EU5SCP3kY4gwgYaN'
+            ]
+        ]);
+
 
     }
 }

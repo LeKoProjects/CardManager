@@ -48,6 +48,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th>#</th>
                                         <th>Status</th>
                                         <th>Editar</th>
                                         <th>Excluir</th>
@@ -56,23 +57,22 @@
                                 <tbody>
                                     @foreach ($status as $item)
                                         <tr>
-                                            <td>{{ $item->nome }}</td>
-                                            <td>
-                                                <div>
-                                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">
-                                                        Editar
-                                                    </button>
-                                                </div>
+                                            <td class="align-middle">{{ $item->id }}</td>
+                                            <td class="align-middle">{{ $item->nome }}</td>
+                                            <td class="align-middle text-center">
+                                                <button type="button" class="btn btn-info " data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">
+                                                    Editar
+                                                </button>
                                             </td>
-                                            <td>
-                                                <form action="{{ route('status.destroy', $item->id) }}" method="POST">
+                                            <td class="align-middle">
+                                                <form action="{{ route('status.destroy', $item->id) }}" method="POST" >
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger">Excluir</button>
                                                 </form>
                                             </td>
                                         </tr>
-
+                            
                                         <!-- Modal for Editing -->
                                         <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $item->id }}" aria-hidden="true">
                                             <div class="modal-dialog">
@@ -101,7 +101,7 @@
                                         </div>
                                     @endforeach
                                 </tbody>
-                            </table>
+                            </table>                            
                         </div>
                         </div>
                     </div>

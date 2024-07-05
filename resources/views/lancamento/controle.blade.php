@@ -69,7 +69,7 @@
                                     @if ($item->status_id == 4)
                                         <td>{{ $item->codigo }}</td>
                                     @else
-                                        <td class="codigo-cell">{{ $item->codigo }}</td>
+                                        <td>{{ $item->codigo }}</td>
                                     @endif
                                     @php
                                         $abreviacao = $item->moeda->abreviacao;

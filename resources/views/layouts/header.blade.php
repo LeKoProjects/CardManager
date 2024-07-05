@@ -8,11 +8,6 @@
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
-        <!-- Botão de tradução -->
-        <li class="nav-item dropdown no-arrow">
-            <button class="btn btn-info" onclick="translatePage()" title="English"><i class="fas fa-solid fa-language"></i></button>
-        </li>
-
         <div class="topbar-divider d-none d-sm-block"></div>
         <!-- Demais itens -->
         <li class="nav-item dropdown no-arrow" id="walletDropdownMenu">
@@ -21,11 +16,14 @@
                 <i class="fas fa-wallet fa-sm fa-fw mr-2 text-gray-600"></i>
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                     @if ($valorTotalUSD > 0)
-                        USD -{{ number_format($valorTotalUSD, 2, ',', '.') }}
+                        USD | {{ number_format($valorTotalUSD, 2, ',', '.') }}
+                    @else
+                        USD | 0.00
                     @endif
                 </span>
             </a>
         </li>
+        
 
         <!-- User -->
         <li class="nav-item dropdown no-arrow">
@@ -58,8 +56,3 @@
     </div>
 @endif
 
-<style>
-    .btn-info {
-        margin-top: 18px; /* Ajuste o espaçamento superior conforme necessário */
-    }
-</style>

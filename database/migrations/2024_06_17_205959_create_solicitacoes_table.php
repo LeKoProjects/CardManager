@@ -17,7 +17,6 @@ return new class extends Migration
             $table->text('resposta')->nullable(); // Adicionando a coluna resposta
             $table->timestamps();
             $table->softDeletes();
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('tipo_id')->references('id')->on('tipos')->onDelete('cascade'); // Definindo a chave estrangeira para tipo_id
         });

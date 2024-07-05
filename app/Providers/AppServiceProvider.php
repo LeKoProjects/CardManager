@@ -2,11 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Transfer;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Lancamentos;
-use App\Models\Moedas;
 use Illuminate\Support\Facades\Http;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,25 +26,17 @@ class AppServiceProvider extends ServiceProvider
     View::composer('layouts.header', function ($view) {
         $user = Auth::user();
         $valorTotalUSD = 0;
-        $moeda = Moedas::all();
-        
-        if ($user) {
-            $lancamentos = Lancamentos::where('user_id', $user->id)
-                ->where('status_id', '!=', 4) // Supondo que o status 'Adquirido' tem o ID 4
-                ->get();
 
-                $valorTotalRS = $lancamentos->where('moeda.moeda', 'Real')
-                ->filter(function ($item) {
-                    return is_numeric($item['valor']);
-                })
-                ->sum('valor');
-            
-            $valorTotalUSD = $lancamentos->where('moeda.moeda', 'Dolar')
-                ->filter(function ($item) {
-                    return is_numeric($item['valor']);
-                })
-                ->sum('valor');
-            
+        if ($user) {
+            $transfers = Transfer::where('user_id', $user->id)->get();
+
+            $valorTotalRS = $transfers->filter(function ($item) {
+                return is_numeric($item->valor) && $item->moeda === 'Real';
+            })->sum('valor');
+
+            $valorTotalUSD = $transfers->filter(function ($item) {
+                return is_numeric($item->valor) && $item->moeda === 'Dolar';
+            })->sum('valor');
 
             // Buscar a cotação do dólar
             $url = 'https://economia.awesomeapi.com.br/last/USD-BRL';

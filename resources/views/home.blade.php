@@ -110,7 +110,7 @@
                 }).get();
 
                 $.ajax({
-                    url: '{{ route('lancamentos.update-status1') }}',
+                    url: '{{ route('lancamentos.update-status4') }}',
                     method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',

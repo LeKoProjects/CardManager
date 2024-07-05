@@ -21,7 +21,7 @@ class LancamentosController extends Controller
      */
     public function index()
     {
-        $lancamento = Lancamentos::orderBy('created_at', 'desc')->paginate(10); // Pagina com 10 itens por página
+        $lancamento = Lancamentos::all(); // Pagina com 10 itens por página
         $moeda = Moedas::all();
         $tipo = Tipo::all();
         $status = Status::all();
@@ -44,11 +44,31 @@ class LancamentosController extends Controller
      */
     public function store(Request $request)
     {
-        $codigos = $request->input('codigo');
-        $moedas = $request->input('moeda_id');
-        $valores = $request->input('valor');
-        $tipos = $request->input('tipo_id');
-        $users = $request->input('user_id'); // Corrigido para 'usuario_id' conforme o nome no template
+        $messages = [
+            'codigo.*.required' => 'O campo código é obrigatório.',
+            'moeda_id.*.required' => 'O campo moeda é obrigatório.',
+            'moeda_id.*.integer' => 'O campo moeda deve ser selecionado.',
+            'moeda_id.*.not_in' => 'Por favor, selecione uma moeda válida.',
+            'valor.*.required' => 'O campo valor é obrigatório.',
+            'valor.*.numeric' => 'O campo valor deve ser numérico.',
+            'tipo_id.*.required' => 'O campo tipo é obrigatório.',
+            'tipo_id.*.integer' => 'O campo tipo deve ser um número inteiro.',
+            'tipo_id.*.not_in' => 'Por favor, selecione um tipo válido.',
+            'user_id.*.integer' => 'O campo usuário deve ser um número inteiro.',
+        ];
+
+        $validatedData = $request->validate([
+            'codigo.*' => 'required|string',
+            'moeda_id.*' => 'required|integer|not_in:0',
+            'valor.*' => 'required|string',
+            'tipo_id.*' => 'required|integer|not_in:0',
+            'user_id.*' => 'nullable|integer',
+        ], $messages);
+        $codigos = $validatedData['codigo'];
+        $moedas = $validatedData['moeda_id'];
+        $valores = $validatedData['valor'];
+        $tipos = $validatedData['tipo_id'];
+        $users = $validatedData['user_id'];
 
         foreach ($codigos as $index => $codigo) {
             $moeda = $moedas[$index];
@@ -74,6 +94,7 @@ class LancamentosController extends Controller
                 'tipo_id' => $tipo,
                 'user_id' => $user,
                 'status_id' => $status_id,
+                'valido' => 'S',
             ]);
         }
 
@@ -114,6 +135,7 @@ class LancamentosController extends Controller
         $lancamento->tipo_id = $request->input('tipo_id');
         $lancamento->valor = $request->input('valor');
         $lancamento->status_id = $request->input('status_id');
+        $lancamento->valido = $request->input('valido');
 
         $lancamento->save();
 
@@ -153,11 +175,23 @@ class LancamentosController extends Controller
     }
 }
 
-    public function updateStatus1(Request $request)
+public function updateStatus4(Request $request)
     {
         foreach ($request->lancamento_ids as $lancamento_id) {
             $lancamento = Lancamentos::find($lancamento_id);
             $lancamento->status_id = $request->status_id;
+            $lancamento->user_id = auth()->user()->id;
+            $lancamento->save();
+        }
+
+        return response()->json(['success' => 'Status atualizado com sucesso']);
+    }
+
+    public function updateStatus1(Request $request)
+    {
+        foreach ($request->lancamento_ids as $lancamento_id) {
+            $lancamento = Lancamentos::find($lancamento_id);
+            $lancamento->valido = $request->valido;
             $lancamento->user_id = auth()->user()->id;
             $lancamento->save();
         }

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lancamentos;
+use App\Models\Moedas;
 use App\Models\Solicitacoes;
+use App\Models\Status;
 use App\Models\Tipo;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,8 +18,13 @@ class SolicitacoesController extends Controller
      */
     public function index()
     {
+        $lancamentos = Lancamentos::whereNotNull('solicitacao_id')->get(); // Pagina com 10 itens por página
+        $moeda = Moedas::all();
+        $status = Status::all();
+        $users = User::all();
+        $tipos = Tipo::where('id', '<>', 3)->get();
         $solicitacoes = Solicitacoes::with('user', 'tipo')->get();
-        return view('solicitacao.lista', compact('solicitacoes'));
+        return view('solicitacao.lista', compact(['tipos', 'solicitacoes', 'lancamentos', 'moeda', 'status', 'users']));
     }
 
     /**
@@ -24,9 +32,10 @@ class SolicitacoesController extends Controller
      */
     public function criar()
     {
+        $lancamentos = Lancamentos::whereNotNull('solicitacao_id')->get();
         $tipos = Tipo::where('id', '<>', 3)->get();
         $solicitacoes = Solicitacoes::where('user_id', Auth::id())->with('tipo')->get();
-        return view('solicitacao.criar', compact('tipos', 'solicitacoes'));
+        return view('solicitacao.criar', compact('tipos', 'solicitacoes', 'lancamentos'));
     }
 
     /**
@@ -55,20 +64,87 @@ class SolicitacoesController extends Controller
      */
 
      public function update(Request $request, $id)
-     {
-         $solicitacao = Solicitacoes::find($id);
- 
-         if (!$solicitacao) {
-             return redirect()->back()->with('error', 'lançamento não encontrado!');
-         }
- 
-         $solicitacao->resposta = $request->input('resposta');
+    {
+        $solicitacao = Solicitacoes::find($id);
 
- 
-         $solicitacao->save();
- 
-         return redirect()->back()->with('success', 'Resposta Atualizado com sucesso!');
-     }
+        if (!$solicitacao) {
+            return response()->json(['error' => 'Lançamento não encontrado!'], 404);
+        }
+
+        $solicitacao->resposta = $request->input('resposta');
+        $solicitacao->save();
+
+        return response()->json(['success' => 'Resposta atualizada com sucesso!']);
+    }
+
+    public function store2(Request $request)
+    {
+        $messages = [
+            'codigo.*.required' => 'O campo código é obrigatório.',
+            'moeda_id.*.required' => 'O campo moeda é obrigatório.',
+            'moeda_id.*.integer' => 'O campo moeda deve ser selecionado.',
+            'moeda_id.*.not_in' => 'Por favor, selecione uma moeda válida.',
+            'valor.*.required' => 'O campo valor é obrigatório.',
+            'valor.*.numeric' => 'O campo valor deve ser numérico.',
+            'tipo_id.*.required' => 'O campo tipo é obrigatório.',
+            'tipo_id.*.integer' => 'O campo tipo deve ser um número inteiro.',
+            'tipo_id.*.not_in' => 'Por favor, selecione um tipo válido.',
+            'user_id.*.integer' => 'O campo usuário deve ser um número inteiro.',
+            'solicitacao_id.*.integer' => 'O campo usuário deve ser um número inteiro.',
+        ];
+    
+        $validatedData = $request->validate([
+            'codigo.*' => 'required|string',
+            'moeda_id.*' => 'required|integer|not_in:0',
+            'valor.*' => 'required|string',
+            'tipo_id.*' => 'required|integer|not_in:0',
+            'user_id.*' => 'nullable|integer',
+            'solicitacao_id.*' => 'nullable|integer',
+        ], $messages);
+    
+        $codigos = $validatedData['codigo'];
+        $moedas = $validatedData['moeda_id'];
+        $valores = $validatedData['valor'];
+        $tipos = $validatedData['tipo_id'];
+        $users = $validatedData['user_id'];
+        $solicitacaos = $validatedData['solicitacao_id'];
+    
+        foreach ($codigos as $index => $codigo) {
+            $moeda = $moedas[$index];
+            $valor = $valores[$index];
+            $tipo = $tipos[$index];
+            $solicitacao = $solicitacaos[$index];
+            $user = $users[$index]; // Verificar se o usuário está definido
+    
+            // Check if the lancamento already exists
+            $existeLancamento = Lancamentos::where('codigo', $codigo)->first();
+    
+            if ($existeLancamento) {
+                return response()->json(['error' => 'Lançamento já existe!'], 400);
+            }
+    
+            // Create a new lancamento
+            Lancamentos::create([
+                'codigo' => $codigo,
+                'moeda_id' => $moeda,
+                'valor' => $valor,
+                'tipo_id' => $tipo,
+                'user_id' => $user,
+                'solicitacao_id' => $solicitacao,
+                'status_id' => 4,
+                'valido' => 'S',
+            ]);
+        }
+    
+        return response()->json(['success' => 'Lançamentos cadastrados com sucesso!']);
+    }
+    
+    public function getLancamentos($id)
+    {
+        $lancamentos = Lancamentos::where('solicitacao_id', $id)->get();
+        return view('solicitacao.lista', compact(['lancamentos']));
+    }
+
 
     /**
      * Remove the specified resource from storage.

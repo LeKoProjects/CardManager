@@ -56,7 +56,7 @@ Route::middleware(['admin'])->group(function () {
 
     #lançamentos
     Route::post('/lancamentos/reserva', [App\Http\Controllers\LancamentosController::class, 'reserva'])->name('lancamentos.reserva');
-    Route::get('/lancamento/liberar', [LancamentosController::class, 'listaLiberar'])->name('lancamento.liberar');
+    #Route::get('/lancamento/liberar', [LancamentosController::class, 'listaLiberar'])->name('lancamento.liberar');
     Route::get('/lancamento/controle', [LancamentosController::class, 'controle'])->name('lancamento.controle');
     Route::post('/lancamentos/update-status', [LancamentosController::class, 'updateStatus'])->name('lancamentos.update-status');
     Route::post('/lancamentos/update-status3', [LancamentosController::class, 'updateStatus3'])->name('lancamentos.update-status3');
@@ -72,6 +72,7 @@ Route::middleware(['admin'])->group(function () {
 
 #lançamentos
 Route::get('/lancamento/usuario', [LancamentosController::class, 'listaUser'])->name('lancamento.usuario');
+Route::post('/lancamentos/update-status4', [LancamentosController::class, 'updateStatus4'])->name('lancamentos.update-status4');
 Route::post('/lancamentos/update-status1', [LancamentosController::class, 'updateStatus1'])->name('lancamentos.update-status1');
 Route::get('/lancamentos/exportar-selecionados-excel', [LancamentosController::class, 'exportarSelecionadosParaExcel'])->name('exportar.lancamentos.selecionados.excel');
 
@@ -82,6 +83,9 @@ Route::put('/solicitacoes/{id}', [SolicitacoesController::class, 'update'])->nam
 Route::delete('/solicitacoes/{solicitacao}', [SolicitacoesController::class, 'destroy'])->name('solicitacoes.destroy');
 Route::get('/solicitacoes/criar', [SolicitacoesController::class, 'criar'])->name('solicitacoes.criar');
 Route::post('/solicitacoes', [SolicitacoesController::class, 'store'])->name('solicitacoes.store');
+Route::post('/solicitacoes2', [SolicitacoesController::class, 'store2'])->name('solicitacoes.store2');
+Route::get('/solicitacoes/{id}/lancamentos', [SolicitacoesController::class, 'getLancamentos']);
+
 
 Route::get('/transferencia/user', [TransferController::class, 'index'])->name('transferencia.index');
 Route::post('/transferencia/user', [TransferController::class, 'store'])->name('transferencia.store');

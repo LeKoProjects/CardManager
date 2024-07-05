@@ -17,13 +17,21 @@
     <li class="nav-item">
         <a class="nav-link" href="/home">
             <i class="fas fa-fw fa-table"></i>
-            <span>Inicio</span></a>
+            <span>Home</span></a>
         <a class="nav-link" href="{{route('lancamento.usuario')}}">
             <i class="fas fa-solid fa-store"></i>
             <span>Minhas Compras</span></a>
         <a class="nav-link" href="{{ route('solicitacoes.criar') }}">
             <i class="fas fa-solid fa-envelope"></i>
             <span>Solicitações</span></a>
+        @if (auth()->user()->tipo == 1)
+            <a class="nav-link" href="{{route('transferencia.index')}}">
+                <i class="fas fa-solid fa-wallet"></i>
+                <span>Transferências<br>(Em Construção) - visto apenas pelo User Admin</span></a>
+            {{-- <a class="nav-link" href="{{route('buscar')}}">
+                <i class="fas fa-solid fa-wallet"></i>
+                <span>Buscar Transferências<br>(Em Construção) - visto apenas pelo User Admin</span></a> --}}
+        @endif
     </li>
 
     <!-- Divider -->
@@ -41,7 +49,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="{{ route('lancamento.index') }}">Criar</a>
                     <a class="collapse-item" href="{{ route('lancamento.controle') }}">Controle</a>
-                    <a class="collapse-item" href="{{ route('lancamento.liberar') }}">Liberar</a>
+                    {{-- <a class="collapse-item" href="{{ route('lancamento.liberar') }}">Liberar</a> --}}
                 </div>
             </div>
         </li>
@@ -52,7 +60,11 @@
                 <span>Solicitações</span>
             </a>
         </li>
-
+        <li class="nav-item">
+            <a class="nav-link" href="{{route('transferencia.index2')}}">
+                <i class="fas fa-solid fa-wallet"></i>
+                <span>Transferências</span></a>
+        </li>
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
@@ -83,3 +95,21 @@
 
 </ul>
 <!-- End of Sidebar -->
+<script>
+        $(document).ready(function() {
+        $('#sidebarToggle').on('click', function() {
+            $('#accordionSidebar').toggleClass('sidebar-visible sidebar-hidden');
+        });
+    });
+</script>
+<style>
+    .sidebar-hidden {
+        transform: translateX(-250px); /* Esconder o sidebar para a esquerda */
+        transition: transform 0.3s ease-in-out; /* Duração e tipo da animação */
+    }
+
+    .sidebar-visible {
+        transform: translateX(0); /* Mostrar o sidebar */
+        transition: transform 0.3s ease-in-out; /* Duração e tipo da animação */
+    }
+</style>

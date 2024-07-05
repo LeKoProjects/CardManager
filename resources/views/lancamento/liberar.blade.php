@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 
 @section('content')
     <div class="container-fluid">
@@ -30,7 +30,7 @@
                         </thead>
                         <tbody>
                             @foreach ($lancamento as $item)
-                                <tr style="text-align: center">
+                            <tr style="text-align: center" class="{{ $item->valido == 'N' ? 'red-row' : '' }}">
                                     <td><input type="checkbox" class="selectRow" data-id="{{ $item->id }}"></td>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->created_at }}</td>
@@ -48,9 +48,9 @@
                                     <td>{{ $item->user ? $item->user->celular : 'Celular não encontrado' }}</td>
                                     <td>
                                         @if ($item->status_id == 4)
-                                            <span style="color: green">Liberado</span>
+                                            <span style="color: green">Comprado</span>
                                         @else
-                                            <span style="color: red">Pendente</span>
+                                            <span style="color: rgb(64, 0, 255)">Novo</span>
                                         @endif
                                     </td>
                                 </tr>
@@ -113,4 +113,4 @@
             }
         });
     </script>
-@endsection
+@endsection --}}

@@ -40,13 +40,13 @@ class LoginController extends Controller
     {
         if ($type == 'email') {
             throw ValidationException::withMessages([
-                $this->username() => ['O E-mail está incorreto.'],
+                $this->username() => ['Email incorrect.'],
             ]);
         }
 
         if ($type == 'password') {
             throw ValidationException::withMessages([
-                'password' => ['A senha está incorreta.'],
+                'password' => ['Password incorrect.'],
             ]);
         }
     }

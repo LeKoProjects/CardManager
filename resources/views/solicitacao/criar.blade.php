@@ -63,7 +63,7 @@
                                                 <td>{{ $item->tipo->nome }}</td>
                                                 <td>
                                                     @if ($item->resposta)
-                                                        <button class="btn btn-success" data-toggle="modal" data-target="#respostaModal" data-resposta="{{ $item->resposta }}">Respondido</button>
+                                                        <button class="btn btn-success" data-toggle="modal" data-target="#respostaModal{{ $item->id }}" data-resposta="{{ $item->resposta }}">Respondido</button>
                                                     @else
                                                         <button class="btn btn-warning" disabled>Solicitado</button>
                                                     @endif
@@ -76,22 +76,57 @@
                                                     </form>
                                                 </td>
                                             </tr>
-                                            <div class="modal fade" id="respostaModal" tabindex="-1" role="dialog" aria-labelledby="respostaModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
+
+                                            <!-- Modal de Resposta -->
+                                            <div class="modal fade" id="respostaModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="respostaModalLabel{{ $item->id }}" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="respostaModalLabel">Resposta</h5>
+                                                            <h5 class="modal-title" id="respostaModalLabel{{ $item->id }}">Resposta</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <div class="mb-3 col-md-12">
-                                                                <label class="form-label">Resposta</label>
-                                                                <textarea name="resposta" id="resposta{{ $item->resposta }}"
-                                                                    class="form-control valor" type="text"
-                                                                    placeholder="" >{{ $item->resposta }}</textarea>
+                                                            <div class="row">
+                                                                <div class="mb-3 col-md-12">
+                                                                    <label class="form-label">Resposta</label>
+                                                                    <textarea class="form-control" readonly>{{ $item->resposta }}</textarea>
+                                                                </div>
                                                             </div>
+                                                            <hr>
+                                                            <div class="row mb-3">
+                                                                <div class="col-md-3">
+                                                                    <label class="form-label">Código:</label>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <label class="form-label">Moeda:</label>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <label class="form-label">Valor:</label>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <label class="form-label">Tipo:</label>
+                                                                </div>
+                                                            </div>
+                                                            @foreach ($lancamentos as $lancamento)
+                                                                @if ($lancamento->solicitacao_id == $item->id)
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-md-3">
+                                                                            <input type="text" class="form-control" value="{{ $lancamento->codigo }}" readonly>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <input type="text" class="form-control" value="{{ $lancamento->moeda->moeda }}" readonly>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <input type="text" class="form-control" value="{{ $lancamento->valor }}" readonly>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <input type="text" class="form-control" value="{{ $lancamento->tipo->nome }}" readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
+                                                            @endforeach
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -99,6 +134,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- Fim do Modal de Resposta -->
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -111,13 +147,16 @@
     </div>
     <!-- Script para manipular o modal -->
     <script>
-        $('#respostaModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget) // Botão que acionou o modal
-            var resposta = button.data('resposta') // Extrai a informação da resposta
+        $(document).ready(function() {
+            // Mostrar a resposta correta no modal
+            $('#respostaModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Botão que acionou o modal
+                var resposta = button.data('resposta'); // Extrai a informação da resposta
 
-            var modal = $(this)
-            modal.find('.modal-body').text(resposta)
-        })
+                var modal = $(this);
+                modal.find('.modal-body textarea').val(resposta);
+            });
+        });
     </script>
 </body>
 @endsection
