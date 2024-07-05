@@ -248,9 +248,9 @@
                                     </tbody>
                                 </table>
                                 <!-- Paginação -->
-                                {{-- <div class="d-flex justify-content-center">
+                                <div class="d-flex justify-content-center">
                                     {{ $lancamento->links('pagination::bootstrap-4') }}
-                                </div> --}}
+                                </div>
                             </div>
                         </div>
                     </div>
