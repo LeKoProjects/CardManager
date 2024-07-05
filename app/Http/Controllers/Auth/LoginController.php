@@ -4,37 +4,50 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
     protected $redirectTo = '/home';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
+    }
+
+    protected function attemptLogin(Request $request)
+    {
+        $credentials = $request->only($this->username(), 'password');
+        $user = Auth::getProvider()->retrieveByCredentials($request->only($this->username()));
+
+        if (!$user) {
+            return $this->sendFailedLoginResponse($request, 'email');
+        }
+
+        if (!Auth::validate($credentials)) {
+            return $this->sendFailedLoginResponse($request, 'password');
+        }
+
+        return $this->guard()->attempt($credentials, $request->filled('remember'));
+    }
+
+    protected function sendFailedLoginResponse(Request $request, $type)
+    {
+        if ($type == 'email') {
+            throw ValidationException::withMessages([
+                $this->username() => ['O E-mail está incorreto.'],
+            ]);
+        }
+
+        if ($type == 'password') {
+            throw ValidationException::withMessages([
+                'password' => ['A senha está incorreta.'],
+            ]);
+        }
     }
 }
