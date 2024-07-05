@@ -5,6 +5,7 @@ use App\Http\Controllers\MoedasController;
 use App\Http\Controllers\SolicitacoesController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TipoController;
+use App\Http\Controllers\TransferController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('/');
 
 Auth::routes();
 
@@ -64,6 +65,9 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/lancamento', [LancamentosController::class, 'index'])->name('lancamento.index');
     Route::post('/lancamento', [LancamentosController::class, 'store'])->name('lancamento.store');
     Route::post('/lancamentos/updatestatus', [App\Http\Controllers\LancamentosController::class, 'updateStatus2'])->name('lancamentos.update-status2');
+
+    #transferencia
+    Route::get('/transferencia', [TransferController::class, 'index2'])->name('transferencia.index2');
 });
 
 #lançamentos
@@ -78,3 +82,10 @@ Route::put('/solicitacoes/{id}', [SolicitacoesController::class, 'update'])->nam
 Route::delete('/solicitacoes/{solicitacao}', [SolicitacoesController::class, 'destroy'])->name('solicitacoes.destroy');
 Route::get('/solicitacoes/criar', [SolicitacoesController::class, 'criar'])->name('solicitacoes.criar');
 Route::post('/solicitacoes', [SolicitacoesController::class, 'store'])->name('solicitacoes.store');
+
+Route::get('/transferencia/user', [TransferController::class, 'index'])->name('transferencia.index');
+Route::post('/transferencia/user', [TransferController::class, 'store'])->name('transferencia.store');
+
+Route::get('/buscar', [TransferController::class, 'index3'])->name('buscar');
+
+Route::get('/qrcode/{address}', [TransferController::class, 'generateQRCode'])->name('qrcode.generate');
