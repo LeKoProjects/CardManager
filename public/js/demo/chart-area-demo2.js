@@ -27,7 +27,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
   return s.join(dec);
 }
 
-var ctx = document.getElementById("myAreaChart");
+var ctx = document.getElementById("myAreaChart2");
 
 // Labels para os meses
 var monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -40,8 +40,8 @@ var dataLabels = [];
 for (var i = 1; i <= 12; i++) {
     var monthLabel = monthLabels[i - 1]; // Obter rótulo do mês
 
-    if (totalGiftsCompradosPorMes.hasOwnProperty(i.toString())) {
-        dataValues.push(totalGiftsCompradosPorMes[i.toString()]);
+    if (totalGiftsCompradosPorMes1.hasOwnProperty(i.toString())) {
+        dataValues.push(totalGiftsCompradosPorMes1[i.toString()]);
     } else {
         dataValues.push(null); // Preenche com null para os meses sem lançamentos
     }
