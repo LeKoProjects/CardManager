@@ -102,10 +102,11 @@
                             <div class="tile">
                                 <div class="row mb-3">
                                     <div class="col-md-12">
-                                        <input type="text" id="filter_input" class="form-control" placeholder="Filtrar...">
+                                        <input type="text" id="filter_input" class="form-control"
+                                            placeholder="Filtrar...">
                                     </div>
                                 </div>
-                        
+
                                 <div class="table-responsive">
                                     <table class="table table-bordered">
                                         <thead>
@@ -124,8 +125,10 @@
                                         </thead>
                                         <tbody id="table-body">
                                             @foreach ($lancamento as $item)
-                                                <tr style="text-align: center" class="{{ $item->valido == 'N' ? 'red-row' : '' }}">
-                                                    <td><input type="checkbox" class="selectRow" data-id="{{ $item->id }}"></td>
+                                                <tr style="text-align: center"
+                                                    class="{{ $item->valido == 'N' ? 'red-row' : '' }}">
+                                                    <td><input type="checkbox" class="selectRow"
+                                                            data-id="{{ $item->id }}"></td>
                                                     <td>{{ $item->id }}</td>
                                                     <td>{{ $item->created_at }}</td>
                                                     <td>{{ $item->codigo }}</td>
@@ -150,44 +153,59 @@
                                                     </td>
                                                     <td>
                                                         <div>
-                                                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editModal{{ $item->id }}">
+                                                            <button type="button" class="btn btn-info"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#editModal{{ $item->id }}">
                                                                 Editar
                                                             </button>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <form action="{{ route('lancamento.destroy', $item->id) }}" method="POST">
+                                                        <form action="{{ route('lancamento.destroy', $item->id) }}"
+                                                            method="POST">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-danger">Excluir</button>
                                                         </form>
                                                     </td>
                                                 </tr>
-                        
+
                                                 <!-- Modal for Editing -->
-                                                <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1" aria-labelledby="editModalLabel{{ $item->id }}" aria-hidden="true">
+                                                <div class="modal fade" id="editModal{{ $item->id }}" tabindex="-1"
+                                                    aria-labelledby="editModalLabel{{ $item->id }}" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="editModalLabel{{ $item->id }}">Editar Lançamento</h5>
+                                                                <h5 class="modal-title"
+                                                                    id="editModalLabel{{ $item->id }}">Editar
+                                                                    Lançamento</h5>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form method="POST" action="{{ route('lancamento.update', $item->id) }}" enctype="multipart/form-data">
+                                                                <form method="POST"
+                                                                    action="{{ route('lancamento.update', $item->id) }}"
+                                                                    enctype="multipart/form-data">
                                                                     @csrf
                                                                     @method('PUT')
                                                                     <div class="row">
                                                                         <div class="mb-3 col-md-12">
                                                                             <label class="form-label">Código</label>
-                                                                            <input name="codigo" id="codigo{{ $item->id }}" class="form-control" type="text" placeholder="" value="{{ $item->codigo }}">
+                                                                            <input name="codigo"
+                                                                                id="codigo{{ $item->id }}"
+                                                                                class="form-control" type="text"
+                                                                                placeholder=""
+                                                                                value="{{ $item->codigo }}">
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="mb-3 col-md-3">
                                                                             <label class="form-label">Moeda</label>
-                                                                            <select class="form-control" id="moeda_id{{ $item->id }}" name="moeda_id">
+                                                                            <select class="form-control"
+                                                                                id="moeda_id{{ $item->id }}"
+                                                                                name="moeda_id">
                                                                                 <option selected></option>
                                                                                 @foreach ($moeda as $moedas)
-                                                                                    <option value="{{ $moedas->id }}" {{ $item->moeda_id == $moedas->id ? 'selected' : '' }}>
+                                                                                    <option value="{{ $moedas->id }}"
+                                                                                        {{ $item->moeda_id == $moedas->id ? 'selected' : '' }}>
                                                                                         {{ $moedas->moeda }}
                                                                                     </option>
                                                                                 @endforeach
@@ -195,14 +213,21 @@
                                                                         </div>
                                                                         <div class="mb-3 col-md-3">
                                                                             <label class="form-label">Valor</label>
-                                                                            <input name="valor" id="valor{{ $item->id }}" class="form-control valor" type="text" placeholder="" value="{{ $item->valor }}">
+                                                                            <input name="valor"
+                                                                                id="valor{{ $item->id }}"
+                                                                                class="form-control valor" type="text"
+                                                                                placeholder=""
+                                                                                value="{{ $item->valor }}">
                                                                         </div>
                                                                         <div class="mb-3 col-md-3">
                                                                             <label class="form-label">Tipo</label>
-                                                                            <select class="form-control" id="tipo_id{{ $item->id }}" name="tipo_id">
+                                                                            <select class="form-control"
+                                                                                id="tipo_id{{ $item->id }}"
+                                                                                name="tipo_id">
                                                                                 <option selected></option>
                                                                                 @foreach ($tipo as $tipos)
-                                                                                    <option value="{{ $tipos->id }}" {{ $item->tipo_id == $tipos->id ? 'selected' : '' }}>
+                                                                                    <option value="{{ $tipos->id }}"
+                                                                                        {{ $item->tipo_id == $tipos->id ? 'selected' : '' }}>
                                                                                         {{ $tipos->nome }}
                                                                                     </option>
                                                                                 @endforeach
@@ -210,19 +235,30 @@
                                                                         </div>
                                                                         <div class="mb-3 col-md-3">
                                                                             <label class="form-label">Válido</label>
-                                                                            <select class="form-control" id="valido{{ $item->id }}" name="valido">
-                                                                                <option value="S" {{ $item->valido == 'S' ? 'selected' : '' }}>Sim</option>
-                                                                                <option value="N" {{ $item->valido == 'N' ? 'selected' : '' }}>Não</option>
+                                                                            <select class="form-control"
+                                                                                id="valido{{ $item->id }}"
+                                                                                name="valido">
+                                                                                <option value="S"
+                                                                                    {{ $item->valido == 'S' ? 'selected' : '' }}>
+                                                                                    Sim</option>
+                                                                                <option value="N"
+                                                                                    {{ $item->valido == 'N' ? 'selected' : '' }}>
+                                                                                    Não</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-                                                                        <div class="mb-3 col-md-12" style="text-align: center">
+                                                                        <div class="mb-3 col-md-12"
+                                                                            style="text-align: center">
                                                                             <label class="form-label">Status</label>
-                                                                            <select class="form-control" id="status_id{{ $item->id }}" name="status_id" style="text-align: center">
+                                                                            <select class="form-control"
+                                                                                id="status_id{{ $item->id }}"
+                                                                                name="status_id"
+                                                                                style="text-align: center">
                                                                                 <option selected></option>
                                                                                 @foreach ($status as $statuss)
-                                                                                    <option value="{{ $statuss->id }}" {{ $item->status_id == $statuss->id ? 'selected' : '' }}>
+                                                                                    <option value="{{ $statuss->id }}"
+                                                                                        {{ $item->status_id == $statuss->id ? 'selected' : '' }}>
                                                                                         {{ $statuss->nome }}
                                                                                     </option>
                                                                                 @endforeach
@@ -231,8 +267,10 @@
                                                                     </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                                <button type="submit" class="btn btn-primary">Salvar</button>
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Cancelar</button>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">Salvar</button>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -254,7 +292,6 @@
                 </div>
             </div>
         </div>
-
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
@@ -396,57 +433,57 @@
                 });
             });
 
-            document.addEventListener('DOMContentLoaded', function () {
-    const rowsPerPage = 10;
-    let currentPage = 1;
-    const tableBody = document.getElementById('table-body');
-    const filterInput = document.getElementById('filter_input');
-    const pagination = document.getElementById('pagination');
+            document.addEventListener('DOMContentLoaded', function() {
+                const rowsPerPage = 10;
+                let currentPage = 1;
+                const tableBody = document.getElementById('table-body');
+                const filterInput = document.getElementById('filter_input');
+                const pagination = document.getElementById('pagination');
 
-    function displayRows(filteredRows, page) {
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        tableBody.innerHTML = '';
+                function displayRows(filteredRows, page) {
+                    const start = (page - 1) * rowsPerPage;
+                    const end = start + rowsPerPage;
+                    tableBody.innerHTML = '';
 
-        filteredRows.slice(start, end).forEach(row => {
-            tableBody.appendChild(row);
-        });
-    }
+                    filteredRows.slice(start, end).forEach(row => {
+                        tableBody.appendChild(row);
+                    });
+                }
 
-    function updatePagination(filteredRows) {
-        pagination.innerHTML = '';
-        const pageCount = Math.ceil(filteredRows.length / rowsPerPage);
+                function updatePagination(filteredRows) {
+                    pagination.innerHTML = '';
+                    const pageCount = Math.ceil(filteredRows.length / rowsPerPage);
 
-        for (let i = 1; i <= pageCount; i++) {
-            const li = document.createElement('li');
-            li.className = `page-item ${i === currentPage ? 'active' : ''}`;
-            li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-            li.addEventListener('click', function (e) {
-                e.preventDefault();
-                currentPage = i;
-                displayRows(filteredRows, currentPage);
-                updatePagination(filteredRows);
+                    for (let i = 1; i <= pageCount; i++) {
+                        const li = document.createElement('li');
+                        li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                        li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                        li.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            currentPage = i;
+                            displayRows(filteredRows, currentPage);
+                            updatePagination(filteredRows);
+                        });
+                        pagination.appendChild(li);
+                    }
+                }
+
+                filterInput.addEventListener('input', function() {
+                    const filterValue = this.value.toLowerCase();
+                    const rows = Array.from(tableBody.getElementsByTagName('tr'));
+                    const filteredRows = rows.filter(row => {
+                        const rowText = row.textContent.toLowerCase();
+                        return rowText.includes(filterValue);
+                    });
+
+                    currentPage = 1;
+                    displayRows(filteredRows, currentPage);
+                    updatePagination(filteredRows);
+                });
+
+                const initialRows = Array.from(tableBody.getElementsByTagName('tr'));
+                displayRows(initialRows, currentPage);
+                updatePagination(initialRows);
             });
-            pagination.appendChild(li);
-        }
-    }
-
-    filterInput.addEventListener('input', function () {
-        const filterValue = this.value.toLowerCase();
-        const rows = Array.from(tableBody.getElementsByTagName('tr'));
-        const filteredRows = rows.filter(row => {
-            const rowText = row.textContent.toLowerCase();
-            return rowText.includes(filterValue);
-        });
-
-        currentPage = 1;
-        displayRows(filteredRows, currentPage);
-        updatePagination(filteredRows);
-    });
-
-    const initialRows = Array.from(tableBody.getElementsByTagName('tr'));
-    displayRows(initialRows, currentPage);
-    updatePagination(initialRows);
-});
         </script>
     @endsection
