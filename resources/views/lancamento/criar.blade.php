@@ -279,12 +279,12 @@
                                             @endforeach
                                         </tbody>
                                     </table>
-                                    <!-- Paginação -->
                                     <div class="d-flex justify-content-center">
-                                        <nav>
-                                            <ul class="pagination" id="pagination"></ul>
+                                        <nav aria-label="Page navigation">
+                                            <ul class="pagination pagination-sm" id="pagination"></ul>
                                         </nav>
                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -433,57 +433,58 @@
                 });
             });
 
-            document.addEventListener('DOMContentLoaded', function() {
-                const rowsPerPage = 10;
-                let currentPage = 1;
-                const tableBody = document.getElementById('table-body');
-                const filterInput = document.getElementById('filter_input');
-                const pagination = document.getElementById('pagination');
+            document.addEventListener('DOMContentLoaded', function () {
+    const rowsPerPage = 10;
+    let currentPage = 1;
+    const tableBody = document.getElementById('table-body');
+    const filterInput = document.getElementById('filter_input');
+    const pagination = document.getElementById('pagination');
 
-                function displayRows(filteredRows, page) {
-                    const start = (page - 1) * rowsPerPage;
-                    const end = start + rowsPerPage;
-                    tableBody.innerHTML = '';
+    function displayRows(filteredRows, page) {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        tableBody.innerHTML = '';
 
-                    filteredRows.slice(start, end).forEach(row => {
-                        tableBody.appendChild(row);
-                    });
-                }
+        filteredRows.slice(start, end).forEach(row => {
+            tableBody.appendChild(row);
+        });
+    }
 
-                function updatePagination(filteredRows) {
-                    pagination.innerHTML = '';
-                    const pageCount = Math.ceil(filteredRows.length / rowsPerPage);
+    function updatePagination(filteredRows) {
+        pagination.innerHTML = '';
+        const pageCount = Math.ceil(filteredRows.length / rowsPerPage);
 
-                    for (let i = 1; i <= pageCount; i++) {
-                        const li = document.createElement('li');
-                        li.className = `page-item ${i === currentPage ? 'active' : ''}`;
-                        li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-                        li.addEventListener('click', function(e) {
-                            e.preventDefault();
-                            currentPage = i;
-                            displayRows(filteredRows, currentPage);
-                            updatePagination(filteredRows);
-                        });
-                        pagination.appendChild(li);
-                    }
-                }
-
-                filterInput.addEventListener('input', function() {
-                    const filterValue = this.value.toLowerCase();
-                    const rows = Array.from(tableBody.getElementsByTagName('tr'));
-                    const filteredRows = rows.filter(row => {
-                        const rowText = row.textContent.toLowerCase();
-                        return rowText.includes(filterValue);
-                    });
-
-                    currentPage = 1;
-                    displayRows(filteredRows, currentPage);
-                    updatePagination(filteredRows);
-                });
-
-                const initialRows = Array.from(tableBody.getElementsByTagName('tr'));
-                displayRows(initialRows, currentPage);
-                updatePagination(initialRows);
+        for (let i = 1; i <= pageCount; i++) {
+            const li = document.createElement('li');
+            li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+            li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+            li.addEventListener('click', function (e) {
+                e.preventDefault();
+                currentPage = i;
+                displayRows(filteredRows, currentPage);
+                updatePagination(filteredRows);
             });
+            pagination.appendChild(li);
+        }
+    }
+
+    filterInput.addEventListener('input', function () {
+        const filterValue = this.value.toLowerCase();
+        const rows = Array.from(tableBody.getElementsByTagName('tr'));
+        const filteredRows = rows.filter(row => {
+            const rowText = row.textContent.toLowerCase();
+            return rowText.includes(filterValue);
+        });
+
+        currentPage = 1;
+        displayRows(filteredRows, currentPage);
+        updatePagination(filteredRows);
+    });
+
+    const initialRows = Array.from(tableBody.getElementsByTagName('tr'));
+    displayRows(initialRows, currentPage);
+    updatePagination(initialRows);
+});
+
         </script>
     @endsection
