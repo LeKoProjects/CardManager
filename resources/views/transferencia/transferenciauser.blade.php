@@ -18,6 +18,7 @@
                                         <tr style="text-align: center">
                                             <th>#</th>
                                             <th>Valor</th>
+                                            <th>Status</th>
                                             <th>Remetente</th>
                                             <th>Destinatário</th>
                                         </tr>
@@ -27,6 +28,13 @@
                                             <tr style="text-align: center">
                                                 <td>{{ $item->id }}</td>
                                                 <td>{{ $item->valor }}</td>
+                                                @if($item->status == 'Em Andamento')
+                                                    <td style="color: orange">{{ $item->status }}</td>
+                                                @elseif($item->status == 'Indisponível')
+                                                    <td style="color: red">{{ $item->status }}</td>
+                                                @else
+                                                    <td style="color: green">{{ $item->status }}</td>
+                                                @endif
                                                 <td>{{ $item->to_address }}</td>
                                                 <td>{{ $item->from_address }}</td>
                                             </tr>

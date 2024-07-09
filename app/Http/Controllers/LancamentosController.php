@@ -21,7 +21,7 @@ class LancamentosController extends Controller
      */
     public function index()
     {
-        $lancamento = Lancamentos::all(); // Pagina com 10 itens por página
+        $lancamento = Lancamentos::orderBy('id', 'desc')->get();
         $moeda = Moedas::all();
         $tipo = Tipo::all();
         $status = Status::all();

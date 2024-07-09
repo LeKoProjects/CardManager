@@ -56,7 +56,8 @@
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
+            
+            <span id="timer"></span>
             <!-- Main Content -->
             <div id="content">
 
