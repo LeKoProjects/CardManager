@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LancamentosController;
 use App\Http\Controllers\MoedasController;
 use App\Http\Controllers\SolicitacoesController;
@@ -68,7 +69,9 @@ Route::middleware(['admin'])->group(function () {
 
     #transferencia
     Route::get('/transferencia', [TransferController::class, 'index2'])->name('transferencia.index2');
-});
+}); 
+#Dashboard
+Route::get('/dashboard', [DashboardController::class, 'showDashboard'])->name('dashboard');
 
 #lançamentos
 Route::get('/lancamento/usuario', [LancamentosController::class, 'listaUser'])->name('lancamento.usuario');

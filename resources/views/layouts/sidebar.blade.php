@@ -18,27 +18,27 @@
         <a class="nav-link" href="/home">
             <i class="fas fa-fw fa-table"></i>
             <span>Home</span></a>
+        <a class="nav-link" href="{{ route('dashboard') }}">
+            <i class=" fas fa-solid fa-chart-pie"></i>
+            <span>Dashboard</span>
+        </a>
         <a class="nav-link" href="{{route('lancamento.usuario')}}">
             <i class="fas fa-solid fa-store"></i>
             <span>Minhas Compras</span></a>
         <a class="nav-link" href="{{ route('solicitacoes.criar') }}">
             <i class="fas fa-solid fa-envelope"></i>
             <span>Solicitações</span></a>
-        @if (auth()->user()->tipo == 1)
-            <a class="nav-link" href="{{route('transferencia.index')}}">
-                <i class="fas fa-solid fa-wallet"></i>
-                <span>Transferências<br>(Em Construção) - visto apenas pelo User Admin</span></a>
-            {{-- <a class="nav-link" href="{{route('buscar')}}">
-                <i class="fas fa-solid fa-wallet"></i>
-                <span>Buscar Transferências<br>(Em Construção) - visto apenas pelo User Admin</span></a> --}}
-        @endif
+        <a class="nav-link" href="{{route('transferencia.index')}}">
+            <i class="fas fa-solid fa-wallet"></i>
+            <span>Transferências</span></a>
     </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
+    
     <!-- Nav Item - Pages Collapse Menu -->
     @if (auth()->user()->tipo == 1)
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                 aria-expanded="true" aria-controls="collapseTwo">

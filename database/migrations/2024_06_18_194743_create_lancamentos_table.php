@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('codigo')->nullable();
             $table->string('valor')->nullable();
-            $table->integer('user_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable(); // Assuming user_id is unsigned big integer
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('moeda_id')->nullable();
+            $table->unsignedBigInteger('moeda_id')->nullable(); // Assuming moeda_id is unsigned big integer
             $table->foreign('moeda_id')->references('id')->on('moedas')->onDelete('cascade');
-            $table->integer('status_id')->nullable();
+            $table->unsignedBigInteger('status_id')->nullable(); // Assuming status_id is unsigned big integer
             $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
-            $table->integer('tipo_id')->nullable();
+            $table->unsignedBigInteger('tipo_id')->nullable(); // Assuming tipo_id is unsigned big integer
             $table->foreign('tipo_id')->references('id')->on('tipos')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
