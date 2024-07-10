@@ -48,6 +48,12 @@ class DashboardController extends Controller
                 ->groupBy('tipos.id', 'tipos.nome')
                 ->pluck('total', 'tipos.nome')
                 ->toArray();
+            $totalGiftsPorUsuario = DB::table('users')
+                ->leftJoin('lancamentos', 'users.id', '=', 'lancamentos.user_id')
+                ->select('users.name', DB::raw('IFNULL(COUNT(lancamentos.id), 0) as total'))
+                ->groupBy('users.id', 'users.name')
+                ->orderByDesc('total') // Ordena os resultados pelo total de gifts em ordem decrescente
+                ->get();
         //ENDADMIN
         
         //USER
@@ -91,6 +97,7 @@ class DashboardController extends Controller
             'totalGiftsDividas',
             'totalGiftsCompradosPorMes',
             'countByTipo',
+            'totalGiftsPorUsuario',
         ]));
     }
 }

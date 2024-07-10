@@ -5,16 +5,16 @@
 
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card shadow h-100 py-2" style="border-left: .25rem solid #cc3c3e">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color:#cc3c3e">
                                 Não Vendidos (Mês)</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalGiftsNaoComprados}}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            <i class="fas fa-solid fa-thumbs-down fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
@@ -59,16 +59,16 @@
 
         <!-- Pending Requests Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card shadow h-100 py-2" style="border-left: .25rem solid #f6833e">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color:#f6833e">
                                 Users</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalUsers}}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                            <i class="fas fa-solid fa-user fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
@@ -84,51 +84,29 @@
             <!-- Project Card Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Lista de Usuários (EM PRODUÇÃO)</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Lista de Usuários </h6>
                 </div>
                 <div class="card-body">
-                    <h4 class="small font-weight-bold">Server Migration <span
-                            class="float-right">20%</span></h4>
+                    @foreach($totalGiftsPorUsuario as $usuario)
+                    <h4 class="small font-weight-bold">{{ $usuario->name }} <span class="float-right">Total de gifts: {{ $usuario->total }}</span></h4>
                     <div class="progress mb-4">
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
-                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                        @php
+                            $randomColor = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+                        @endphp
+                        <div class="progress-bar" role="progressbar" style="width: {{ $usuario->total / $totalGifts * 100 }}%; background-color: {{ $randomColor }};"
+                            aria-valuenow="{{ $usuario->total / $totalGifts * 100 }}" aria-valuemin="0" aria-valuemax="100">
+                        </div>
                     </div>
-                    <h4 class="small font-weight-bold">Sales Tracking <span
-                            class="float-right">40%</span></h4>
-                    <div class="progress mb-4">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"
-                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <h4 class="small font-weight-bold">Customer Database <span
-                            class="float-right">60%</span></h4>
-                    <div class="progress mb-4">
-                        <div class="progress-bar" role="progressbar" style="width: 60%"
-                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <h4 class="small font-weight-bold">Payout Details <span
-                            class="float-right">80%</span></h4>
-                    <div class="progress mb-4">
-                        <div class="progress-bar bg-info" role="progressbar" style="width: 80%"
-                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <h4 class="small font-weight-bold">Account Setup <span
-                            class="float-right">Complete!</span></h4>
-                    <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
-                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+                    @endforeach
                 </div>
-            </div>
+            </div>           
         </div>
-
-       
 
         <!-- Pie Chart -->
         <div class="col-xl-6 col-lg-5">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Gráfico por Tipo</h6>
                     <div class="dropdown no-arrow">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"

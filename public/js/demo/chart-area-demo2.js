@@ -96,7 +96,7 @@ var myLineChart = new Chart(ctx, {
         },
         scaleLabel: {
           display: true,
-          labelString: 'Value in USD'
+          labelString: 'Valor em USD'
         },
         gridLines: {
           color: "rgb(234, 236, 244)",
