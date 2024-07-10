@@ -24,7 +24,7 @@ class VerificarTransferenciaJob implements ShouldQueue
 
     public function handle()
     {
-        $endTime = now()->addMinutes(10);
+        $endTime = now()->addMinutes(1);
 
         while (now()->lessThan($endTime)) {
             $transactions = app('App\Http\Controllers\TransferController')->getTrc20Transactions2();
