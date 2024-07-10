@@ -18,12 +18,12 @@ class DashboardController extends Controller
             $totalGiftsReservados1 = DB::table('lancamentos')->where('status_id', 5)->count();
             $totalGiftsDividas1 = DB::table('lancamentos')
                 ->join('users', 'lancamentos.user_id', '=', 'users.id')
-                ->select('users.name', DB::raw('SUM(CAST(lancamentos.valor AS NUMERIC)) as total'))
+                ->select('users.name', DB::raw('SUM(CAST(lancamentos.valor AS DECIMAL)) as total'))
                 ->where('lancamentos.tipo_id', 3)
                 ->groupBy('users.name')
                 ->get();
             $totalGiftsCompradosPorMes1 = DB::table('lancamentos')
-                ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), DB::raw('SUM(CAST(valor AS NUMERIC)) as total'))
+                ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), DB::raw('SUM(CAST(valor AS DECIMAL)) as total'))
                 ->where('status_id', 4)
                 ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
                 ->orderBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
@@ -40,9 +40,9 @@ class DashboardController extends Controller
         //USER
             $totalGiftsComprados = DB::table('lancamentos')->where('status_id', 4)->where('user_id', $userId->id)->count();
             $totalGiftsReservados = DB::table('lancamentos')->where('status_id', 5)->where('user_id', $userId->id)->count();
-            $totalGiftsDividas = DB::table('lancamentos')->where('tipo_id', 3)->where('user_id', $userId->id)->sum(DB::raw('CAST(valor AS NUMERIC)'));
+            $totalGiftsDividas = DB::table('lancamentos')->where('tipo_id', 3)->where('user_id', $userId->id)->sum(DB::raw('CAST(valor AS DECIMAL)'));
             $totalGiftsCompradosPorMes = DB::table('lancamentos')
-                ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), DB::raw('SUM(CAST(valor AS NUMERIC)) as total'))
+                ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), DB::raw('SUM(CAST(valor AS DECIMAL)) as total'))
                 ->where('status_id', 4)
                 ->where('user_id', $userId->id)
                 ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
