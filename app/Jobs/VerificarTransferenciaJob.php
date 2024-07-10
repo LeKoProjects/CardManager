@@ -3,12 +3,12 @@
 namespace App\Jobs;
 
 use App\Models\Transfer;
-use App\Http\Controllers\YourController;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
 class VerificarTransferenciaJob implements ShouldQueue
@@ -24,37 +24,31 @@ class VerificarTransferenciaJob implements ShouldQueue
 
     public function handle()
     {
-        \Log::info('Iniciando processamento do job...');
-        
-        $endTime = now()->addMinutes(10);
-        \Log::info('Verificação de transações até: ' . $endTime->toDateTimeString());
-    
-        while (now()->lessThan($endTime)) {
-            \Log::info('Verificando transações...');
-    
+        Log::info('Iniciando processamento do job para a transferência ID: ' . $this->transfer->id);
+        $endTime = Carbon::now()->addMinutes(10);
+        $transferCreatedAt = $this->transfer->created_at;
+        $validEndTime = $transferCreatedAt->copy()->addMinutes(10);
+
+        while (Carbon::now()->lessThan($endTime)) {
             $transactions = app('App\Http\Controllers\TransferController')->getTrc20Transactions2();
-            \Log::info('Total de transações recuperadas: ' . count($transactions));
-    
+
             foreach ($transactions as $transaction) {
-                \Log::info('Verificando transação: ', $transaction);
-    
+                $transactionTime = Carbon::parse($transaction['time']);
+
                 if ($transaction['to'] === $this->transfer->to_address &&
                     $transaction['from'] === $this->transfer->from_address &&
-                    $transaction['amount'] == $this->transfer->valor) {
-                    
-                    \Log::info('Transação encontrada. Atualizando status para "Disponível"');
+                    $transaction['amount'] == $this->transfer->valor &&
+                    $transactionTime->between($transferCreatedAt, $validEndTime)) {
                     $this->transfer->update(['status' => 'Disponível']);
+                    Log::info('Transação encontrada e status atualizado para Disponível para a transferência ID: ' . $this->transfer->id);
                     return;
                 }
             }
-    
-            \Log::info('Nenhuma transação encontrada. Aguardando 30 segundos antes de verificar novamente...');
+
             sleep(30); // Espera 30 segundos antes de verificar novamente
         }
-    
-        \Log::info('Tempo limite atingido. Atualizando status para "Indisponível".');
+
         $this->transfer->update(['status' => 'Indisponível']);
-        \Log::info('Job processado com sucesso!');
+        Log::info('Tempo esgotado. Status atualizado para Indisponível para a transferência ID: ' . $this->transfer->id);
     }
-    
 }
