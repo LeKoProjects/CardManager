@@ -26,7 +26,7 @@ class VerificarTransferenciaJob implements ShouldQueue
     {
         \Log::info('Iniciando processamento do job...');
         
-        $endTime = now()->addMinutes(1);
+        $endTime = now()->addMinutes(10);
         \Log::info('Verificação de transações até: ' . $endTime->toDateTimeString());
     
         while (now()->lessThan($endTime)) {
