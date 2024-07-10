@@ -103,7 +103,7 @@
                                 <div class="d-flex justify-content-between mb-3">
                                     <input type="text" id="filter_input" class="form-control w-50" placeholder="Filtrar...">
                                     <select id="rows_per_page" class="form-control w-25">
-                                        <option value="2">2 linhas por página</option>
+                                        <option value="10">10 linhas por página</option>
                                         <option value="20" selected>20 linhas por página</option>
                                         <option value="30">30 linhas por página</option>
                                         <option value="40">40 linhas por página</option>
