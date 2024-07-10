@@ -90,11 +90,13 @@ var myLineChart = new Chart(ctx, {
       }],
       yAxes: [{
         ticks: {
-          maxTicksLimit: 5,
-          padding: 10,
           callback: function(value, index, values) {
             return '$' + number_format(value);
           }
+        },
+        scaleLabel: {
+          display: true,
+          labelString: 'Value in USD'
         },
         gridLines: {
           color: "rgb(234, 236, 244)",
@@ -109,23 +111,11 @@ var myLineChart = new Chart(ctx, {
       display: false
     },
     tooltips: {
-      backgroundColor: "rgb(255,255,255)",
-      bodyFontColor: "#858796",
-      titleMarginBottom: 10,
-      titleFontColor: '#6e707e',
-      titleFontSize: 18,
-      borderColor: '#dddfeb',
-      borderWidth: 1,
-      xPadding: 15,
-      yPadding: 15,
-      displayColors: false,
-      intersect: false,
-      mode: 'index',
-      caretPadding: 10,
       callbacks: {
         label: function(tooltipItem, chart) {
           var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-          return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+          var value = chart.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+          return datasetLabel + ': $' + number_format(value);
         }
       }
     }

@@ -34,14 +34,12 @@ class DashboardController extends Controller
                 ->groupBy('users.name')
                 ->get();
             $totalGiftsCompradosPorMes1 = DB::table('lancamentos')
-                ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), 
-                         DB::raw('SUM(CASE 
-                                      WHEN moeda_id = 1 THEN valor / ' . $taxaDeCambio . ' 
-                                      ELSE valor 
-                                  END) as total'))
-                ->where('status_id', 4)
-                ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
-                ->orderBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
+                ->select(DB::raw('EXTRACT(MONTH FROM lancamentos.created_at) as month'), 
+                         DB::raw('SUM(lancamentos.valor * IF(lancamentos.moeda_id = 1, 1 / ' . $taxaDeCambio . ', 1) * (1 - tipos.porcentagem / 100)) as total'))
+                ->join('tipos', 'lancamentos.tipo_id', '=', 'tipos.id')
+                ->where('lancamentos.status_id', 4)
+                ->groupBy(DB::raw('EXTRACT(MONTH FROM lancamentos.created_at)'))
+                ->orderBy(DB::raw('EXTRACT(MONTH FROM lancamentos.created_at)'))
                 ->pluck('total', 'month')
                 ->toArray();
             $countByTipo1 = DB::table('lancamentos')
