@@ -10,7 +10,7 @@
     <ul class="navbar-nav ml-auto">
         <div class="topbar-divider d-none d-sm-block"></div>
         <!-- Demais itens -->
-        <li class="nav-item dropdown no-arrow" id="walletDropdownMenu">
+        {{-- <li class="nav-item dropdown no-arrow" id="walletDropdownMenu">
             <a class="nav-link dropdown-toggle" href="{{ route('transferencia.index') }}" id="walletDropdown" role="button"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-wallet fa-sm fa-fw mr-2 text-gray-600"></i>
@@ -22,7 +22,7 @@
                     @endif
                 </span>
             </a>
-        </li>        
+        </li>         --}}
         
         <!-- User -->
         <li class="nav-item dropdown no-arrow">
