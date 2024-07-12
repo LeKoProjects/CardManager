@@ -34,7 +34,7 @@ class LancamentosExport implements FromCollection
     ->select('lancamentos.codigo', 'mo.abreviacao', 'lancamentos.valor', 'st.nome as status_nome', 'ti.nome as tipo_nome', 'lancamentos.status_id')
     ->get()
     ->map(function ($lancamento) {
-        if ($lancamento->status_id != 4) {
+        if ($lancamento->status_id != 2) {
             $lancamento->codigo = substr($lancamento->codigo, 0, 5) . str_repeat('*', strlen($lancamento->codigo) - 5);
         }
         return $lancamento;
