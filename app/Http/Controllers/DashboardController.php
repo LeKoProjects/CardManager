@@ -65,6 +65,7 @@ class DashboardController extends Controller
         
         //USER
             $totalGiftsComprados = DB::table('lancamentos')->where('status_id', 4)->where('user_id', $userId->id)->count();
+            $totalGiftsPendentes = DB::table('lancamentos')->where('status_id', 2)->where('user_id', $userId->id)->count();
             $totalGiftsReservados = DB::table('lancamentos')->where('status_id', 5)->where('user_id', $userId->id)->count();
             $totalGiftsDividas = DB::table('lancamentos')->where('tipo_id', 3)->where('user_id', $userId->id)->sum(DB::raw('CAST(valor AS DECIMAL)'));
             $totalGiftsCompradosPorMes = DB::table('lancamentos')
@@ -105,6 +106,7 @@ class DashboardController extends Controller
             'totalGiftsCompradosPorMes',
             'countByTipo',
             'totalGiftsPorUsuario',
+            'totalGiftsPendentes'
         ]));
     }
 }

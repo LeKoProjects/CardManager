@@ -254,16 +254,14 @@ public function updateStatus4(Request $request)
         $userId = Auth::id();
 
         // Filtra os lançamentos pelo usuário logado e exclui aqueles com status_id igual a 2
-        $lancamento = Lancamentos::where('user_id', $userId)
-            ->where('status_id', '!=', 1)
-            ->get();
+        $lancamento = Lancamentos::where('user_id', $userId)->where('status_id', '!=', 1)->orderBy('id', 'desc')->get();
 
         return view('lancamento.listauser', compact('lancamento'));
     }
 
     public function listaLiberar()
     {
-        $lancamento = Lancamentos::whereIn('status_id', [2, 4])->get();
+        $lancamento = Lancamentos::whereIn('status_id', [2, 4])->orderBy('id', 'desc')->get();
 
         return view('lancamento.liberar', compact('lancamento'));
     }

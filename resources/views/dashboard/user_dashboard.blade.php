@@ -3,7 +3,7 @@
     <!-- Content Row -->
     <div class="row">
         <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-4 col-md-6 mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -20,8 +20,24 @@
             </div>
         </div>
 
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card shadow h-100 py-2" style="border-left: .25rem solid #cc3c3e">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color:#cc3c3e">
+                                Gifts Pendentes</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalGiftsPendentes}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-solid fa-thumbs-down fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-4 col-md-6 mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -39,7 +55,7 @@
         </div>
 
         <!-- Pending Requests Card Example -->
-        <div class="col-xl-4 col-md-6 mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -62,7 +78,7 @@
 
     <div class="row">
         <!-- Area Chart -->
-        <div class="col-xl-6 col-lg-7">
+        <div class="col-xl-8 col-lg-7">
            <div class="card shadow mb-4">
                <!-- Card Header - Dropdown -->
                <div
@@ -93,7 +109,7 @@
        </div>
 
         <!-- Pie Chart -->
-        <div class="col-xl-6 col-lg-5">
+        <div class="col-xl-4 col-lg-5">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
