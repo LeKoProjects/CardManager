@@ -25,7 +25,7 @@ class VerificarTransferenciaJob implements ShouldQueue
     public function handle()
     {
         // Define o tempo máximo para verificar transações
-        $endTime = now()->addMinutes(10);
+        $endTime = now()->addMinutes(1);
 
         // Loop para verificar as transações durante o tempo definido
         while (now()->lessThan($endTime)) {

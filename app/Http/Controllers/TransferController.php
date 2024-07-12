@@ -31,7 +31,7 @@ class TransferController extends Controller
             $lastTransferTime = $lastTransfer->created_at;
             $now = now();
             $elapsedTime = $now->diffInSeconds($lastTransferTime);
-            $remainingTime = max(0, 600 - $elapsedTime); // 600 seconds = 10 minutes
+            $remainingTime = max(0, 60 - $elapsedTime); // 600 seconds = 10 minutes
         }
 
         $destinoAddress = $destino->address;
