@@ -53,6 +53,9 @@ class VerificarTransferenciaJob implements ShouldQueue
                     
                     // Atualiza o status da transferência para 'Disponível'
                     $this->transfer->update(['status' => 'Disponível']);
+                    
+                    // Log informando que a transferência foi atualizada para 'Disponível'
+                    Log::info('Transferência atualizada para Disponível:', ['transfer_id' => $this->transfer->id]);
                     return; // Sai do loop e do método handle
                 }
             }
@@ -60,5 +63,8 @@ class VerificarTransferenciaJob implements ShouldQueue
 
         // Se não encontrar uma transação válida dentro do tempo, atualiza o status para 'Indisponível'
         $this->transfer->update(['status' => 'Indisponível']);
+        
+        // Log informando que a transferência foi atualizada para 'Indisponível'
+        Log::info('Transferência atualizada para Indisponível:', ['transfer_id' => $this->transfer->id]);
     }
 }
