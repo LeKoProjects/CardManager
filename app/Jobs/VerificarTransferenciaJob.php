@@ -27,6 +27,9 @@ class VerificarTransferenciaJob implements ShouldQueue
         // Define o tempo máximo para verificar transações
         $endTime = now()->addMinutes(1);
 
+        // Variável para rastrear se a transferência foi encontrada
+        $transferenciaEncontrada = false;
+
         // Loop para verificar as transações durante o tempo definido
         while (now()->lessThan($endTime)) {
             // Obtém as transações TRC-20 através de um método do controlador TransferController
@@ -56,15 +59,20 @@ class VerificarTransferenciaJob implements ShouldQueue
                     
                     // Log informando que a transferência foi atualizada para 'Disponível'
                     Log::info('Transferência atualizada para Disponível:', ['transfer_id' => $this->transfer->id]);
-                    return; // Sai do loop e do método handle
+                    
+                    // Marca que a transferência foi encontrada
+                    $transferenciaEncontrada = true;
+                    break 2; // Sai do loop foreach e do loop while
                 }
             }
         }
 
         // Se não encontrar uma transação válida dentro do tempo, atualiza o status para 'Indisponível'
-        $this->transfer->update(['status' => 'Indisponível']);
-        
-        // Log informando que a transferência foi atualizada para 'Indisponível'
-        Log::info('Transferência atualizada para Indisponível:', ['transfer_id' => $this->transfer->id]);
+        if (!$transferenciaEncontrada) {
+            $this->transfer->update(['status' => 'Indisponível']);
+            
+            // Log informando que a transferência foi atualizada para 'Indisponível'
+            Log::info('Transferência atualizada para Indisponível:', ['transfer_id' => $this->transfer->id]);
+        }
     }
 }
