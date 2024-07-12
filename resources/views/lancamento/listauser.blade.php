@@ -106,7 +106,7 @@
         $('.btn-pagar-confirmar').click(function() {
             // Filtrar lançamentos com status 4
             var lancamentosParaAtualizar = lancamentosSelecionados.filter(function(lancamento) {
-                return lancamento.status == 4;
+                return lancamento.status == 2;
             }).map(function(lancamento) {
                 return lancamento.id;
             });
