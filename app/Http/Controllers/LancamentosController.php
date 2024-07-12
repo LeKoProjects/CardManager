@@ -30,6 +30,17 @@ class LancamentosController extends Controller
         return view('lancamento.criar', compact(['lancamento', 'moeda', 'tipo', 'status', 'users']));
     }
 
+    public function indexLista()
+    {
+        $lancamento = Lancamentos::orderBy('id', 'desc')->get();
+        $moeda = Moedas::all();
+        $tipo = Tipo::all();
+        $status = Status::where('id', '!=', 3)->get();
+        $users = User::all();
+    
+        return view('lancamento.lista_lancamento', compact(['lancamento', 'moeda', 'tipo', 'status', 'users']));
+    }
+
 
     /**
      * Show the form for creating a new resource.

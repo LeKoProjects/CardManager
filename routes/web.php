@@ -64,6 +64,7 @@ Route::middleware(['admin'])->group(function () {
     Route::put('/lancamento/{id}', [LancamentosController::class, 'update'])->name('lancamento.update');
     Route::delete('/lancamento/{id}', [LancamentosController::class, 'destroy'])->name('lancamento.destroy');
     Route::get('/lancamento', [LancamentosController::class, 'index'])->name('lancamento.index');
+    Route::get('/Listalancamento', [LancamentosController::class, 'indexLista'])->name('lancamento.indexLista');
     Route::post('/lancamento', [LancamentosController::class, 'store'])->name('lancamento.store');
     Route::post('/lancamentos/updatestatus', [App\Http\Controllers\LancamentosController::class, 'updateStatus2'])->name('lancamentos.update-status2');
 
