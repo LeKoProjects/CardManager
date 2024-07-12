@@ -11,7 +11,7 @@
         <div class="topbar-divider d-none d-sm-block"></div>
         <!-- Demais itens -->
         <li class="nav-item dropdown no-arrow" id="walletDropdownMenu">
-            <a class="nav-link dropdown-toggle" href="{{ route('lancamento.usuario') }}" id="walletDropdown" role="button"
+            <a class="nav-link dropdown-toggle" href="{{ route('transferencia.index') }}" id="walletDropdown" role="button"
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-wallet fa-sm fa-fw mr-2 text-gray-600"></i>
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
@@ -22,9 +22,8 @@
                     @endif
                 </span>
             </a>
-        </li>
+        </li>        
         
-
         <!-- User -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"

@@ -24,35 +24,29 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
 {
     View::composer('layouts.header', function ($view) {
-        $user = Auth::user();
-        $valorTotalUSD = 0;
-
-        if ($user) {
-            $transfers = Transfer::where('user_id', $user->id)->get();
-
-            $valorTotalRS = $transfers->filter(function ($item) {
-                return is_numeric($item->valor) && $item->moeda === 'Real';
-            })->sum('valor');
-
-            $valorTotalUSD = $transfers->filter(function ($item) {
-                return is_numeric($item->valor) && $item->moeda === 'Dolar';
-            })->sum('valor');
-
-            // Buscar a cotação do dólar
-            $url = 'https://economia.awesomeapi.com.br/last/USD-BRL';
-            $response = Http::withOptions(['verify' => false])->get($url);
-
-            if ($response->successful()) {
-                $cotacao = $response->json()['USDBRL']['bid'];
-
-                // Converter o valor em reais para dólares
-                if ($valorTotalRS > 0) {
-                    $valorTotalUSD += $valorTotalRS / $cotacao;
-                }
-            }
-        }
-
+        $valorTotalUSD = $this->getWalletValue();
         $view->with(compact('valorTotalUSD'));
     });
+}
+
+
+public function getWalletValue()
+{
+    $user = Auth::user();
+    $valorTotalUSD = 0;
+
+    if ($user) {
+        // Filtrar transferências do usuário com status "Disponível"
+        $transfers = Transfer::where('user_id', $user->id)
+            ->where('status', 'Disponível')
+            ->get();
+
+        // Somar os valores em USD
+        $valorTotalUSD = $transfers->filter(function ($item) {
+            return is_numeric($item->valor);
+        })->sum('valor');
+    }
+
+    return $valorTotalUSD;
 }
 }
