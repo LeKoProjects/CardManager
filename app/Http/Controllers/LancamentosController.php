@@ -24,7 +24,7 @@ class LancamentosController extends Controller
         $lancamento = Lancamentos::orderBy('id', 'desc')->get();
         $moeda = Moedas::all();
         $tipo = Tipo::all();
-        $status = Status::all();
+        $status = Status::where('id', '!=', 3)->get();
         $users = User::all();
     
         return view('lancamento.criar', compact(['lancamento', 'moeda', 'tipo', 'status', 'users']));
@@ -263,7 +263,7 @@ public function updateStatus4(Request $request)
 
     public function listaLiberar()
     {
-        $lancamento = Lancamentos::whereIn('status_id', [3, 4])->get();
+        $lancamento = Lancamentos::whereIn('status_id', [2, 4])->get();
 
         return view('lancamento.liberar', compact('lancamento'));
     }

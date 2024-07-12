@@ -114,7 +114,7 @@
                     method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
-                        status_id: 4,
+                        status_id: 2,
                         lancamento_ids: lancamento_ids
                     },
                     success: function(response) {

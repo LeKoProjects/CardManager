@@ -131,11 +131,11 @@
                                                     @if ($item->status_id == 1)
                                                         <span style="color: blue">Novo</span>
                                                     @elseif ($item->status_id == 2)
-                                                        {{-- <span style="color: red">Aguardando Pagamento</span> --}}
-                                                    @elseif ($item->status_id == 3)
-                                                        <span style="color: orange">Aguardando Liberação</span>
+                                                        <span style="color: red">Pendente</span>
+                                                    {{-- @elseif ($item->status_id == 3)
+                                                        <span style="color: orange">Aguardando Liberação</span> --}}
                                                     @elseif ($item->status_id == 4)
-                                                        <span style="color: green">Comprado</span>
+                                                        <span style="color: green">Finalizado</span>
                                                     @elseif ($item->status_id == 5)
                                                         <span style="color: purple">Reservado</span>
                                                     @endif

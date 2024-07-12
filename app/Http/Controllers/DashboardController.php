@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Http;
 class DashboardController extends Controller
 {
     public function showDashboard(){
-        $response = Http::get('https://economia.awesomeapi.com.br/json/last/USD-BRL');
+        $response = Http::withoutVerifying()->get('https://economia.awesomeapi.com.br/json/last/USD-BRL');
+
 
         if ($response->successful()) {
             $exchangeData = $response->json();
@@ -48,12 +49,18 @@ class DashboardController extends Controller
                 ->groupBy('tipos.id', 'tipos.nome')
                 ->pluck('total', 'tipos.nome')
                 ->toArray();
-            $totalGiftsPorUsuario = DB::table('users')
-                ->leftJoin('lancamentos', 'users.id', '=', 'lancamentos.user_id')
-                ->select('users.name', DB::raw('IFNULL(COUNT(lancamentos.id), 0) as total'))
+                $totalGiftsPorUsuario = DB::table('users')
+                ->leftJoin('lancamentos', function($join) {
+                    $join->on('users.id', '=', 'lancamentos.user_id')
+                         ->where('lancamentos.status_id', '=', 2);
+                })
+                ->select('users.name', 
+                         DB::raw('COALESCE(COUNT(lancamentos.id), 0) as total'), 
+                         DB::raw('COALESCE(SUM(lancamentos.valor), 0) as total2'))
                 ->groupBy('users.id', 'users.name')
                 ->orderByDesc('total') // Ordena os resultados pelo total de gifts em ordem decrescente
                 ->get();
+            
         //ENDADMIN
         
         //USER

@@ -24,6 +24,7 @@
                             <th>Valor</th>
                             <th>Tipo</th>
                             <th>Status</th>
+                            <th>Valido</th>
                             <th>Selecionar</th>
                         </tr>
                     </thead>
@@ -32,23 +33,24 @@
                         <tr style="text-align: center" class="{{ $lancamento->valido == 'N' ? 'red-row' : '' }}">
                             <td>{{ $lancamento->id }}</td>
                             <td>{{ $lancamento->created_at }}</td>
-                            <td>
-                                @if ($lancamento->status_id != 4)
-                                    {{ substr($lancamento->codigo, 0, 5) . str_repeat('*', strlen($lancamento->codigo) - 5) }}
-                                @else
-                                    {{ $lancamento->codigo }}
-                                @endif
-                            </td>
+                            <td>{{ $lancamento->codigo }}</td>
                             <td>{{ $lancamento->moeda->moeda }}</td>
                             <td>{{ $lancamento->moeda->abreviacao }} {{ $lancamento->valor }}</td>
                             <td>
                                 <img src="{{ asset('images/' . optional($lancamento->tipo)->imagem) }}"> {{ optional($lancamento->tipo)->nome }}
                             </td>
                             <td>
+                                @if ($lancamento->status_id == 2)
+                                <span style="color: orange">Pendente</span>
+                                @elseif ($lancamento->status_id == 4)
+                                <span style="color: green">Finalizado</span>
+                                @endif
+                            </td>
+                            <td>
                                 @if ($lancamento->valido == 'N')
-                                <span style="color: red">Desativado</span>
+                                <span style="color: red">N</span>
                                 @elseif ($lancamento->valido == 'S')
-                                <span style="color: green">Ativado</span>
+                                <span style="color: green">S</span>
                                 @endif
                             </td> 
                             <td>

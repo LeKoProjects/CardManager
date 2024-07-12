@@ -57,7 +57,7 @@ Route::middleware(['admin'])->group(function () {
 
     #lançamentos
     Route::post('/lancamentos/reserva', [App\Http\Controllers\LancamentosController::class, 'reserva'])->name('lancamentos.reserva');
-    #Route::get('/lancamento/liberar', [LancamentosController::class, 'listaLiberar'])->name('lancamento.liberar');
+    Route::get('/lancamento/liberar', [LancamentosController::class, 'listaLiberar'])->name('lancamento.liberar');
     Route::get('/lancamento/controle', [LancamentosController::class, 'controle'])->name('lancamento.controle');
     Route::post('/lancamentos/update-status', [LancamentosController::class, 'updateStatus'])->name('lancamentos.update-status');
     Route::post('/lancamentos/update-status3', [LancamentosController::class, 'updateStatus3'])->name('lancamentos.update-status3');

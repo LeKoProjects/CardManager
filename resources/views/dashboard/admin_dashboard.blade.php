@@ -84,18 +84,21 @@
             <!-- Project Card Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Lista de Usuários </h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Lista de Usuários Pendentes</h6>
                 </div>
                 <div class="card-body">
                     @foreach($totalGiftsPorUsuario as $usuario)
-                    <h4 class="small font-weight-bold">{{ $usuario->name }} <span class="float-right">Total de gifts: {{ $usuario->total }}</span></h4>
+                    <h4 class="small font-weight-bold">{{ $usuario->name }} <span class="float-right">Total de gifts: {{ $usuario->total ?? 0}} / Saldo: USD{{ $usuario->total2 ?? 0 }}</span></h4>
                     <div class="progress mb-4">
                         @php
                             $randomColor = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
                         @endphp
-                        <div class="progress-bar" role="progressbar" style="width: {{ $usuario->total / $totalGifts * 100 }}%; background-color: {{ $randomColor }};"
-                            aria-valuenow="{{ $usuario->total / $totalGifts * 100 }}" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" role="progressbar" 
+                                style="width: {{ $totalGifts > 0 ? ($usuario->total / $totalGifts * 100) : 0 }}%; background-color: {{ $randomColor }};"
+                                aria-valuenow="{{ $totalGifts > 0 ? ($usuario->total / $totalGifts * 100) : 0 }}" 
+                                aria-valuemin="0" aria-valuemax="100">
                         </div>
+                   
                     </div>
                     @endforeach
                 </div>
