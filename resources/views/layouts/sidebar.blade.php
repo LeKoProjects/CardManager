@@ -28,9 +28,9 @@
         <a class="nav-link" href="{{ route('solicitacoes.criar') }}">
             <i class="fas fa-solid fa-envelope"></i>
             <span>Solicitações</span></a>
-        <a class="nav-link" href="{{route('transferencia.index')}}">
+        {{-- <a class="nav-link" href="{{route('transferencia.index')}}">
             <i class="fas fa-solid fa-wallet"></i>
-            <span>Transferências</span></a>
+            <span>Transferências</span></a> --}}
     </li>
 
     
@@ -60,11 +60,11 @@
                 <span>Solicitações</span>
             </a>
         </li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link" href="{{route('transferencia.index2')}}">
                 <i class="fas fa-solid fa-wallet"></i>
                 <span>Transferências</span></a>
-        </li>
+        </li> --}}
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"

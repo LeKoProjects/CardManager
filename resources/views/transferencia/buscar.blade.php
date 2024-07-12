@@ -32,6 +32,7 @@
                                             <tr>
                                                 <td>{{ $transaction['num'] }}</td>
                                                 <td>{{ $transaction['time'] }}</td>
+                                                <td>{{ $transaction['now'] }}</td>
                                                 <td>{{ $transaction['amount'] }}</td>
                                                 <td>{{ $transaction['symbol'] }}</td>
                                                 <td>{{ $transaction['from'] }}</td>

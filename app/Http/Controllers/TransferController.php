@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Writer\PngWriter;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 
 class TransferController extends Controller
@@ -81,13 +82,17 @@ class TransferController extends Controller
         // Despachar o job para verificar a transação
         VerificarTransferenciaJob::dispatch($transfer);
     
-        return redirect()->back()->with('success', 'Transferência cadastrada! Efetue a tranferência para o destinário informado e dentro de 10 minutos o valor será creditado.');
+        return redirect()->back()->with('success', 'Transferência cadastrada! Efetue a tranferência para o destinário informado dentro de 10 minutos e o valor será creditado.');
     }
     
     public function getTrc20Transactions2()
     {
         $num = 0;
         $wallet = Wallet::first();
+        if (!$wallet) {
+            Log::error('Wallet não encontrada.');
+            return []; // Retorna um array vazio caso não encontre a wallet
+        }
         $accountId = $wallet->address;
         $url = "https://api.trongrid.io/v1/accounts/{$accountId}/transactions/trc20";
         $pages = 3;
@@ -124,10 +129,13 @@ class TransferController extends Controller
                 $amount = floatval(substr($value, 0, $decimals) . '.' . substr($value, $decimals));
                 $timestamp = floatval($tr['block_timestamp'] ?? '') / 1000;
                 $time = Carbon::createFromTimestamp($timestamp);
+
+                $is_today = $time->isToday() ? 'S' : 'N';
     
                 $transactions[] = [
                     'num' => $num,
                     'time' => $time->toDateTimeString(),
+                    'now' => $is_today,
                     'amount' => $amount,
                     'symbol' => $symbol,
                     'from' => $from,
@@ -192,61 +200,64 @@ class TransferController extends Controller
     }
 
     private function getTrc20Transactions($accountId)
-    {
-        $num = 0;
-        $url = "https://api.trongrid.io/v1/accounts/{$accountId}/transactions/trc20";
-        $pages = 3;
+{
+    $num = 0;
+    $url = "https://api.trongrid.io/v1/accounts/{$accountId}/transactions/trc20";
+    $pages = 3;
+    $params = [
+        'only_confirmed' => true,
+        'limit' => 20,
+    ];
 
-        $params = [
-            'only_confirmed' => true,
-            'limit' => 20,
-        ];
+    $client = new Client([
+        'headers' => ['accept' => 'application/json'],
+        'verify' => false,
+    ]);
 
-        $client = new Client([
-            'headers' => ['accept' => 'application/json'],
-            'verify' => false,
-        ]);
+    $transactions = [];
 
-        $transactions = [];
+    for ($i = 0; $i < $pages; $i++) {
+        $response = $client->get($url, ['query' => $params]);
+        $responseBody = json_decode($response->getBody(), true);
 
-        for ($i = 0; $i < $pages; $i++) {
-            $response = $client->get($url, ['query' => $params]);
-            $responseBody = json_decode($response->getBody(), true);
-
-            if (!isset($responseBody['data'])) {
-                break;
-            }
-
-            $params['fingerprint'] = $responseBody['meta']['fingerprint'] ?? null;
-
-            foreach ($responseBody['data'] as $tr) {
-                $num++;
-                $symbol = $tr['token_info']['symbol'] ?? '';
-                $from = $tr['from'] ?? '';
-                $to = $tr['to'] ?? '';
-                $value = $tr['value'] ?? '';
-                $decimals = -1 * intval($tr['token_info']['decimals'] ?? '6');
-                $amount = floatval(substr($value, 0, $decimals) . '.' . substr($value, $decimals));
-                $timestamp = floatval($tr['block_timestamp'] ?? '') / 1000;
-                $time = Carbon::createFromTimestamp($timestamp);
-
-                $transactions[] = [
-                    'num' => $num,
-                    'time' => $time->toDateTimeString(),
-                    'amount' => $amount,
-                    'symbol' => $symbol,
-                    'from' => $from,
-                    'to' => $to,
-                ];
-            }
-
-            if (empty($params['fingerprint'])) {
-                break;
-            }
+        if (!isset($responseBody['data'])) {
+            break;
         }
 
-        return $transactions;
+        $params['fingerprint'] = $responseBody['meta']['fingerprint'] ?? null;
+
+        foreach ($responseBody['data'] as $tr) {
+            $num++;
+            $symbol = $tr['token_info']['symbol'] ?? '';
+            $from = $tr['from'] ?? '';
+            $to = $tr['to'] ?? '';
+            $value = $tr['value'] ?? '';
+            $decimals = -1 * intval($tr['token_info']['decimals'] ?? '6');
+            $amount = floatval(substr($value, 0, $decimals) . '.' . substr($value, $decimals));
+            $timestamp = floatval($tr['block_timestamp'] ?? '') / 1000;
+            $time = Carbon::createFromTimestamp($timestamp);
+
+            // Verifica se o tempo é hoje
+            $is_today = $time->isToday() ? 'S' : 'N';
+
+            $transactions[] = [
+                'num' => $num,
+                'time' => $time->toDateTimeString(),
+                'now' => $is_today,
+                'amount' => $amount,
+                'symbol' => $symbol,
+                'from' => $from,
+                'to' => $to,
+            ];
+        }
+
+        if (empty($params['fingerprint'])) {
+            break;
+        }
     }
+
+    return $transactions;
+}
 
     
 
