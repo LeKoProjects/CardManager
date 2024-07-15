@@ -30,16 +30,20 @@ class LancamentosController extends Controller
         return view('lancamento.criar', compact(['lancamento', 'moeda', 'tipo', 'status', 'users']));
     }
 
-    public function indexLista()
+    public function indexLista(Request $request)
     {
-        $lancamento = Lancamentos::orderBy('id', 'desc')->get();
+        $lancamento = Lancamentos::orderBy('id', 'desc')->paginate(15);
         $moeda = Moedas::all();
         $tipo = Tipo::all();
         $status = Status::where('id', '!=', 3)->get();
         $users = User::all();
-    
-        return view('lancamento.lista_lancamento', compact(['lancamento', 'moeda', 'tipo', 'status', 'users']));
+
+        // Retorna a view completa com a estrutura de página, incluindo a paginação
+        return view('lancamento.lista_lancamento', compact('lancamento', 'moeda', 'tipo', 'status', 'users'));
     }
+
+    
+
 
 
     /**
