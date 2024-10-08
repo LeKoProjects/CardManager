@@ -16,11 +16,12 @@
                         <thead>
                             <tr style="text-align: center">
                                 <th>#</th>
-                                <th>Data/Hora</th>
                                 <th>Responsável</th>
+                                <th>Data/Hora</th>
                                 <th>Título</th>
                                 <th>Tipo</th>
                                 <th>Responder</th>
+                                <th>Status</th>
                                 <th>Excluir</th>
                             </tr>
                         </thead>
@@ -28,8 +29,8 @@
                             @foreach ($solicitacoes as $solicitacao)
                                 <tr style="text-align: center">
                                     <td>{{ $solicitacao->id }}</td>
-                                    <td>{{ $solicitacao->created_at }}</td>
                                     <td>{{ $solicitacao->user->name }}</td>
+                                    <td>{{ $solicitacao->created_at->format('d/m/Y') }}</td>
                                     <td>{{ $solicitacao->titulo }}</td>
                                     <td>{{ $solicitacao->tipo->nome }}</td>
                                     <td>
@@ -48,6 +49,25 @@
                                         @endif
                                     </td>
                                     <td>
+                                        <form action="{{ route('solicitacoes.updateStatus', $solicitacao->id) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            @if($solicitacao->status == 'Pago')
+                                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#statusModal" data-id="{{ $solicitacao->id }}" data-status="Pago">
+                                                    Pago
+                                                </button>
+                                            @elseif($solicitacao->status == 'Em andamento')
+                                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal" data-id="{{ $solicitacao->id }}" data-status="Em andamento">
+                                                    Em andamento
+                                                </button>
+                                            @elseif($solicitacao->status == 'Devendo')
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#statusModal" data-id="{{ $solicitacao->id }}" data-status="Devendo">
+                                                    Devendo
+                                                </button>
+                                            @endif
+                                        </form>
+                                    </td>
+                                    <td>
                                         <form action="{{ route('solicitacoes.destroy', $solicitacao->id) }}"
                                             method="POST">
                                             @csrf
@@ -64,8 +84,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal -->
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -76,11 +94,21 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="solicitacao_id" name="id">
+                    <div class="row">
+                        <div class="mb-3 col-md-6">
+                            <label class="form-label">Quantidade:</label>
+                            <input class="form-control" readonly value="{{ $solicitacao->quantidade ?? ''}}">
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <label class="form-label">Tipo:</label>
+                            <input type="text" class="form-control" value="{{ $solicitacao->tipo->nome ?? ''}}" readonly>
+                        </div>
+                    </div>
                     <div class="mb-3 col-md-12">
                         <label class="form-label">Mensagem</label>
-                        <input class="form-control" readonly value="{{ $solicitacao->mensagem }}">
+                        <input class="form-control" readonly value="{{ $solicitacao->mensagem ?? ''}}">
                     </div>
-                    <form id="respostaForm" method="POST" action="{{ route('solicitacoes.update', $solicitacao->id) }}">
+                    <form id="respostaForm" method="POST" action="{{ route('solicitacoes.update', $solicitacao->id ?? '') }}">
                         @csrf
                         @method('PUT')
                         <div class="mb-3 col-md-12">
@@ -130,10 +158,10 @@
                                                 </select>
                                             </td>
                                             <td class="usuario-cell" style="display:none;">
-                                                <input name="user_id[]" class="form-control user_id" type="text" value="{{ $solicitacao->user_id }}">
+                                                <input name="user_id[]" class="form-control user_id" type="text" value="{{ $solicitacao->user_id ?? '' }}">
                                             </td>
                                             <td class="solicitacao-cell" style="display:none;">
-                                                <input name="solicitacao_id[]" class="form-control solicitacao_id" type="text" value="{{ $solicitacao->id }}">
+                                                <input name="solicitacao_id[]" class="form-control solicitacao_id" type="text" value="{{ $solicitacao->id ?? '' }}">
                                             </td>
                                             <td><button type="button" class="btn btn-success" onclick="addLancamento()"><i class="fas fa-plus"></i></button></td>
                                             <td><button type="button" class="btn btn-danger" onclick="removeLancamento(this)"><i class="fas fa-minus"></i></button></td>
@@ -174,8 +202,54 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Modal para alterar status -->
+<div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="statusModalLabel">Alterar Status</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="statusForm" method="POST" action="">
+                    @csrf
+                    <!-- Aqui utilizamos o método POST, sem PUT -->
+                    <input type="hidden" id="solicitacao_id" name="id">
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-control" name="status" id="statusSelect" required>
+                            <option value="Pago">Pago</option>
+                            <option value="Em andamento">Em andamento</option>
+                            <option value="Devendo">Devendo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Atualizar Status</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    var statusModal = document.getElementById('statusModal');
+    statusModal.addEventListener('show.bs.modal', function(event) {
+        var button = event.relatedTarget; // Botão que acionou o modal
+        var id = button.getAttribute('data-id'); // Obtém o ID da solicitação
+        var status = button.getAttribute('data-status'); // Obtém o status atual
+
+        // Atualizar a ação do formulário com a URL correta
+        var form = document.getElementById('statusForm');
+        form.action = '/solicitacoes/updateStatus/' + id;
+        
+        // Atualizar o valor do select com o status atual
+        var statusSelect = document.getElementById('statusSelect');
+        statusSelect.value = status;
+    });
+});
+
+
     $(document).ready(function() {
         $('#respostaForm').on('submit', function(event) {
             event.preventDefault();
@@ -248,10 +322,10 @@
                     </select>
                 </td>
                 <td class="usuario-cell" style="display:none;">
-                    <input name="user_id[]" class="form-control user_id" type="text" value="{{ $solicitacao->user_id }}">
+                    <input name="user_id[]" class="form-control user_id" type="text" value="{{ $solicitacao->user_id ?? ''}}">
                 </td>
                 <td class="solicitacao-cell" style="display:none;">
-                    <input name="solicitacao_id[]" class="form-control solicitacao_id" type="text" value="{{ $solicitacao->id }}">
+                    <input name="solicitacao_id[]" class="form-control solicitacao_id" type="text" value="{{ $solicitacao->id ?? ''}}">
                 </td>
                 <td><button type="button" class="btn btn-success" onclick="addLancamento()"><i class="fas fa-plus"></i></button></td>
                 <td><button type="button" class="btn btn-danger" onclick="removeLancamento(this)"><i class="fas fa-minus"></i></button></td>

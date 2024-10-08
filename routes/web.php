@@ -89,6 +89,9 @@ Route::get('/solicitacoes/criar', [SolicitacoesController::class, 'criar'])->nam
 Route::post('/solicitacoes', [SolicitacoesController::class, 'store'])->name('solicitacoes.store');
 Route::post('/solicitacoes2', [SolicitacoesController::class, 'store2'])->name('solicitacoes.store2');
 Route::get('/solicitacoes/{id}/lancamentos', [SolicitacoesController::class, 'getLancamentos']);
+Route::post('/solicitacoes/updateStatus/{id}', [SolicitacoesController::class, 'updateStatus'])->name('solicitacoes.updateStatus');
+
+
 
 
 Route::get('/transferencia/user', [TransferController::class, 'index'])->name('transferencia.index');

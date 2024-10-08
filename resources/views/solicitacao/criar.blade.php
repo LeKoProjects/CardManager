@@ -21,14 +21,20 @@
                                 <label for="mensagem" class="form-label">Mensagem:</label>
                                 <textarea id="mensagem" name="mensagem" class="form-control" placeholder="Digite a mensagem" required></textarea>
                             </div>
-                            <div class="mb-3">
-                                <label for="tipo_id" class="form-label">Tipo:</label>
-                                <select id="tipo_id" name="tipo_id" class="form-control">
-                                    <option value="">Selecione um tipo</option>
-                                    @foreach($tipos as $tipo)
-                                        <option value="{{ $tipo->id }}">{{ $tipo->nome }}</option>
-                                    @endforeach
-                                </select>
+                            <div class="row">
+                                <div class="mb-3 col-md-6">
+                                    <label for="tipo_id" class="form-label">Tipo:</label>
+                                    <select id="tipo_id" name="tipo_id" class="form-control">
+                                        <option value="">Selecione um tipo</option>
+                                        @foreach($tipos as $tipo)
+                                            <option value="{{ $tipo->id }}">{{ $tipo->nome }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                <label for="tipo_id" class="form-label">Quantidade:</label>
+                                <input class="form-control" type="number" name="quantidade" id="quantidade">
+                            </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Salvar</button>
                         </form>
@@ -51,6 +57,7 @@
                                             <th>Título</th>
                                             <th>Mensagem</th>
                                             <th>Tipo</th>
+                                            <th>Quantidade</th>
                                             <th>Resposta</th>
                                             <th>Excluir</th>
                                         </tr>
@@ -61,6 +68,7 @@
                                                 <td>{{ $item->titulo }}</td>
                                                 <td>{{ $item->mensagem }}</td>
                                                 <td>{{ $item->tipo->nome }}</td>
+                                                <td>{{ $item->quantidade }}</td>
                                                 <td>
                                                     @if ($item->resposta)
                                                         <button class="btn btn-success" data-toggle="modal" data-target="#respostaModal{{ $item->id }}" data-resposta="{{ $item->resposta }}">Respondido</button>

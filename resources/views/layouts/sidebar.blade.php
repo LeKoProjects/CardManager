@@ -15,19 +15,19 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item">
-        <a class="nav-link" href="/home">
+        <!-- <a class="nav-link" href="/home">
             <i class="fas fa-fw fa-table"></i>
-            <span>Home</span></a>
-        <a class="nav-link" href="{{ route('dashboard') }}">
+            <span>Home</span></a> -->
+        <!-- <a class="nav-link" href="{{ route('dashboard') }}">
             <i class=" fas fa-solid fa-chart-pie"></i>
             <span>Dashboard</span>
-        </a>
-        <a class="nav-link" href="{{route('lancamento.usuario')}}">
+        </a> -->
+        <!-- <a class="nav-link" href="{{route('lancamento.usuario')}}">
             <i class="fas fa-solid fa-store"></i>
-            <span>Minhas Compras</span></a>
+            <span>Minhas Compras</span></a> -->
         <a class="nav-link" href="{{ route('solicitacoes.criar') }}">
             <i class="fas fa-solid fa-envelope"></i>
-            <span>Solicitações</span></a>
+            <span>Solicitar Códigos</span></a>
         {{-- <a class="nav-link" href="{{route('transferencia.index')}}">
             <i class="fas fa-solid fa-wallet"></i>
             <span>Transferências</span></a> --}}

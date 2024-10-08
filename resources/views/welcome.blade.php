@@ -44,8 +44,8 @@
                                     <form class="user" method="POST" action="{{ route('login') }}">
                                         @csrf
                                         <div class="form-group">
-                                            <input id="email" name="email" type="email" class="form-control form-control-user"
-                                                aria-describedby="emailHelp" placeholder="Email">
+                                            <input id="name" name="name" type="name" class="form-control form-control-user"
+                                                aria-describedby="name" placeholder="name">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" id="password" name="password" class="form-control form-control-user"

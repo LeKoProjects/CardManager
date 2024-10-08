@@ -22,8 +22,8 @@ class SolicitacoesController extends Controller
         $moeda = Moedas::all();
         $status = Status::all();
         $users = User::all();
-        $tipos = Tipo::where('id', '<>', 3)->get();
-        $solicitacoes = Solicitacoes::with('user', 'tipo')->get();
+        $tipos = Tipo::where('id', '<>', 3, )->get();
+        $solicitacoes = Solicitacoes::with('user', 'tipo')->orderBy('created_at', 'asc')->get();
         return view('solicitacao.lista', compact(['tipos', 'solicitacoes', 'lancamentos', 'moeda', 'status', 'users']));
     }
 
@@ -53,6 +53,7 @@ class SolicitacoesController extends Controller
         $solicitacao->user_id = Auth::id();
         $solicitacao->titulo = $request->input('titulo');
         $solicitacao->mensagem = $request->input('mensagem');
+        $solicitacao->quantidade = $request->input('quantidade');
         $solicitacao->tipo_id = $request->input('tipo_id');
         $solicitacao->save();
 
@@ -76,6 +77,25 @@ class SolicitacoesController extends Controller
 
         return response()->json(['success' => 'Resposta atualizada com sucesso!']);
     }
+
+    public function updateStatus(Request $request, $id)
+    {
+        // Encontre a solicitação pelo ID
+        $solicitacao = Solicitacoes::find($id);
+    
+        if (!$solicitacao) {
+            return response()->json(['error' => 'Solicitação não encontrada!'], 404);
+        }
+    
+        // Atualiza o status com o valor recebido do request
+        $solicitacao->status = $request->input('status');
+        $solicitacao->save();
+    
+        // Redireciona de volta à página anterior com mensagem de sucesso
+        return redirect()->back()->with('success', 'Status atualizado com sucesso!');
+    }
+    
+
 
     public function store2(Request $request)
     {
@@ -101,7 +121,6 @@ class SolicitacoesController extends Controller
             'user_id.*' => 'nullable|integer',
             'solicitacao_id.*' => 'nullable|integer',
         ], $messages);
-    
         $codigos = $validatedData['codigo'];
         $moedas = $validatedData['moeda_id'];
         $valores = $validatedData['valor'];
@@ -116,13 +135,11 @@ class SolicitacoesController extends Controller
             $solicitacao = $solicitacaos[$index];
             $user = $users[$index]; // Verificar se o usuário está definido
     
-            // Check if the lancamento already exists
+            // Verificar se o lançamento já existe
             $existeLancamento = Lancamentos::where('codigo', $codigo)->first();
-    
             if ($existeLancamento) {
                 return response()->json(['error' => 'Lançamento já existe!'], 400);
             }
-    
             // Create a new lancamento
             Lancamentos::create([
                 'codigo' => $codigo,
