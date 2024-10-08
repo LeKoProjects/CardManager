@@ -108,19 +108,18 @@
                         <label class="form-label">Mensagem</label>
                         <input class="form-control" readonly value="{{ $solicitacao->mensagem ?? ''}}">
                     </div>
-                    <form id="respostaForm" method="POST" action="{{ route('solicitacoes.update', $solicitacao->id ?? '') }}">
+                    <form id="combinedForm" method="POST" action="{{ route('solicitacoes.update', $solicitacao->id ?? '') }}">
                         @csrf
                         @method('PUT')
+
+                        <!-- Resposta -->
                         <div class="mb-3 col-md-12">
                             <label class="form-label">Responder</label>
                             <textarea class="form-control" id="resposta" name="resposta" rows="3" required></textarea>
-                            <br>
-                            <button type="submit" class="btn btn-primary">Enviar Resposta <i class="fas fa-solid fa-check"></i></button>
                         </div>
-                    </form>
-                    <hr>
-                    <form id="lancamentoForm" method="POST" action="{{ route('solicitacoes.store2') }}">
-                        @csrf
+
+                        <!-- Lançamento -->
+                        <hr>
                         <div class="mb-3 col-md-12">
                             <label class="form-label">Lançamento</label>
                             <div class="table-responsive">
@@ -131,8 +130,6 @@
                                             <th>Moeda</th>
                                             <th>Valor</th>
                                             <th>Tipo</th>
-                                            <th class="usuario-header" style="display: none;">Usuário</th>
-                                            <th class="solicitacao-header" style="display: none;">Solicitação</th>
                                             <th>Adicionar</th>
                                             <th>Excluir</th>
                                         </tr>
@@ -150,28 +147,25 @@
                                             </td>
                                             <td><input name="valor[]" class="form-control valor" type="text" required></td>
                                             <td>
-                                                <select class="form-control tipo-select" name="tipo_id[]" onchange="checkDivida(this)" required>
+                                                <select class="form-control tipo-select" name="tipo_id[]" required>
                                                     <option value="">Selecione o Tipo</option>
                                                     @foreach ($tipos as $item)
                                                         <option value="{{ $item->id }}">{{ $item->nome }}</option>
                                                     @endforeach
                                                 </select>
                                             </td>
-                                            <td class="usuario-cell" style="display:none;">
-                                                <input name="user_id[]" class="form-control user_id" type="text" value="{{ $solicitacao->user_id ?? '' }}">
-                                            </td>
-                                            <td class="solicitacao-cell" style="display:none;">
-                                                <input name="solicitacao_id[]" class="form-control solicitacao_id" type="text" value="{{ $solicitacao->id ?? '' }}">
-                                            </td>
                                             <td><button type="button" class="btn btn-success" onclick="addLancamento()"><i class="fas fa-plus"></i></button></td>
                                             <td><button type="button" class="btn btn-danger" onclick="removeLancamento(this)"><i class="fas fa-minus"></i></button></td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <button type="submit" class="btn btn-primary">Salvar <i class="fas fa-solid fa-check"></i></button>
                             </div>
                         </div>
+
+                        <!-- Botão para salvar resposta e lançamentos -->
+                        <button type="submit" class="btn btn-primary">Salvar <i class="fas fa-solid fa-check"></i></button>
                     </form>
+
                     <hr>
                     <div class="mb-3 col-md-12">
                         <label class="form-label">Lançamentos Enviados</label>
@@ -277,23 +271,24 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var exampleModal = document.getElementById('exampleModal');
-            exampleModal.addEventListener('show.bs.modal', function(event) {
-                var button = event.relatedTarget; // Button that triggered the modal
-                var id = button.getAttribute('data-id');
-                var resposta = button.getAttribute('data-resposta');
+        var exampleModal = document.getElementById('exampleModal');
+        exampleModal.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget; // Button that triggered the modal
+            var id = button.getAttribute('data-id');
+            var resposta = button.getAttribute('data-resposta');
 
-                var modalTitle = exampleModal.querySelector('.modal-title');
-                var modalBodyInput = exampleModal.querySelector('.modal-body textarea');
-                var modalForm = exampleModal.querySelector('form');
-                var modalIdInput = exampleModal.querySelector('input#solicitacao_id');
+            var modalTitle = exampleModal.querySelector('.modal-title');
+            var modalBodyInput = exampleModal.querySelector('.modal-body textarea');
+            var modalForm = exampleModal.querySelector('form');
+            var modalIdInput = exampleModal.querySelector('input#solicitacao_id'); // Input oculto com o ID
 
-                modalTitle.textContent = 'Responder Solicitação #' + id;
-                modalBodyInput.value = resposta;
-                modalForm.action = '/solicitacoes/' + id;
-                modalIdInput.value = id;
-            });
+            modalTitle.textContent = 'Responder Solicitação #' + id;
+            modalBodyInput.value = resposta;
+            modalForm.action = '/solicitacoes/' + id; // Atualiza o action do formulário
+            modalIdInput.value = id; // Define o ID da solicitação
         });
+    });
+
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">

@@ -65,18 +65,54 @@ class SolicitacoesController extends Controller
      */
 
      public function update(Request $request, $id)
-    {
-        $solicitacao = Solicitacoes::find($id);
-
-        if (!$solicitacao) {
-            return response()->json(['error' => 'Lançamento não encontrado!'], 404);
-        }
-
-        $solicitacao->resposta = $request->input('resposta');
-        $solicitacao->save();
-
-        return response()->json(['success' => 'Resposta atualizada com sucesso!']);
-    }
+     {
+         // Atualiza a solicitação com a resposta
+         $solicitacao = Solicitacoes::find($id);
+         if (!$solicitacao) {
+             return response()->json(['error' => 'Solicitação não encontrada!'], 404);
+         }
+     
+         $solicitacao->resposta = $request->input('resposta');
+         $solicitacao->save();
+     
+         // Agora trata os lançamentos
+         $validatedData = $request->validate([
+             'codigo.*' => 'required|string',
+             'moeda_id.*' => 'required|integer|not_in:0',
+             'valor.*' => 'required|string',
+             'tipo_id.*' => 'required|integer|not_in:0',
+         ]);
+     
+         $codigos = $validatedData['codigo'];
+         $moedas = $validatedData['moeda_id'];
+         $valores = $validatedData['valor'];
+         $tipos = $validatedData['tipo_id'];
+     
+         foreach ($codigos as $index => $codigo) {
+             $moeda = $moedas[$index];
+             $valor = $valores[$index];
+             $tipo = $tipos[$index];
+     
+             // Verificar se o lançamento já existe
+             $existeLancamento = Lancamentos::where('codigo', $codigo)->first();
+             if ($existeLancamento) {
+                 return response()->json(['error' => 'Lançamento já existe!'], 400);
+             }
+     
+             // Criar um novo lançamento
+             Lancamentos::create([
+                 'codigo' => $codigo,
+                 'moeda_id' => $moeda,
+                 'valor' => $valor,
+                 'tipo_id' => $tipo,
+                 'solicitacao_id' => $solicitacao->id,
+                 'user_id' => $solicitacao->user_id,
+             ]);
+         }
+     
+         return redirect()->back()->with('success', 'Resposta e lançamentos salvos com sucesso!');
+     }
+     
 
     public function updateStatus(Request $request, $id)
     {
